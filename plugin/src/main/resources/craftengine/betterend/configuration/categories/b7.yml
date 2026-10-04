@@ -1,0 +1,22 @@
+# INTEGRATOR: append this one entry to the root list of the live configuration/categories.yml,
+# under betterend:betterend -> list:
+#   - '#betterend:metals'
+#
+# Do NOT redeclare betterend:betterend / stones / woods / misc here. ItemBrowserManagerImpl
+# .CategoryParser is an IdSectionConfigParser and does byId.put(id, category) (:152) -- a category
+# declared in two files is SILENTLY OVERWRITTEN by whichever loads last.
+#
+# `list: []` is deliberate: membership arrives from each item's own `category:` key via
+# AbstractItemManager.java:429-432 addExternalCategoryMember, exactly as the live pack's leaves do.
+categories:
+  betterend:metals:
+    name: '<!i><white><l10n:category.betterend.metals></white>'
+    hidden: true
+    icon: betterend:terminite_block
+    list: []
+
+# Server-side name for the category label above. TranslationParser,
+# TranslationManagerImpl.java:415-482; suffixed per batch so no two batch files collide.
+translations#b7_categories:
+  en_us:
+    category.betterend.metals: BetterEnd Metals

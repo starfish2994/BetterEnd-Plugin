@@ -1,0 +1,169 @@
+# BetterEnd -- batch B4 (flora-a): the plant foods and drops.
+# Food values are the mod's own (EndFoodItems.java:52-108); MobEffect side effects are dropped --
+# `settings.food` is parsed by FoodData.fromConfig, which reads ONLY nutrition and saturation
+# (FoodData.java:5-12, wired at ItemSettingsModifiers.java:194-197) -- no effects and not even
+# can_always_eat -- so shadow_berry_jelly loses its 20s Night Vision.
+items:
+  betterend:amber_root_raw:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.amber_root_raw></white>'
+    texture: betterend:item/amber_root_raw
+    settings:
+      food:
+        nutrition: 2
+        saturation: 3.2
+  betterend:blossom_berry:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.blossom_berry></white>'
+    texture: betterend:item/blossom_berry
+    settings:
+      food:
+        nutrition: 4
+        saturation: 2.4
+  betterend:blossom_berry_jelly:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.blossom_berry_jelly></white>'
+    texture: betterend:item/blossom_berry_jelly
+    settings:
+      food:
+        nutrition: 8
+        saturation: 11.2
+  betterend:cave_pumpkin_pie:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.cave_pumpkin_pie></white>'
+    texture: betterend:item/cave_pumpkin_pie
+    settings:
+      food:
+        nutrition: 8
+        saturation: 4.8
+  betterend:chorus_mushroom_cooked:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.chorus_mushroom_cooked></white>'
+    texture: betterend:item/chorus_mushroom_cooked
+    settings:
+      food:
+        nutrition: 6
+        saturation: 7.2
+  betterend:chorus_mushroom_raw:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.chorus_mushroom_raw></white>'
+    texture: betterend:item/chorus_mushroom_raw
+    settings:
+      food:
+        nutrition: 3
+        saturation: 3.0
+  betterend:enchanted_petal:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.enchanted_petal></white>'
+    texture: betterend:item/hydralux_petal
+  betterend:end_lily_leaf:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.end_lily_leaf></white>'
+    texture: betterend:block/end_lily_leaf_small
+  betterend:end_lily_leaf_dried:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.end_lily_leaf_dried></white>'
+    texture: betterend:item/end_lily_leaf_dried
+  betterend:hydralux_petal:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.hydralux_petal></white>'
+    texture: betterend:item/hydralux_petal
+  betterend:shadow_berry_cooked:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.shadow_berry_cooked></white>'
+    texture: betterend:item/shadow_berry_cooked
+    settings:
+      food:
+        nutrition: 6
+        saturation: 8.4
+  betterend:shadow_berry_jelly:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.shadow_berry_jelly></white>'
+    texture: betterend:item/shadow_berry_jelly
+    settings:
+      food:
+        nutrition: 6
+        saturation: 9.6
+  betterend:shadow_berry_raw:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.shadow_berry_raw></white>'
+    texture: betterend:item/shadow_berry
+    settings:
+      food:
+        nutrition: 4
+        saturation: 4.0
+  betterend:sweet_berry_jelly:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.sweet_berry_jelly></white>'
+    texture: betterend:item/sweet_berry_jelly
+    settings:
+      food:
+        nutrition: 8
+        saturation: 11.2
+
+# Only the recipes whose every ingredient exists in this batch or in vanilla are shipped.
+# Deferred, with the batch that unblocks them:
+#   blossom_berry_jelly / shadow_berry_jelly / sweet_berry_jelly -- need betterend:gelatine (B8)
+#     and the #wover:water_bottles tag, which has no Bukkit equivalent.
+#   enchanted_petal -- betterend:infusion recipe type (the infusion pedestal ritual); there is
+#     no CraftEngine recipe serializer for it (RecipeSerializers.java:13-25).
+recipes:
+  # generated/data/betterend/recipe/shadow_berry_seeds.json
+  betterend:shadow_berry_seeds:
+    type: shapeless
+    ingredients:
+      - betterend:shadow_berry_raw
+    result:
+      id: betterend:shadow_berry
+      count: 4
+  # generated/data/betterend/recipe/chorus_mushroom_campfire.json
+  betterend:chorus_mushroom_campfire:
+    type: campfire_cooking
+    category: food
+    time: 600
+    ingredient: betterend:chorus_mushroom_raw
+    result:
+      id: betterend:chorus_mushroom_cooked
+  # generated/data/betterend/recipe/chorus_mushroom_smoker.json
+  betterend:chorus_mushroom_smoker:
+    type: smoking
+    category: food
+    ingredient: betterend:chorus_mushroom_raw
+    result:
+      id: betterend:chorus_mushroom_cooked
+  # generated/data/betterend/recipe/end_lily_leaf_dried_smelting.json
+  betterend:end_lily_leaf_dried_smelting:
+    type: smelting
+    ingredient: betterend:end_lily_leaf
+    result:
+      id: betterend:end_lily_leaf_dried
+  # generated/data/betterend/recipe/cave_pumpkin_pie.json -- B accepts either berry, which
+  # AbstractRecipeSerializer.java:86-121 supports as a list ingredient.
+  betterend:cave_pumpkin_pie:
+    type: shaped
+    pattern:
+      - SBS
+      - BPB
+      - SBS
+    ingredients:
+      S: minecraft:sugar
+      B:
+        - betterend:blossom_berry
+        - betterend:shadow_berry_raw
+      P: betterend:cave_pumpkin
+    result:
+      id: betterend:cave_pumpkin_pie

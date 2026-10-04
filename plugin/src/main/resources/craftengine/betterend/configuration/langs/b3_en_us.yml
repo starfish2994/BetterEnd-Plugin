@@ -1,0 +1,99 @@
+# B3-openable localisation. Names are VERBATIM from the mod's
+# assets/betterend/lang/en_us.json -- not prettified.
+# Section suffixes keep this file from colliding with the other batches':
+# AbstractPackManager.java:674-683 selects the parser from the text BEFORE '#', and
+# TranslationManagerImpl.addClientTranslation (:351-368) accumulates instead of replacing.
+
+lang#b3_items:
+  en_us:
+    item.betterend.pythadendron_door: Pythadendron Door
+    item.betterend.pythadendron_trapdoor: Pythadendron Trapdoor
+    item.betterend.pythadendron_gate: Pythadendron Gate
+    item.betterend.pythadendron_plate: Pythadendron Pressure Plate
+    item.betterend.lacugrove_door: Lacugrove Door
+    item.betterend.lacugrove_trapdoor: Lacugrove Trapdoor
+    item.betterend.lacugrove_gate: Lacugrove Gate
+    item.betterend.lacugrove_plate: Lacugrove Pressure Plate
+    item.betterend.dragon_tree_door: Dragon Tree Door
+    item.betterend.dragon_tree_trapdoor: Dragon Tree Trapdoor
+    item.betterend.dragon_tree_gate: Dragon Tree Gate
+    item.betterend.dragon_tree_plate: Dragon Tree Pressure Plate
+    item.betterend.tenanea_door: Tenanea Door
+    item.betterend.tenanea_trapdoor: Tenanea Trapdoor
+    item.betterend.tenanea_gate: Tenanea Gate
+    item.betterend.tenanea_plate: Tenanea Pressure Plate
+    item.betterend.helix_tree_door: Helix Tree Door
+    item.betterend.helix_tree_trapdoor: Helix Tree Trapdoor
+    item.betterend.helix_tree_gate: Helix Tree Gate
+    item.betterend.helix_tree_plate: Helix Tree Pressure Plate
+    item.betterend.lucernia_door: Lucernia Door
+    item.betterend.lucernia_trapdoor: Lucernia Trapdoor
+    item.betterend.lucernia_gate: Lucernia Gate
+    item.betterend.lucernia_plate: Lucernia Pressure Plate
+    item.betterend.mossy_glowshroom_door: Mossy Glowshroom Door
+    item.betterend.mossy_glowshroom_trapdoor: Mossy Glowshroom Trapdoor
+    item.betterend.mossy_glowshroom_gate: Mossy Glowshroom Gate
+    item.betterend.mossy_glowshroom_plate: Mossy Glowshroom Pressure Plate
+    item.betterend.jellyshroom_door: Jellyshroom Door
+    item.betterend.jellyshroom_trapdoor: Jellyshroom Trapdoor
+    item.betterend.jellyshroom_gate: Jellyshroom Gate
+    item.betterend.jellyshroom_plate: Jellyshroom Pressure Plate
+    item.betterend.end_lotus_door: Endlotus Door
+    item.betterend.end_lotus_trapdoor: Endlotus Trapdoor
+    item.betterend.end_lotus_gate: Endlotus Gate
+    item.betterend.end_lotus_plate: Endlotus Pressure Plate
+    item.betterend.umbrella_tree_door: Umbrella Tree Door
+    item.betterend.umbrella_tree_trapdoor: Umbrella Tree Trapdoor
+    item.betterend.umbrella_tree_gate: Umbrella Tree Gate
+    item.betterend.umbrella_tree_plate: Umbrella Tree Pressure Plate
+    item.betterend.terminite_door: Terminite Door
+    item.betterend.terminite_trapdoor: Terminite Trapdoor
+    item.betterend.thallasium_door: Thallasium Door
+    item.betterend.thallasium_trapdoor: Thallasium Trapdoor
+
+lang#b3_blocks:
+  en_us:
+    block_name:betterend:pythadendron_door: Pythadendron Door
+    block_name:betterend:pythadendron_trapdoor: Pythadendron Trapdoor
+    block_name:betterend:pythadendron_gate: Pythadendron Gate
+    block_name:betterend:pythadendron_plate: Pythadendron Pressure Plate
+    block_name:betterend:lacugrove_door: Lacugrove Door
+    block_name:betterend:lacugrove_trapdoor: Lacugrove Trapdoor
+    block_name:betterend:lacugrove_gate: Lacugrove Gate
+    block_name:betterend:lacugrove_plate: Lacugrove Pressure Plate
+    block_name:betterend:dragon_tree_door: Dragon Tree Door
+    block_name:betterend:dragon_tree_trapdoor: Dragon Tree Trapdoor
+    block_name:betterend:dragon_tree_gate: Dragon Tree Gate
+    block_name:betterend:dragon_tree_plate: Dragon Tree Pressure Plate
+    block_name:betterend:tenanea_door: Tenanea Door
+    block_name:betterend:tenanea_trapdoor: Tenanea Trapdoor
+    block_name:betterend:tenanea_gate: Tenanea Gate
+    block_name:betterend:tenanea_plate: Tenanea Pressure Plate
+    block_name:betterend:helix_tree_door: Helix Tree Door
+    block_name:betterend:helix_tree_trapdoor: Helix Tree Trapdoor
+    block_name:betterend:helix_tree_gate: Helix Tree Gate
+    block_name:betterend:helix_tree_plate: Helix Tree Pressure Plate
+    block_name:betterend:lucernia_door: Lucernia Door
+    block_name:betterend:lucernia_trapdoor: Lucernia Trapdoor
+    block_name:betterend:lucernia_gate: Lucernia Gate
+    block_name:betterend:lucernia_plate: Lucernia Pressure Plate
+    block_name:betterend:mossy_glowshroom_door: Mossy Glowshroom Door
+    block_name:betterend:mossy_glowshroom_trapdoor: Mossy Glowshroom Trapdoor
+    block_name:betterend:mossy_glowshroom_gate: Mossy Glowshroom Gate
+    block_name:betterend:mossy_glowshroom_plate: Mossy Glowshroom Pressure Plate
+    block_name:betterend:jellyshroom_door: Jellyshroom Door
+    block_name:betterend:jellyshroom_trapdoor: Jellyshroom Trapdoor
+    block_name:betterend:jellyshroom_gate: Jellyshroom Gate
+    block_name:betterend:jellyshroom_plate: Jellyshroom Pressure Plate
+    block_name:betterend:end_lotus_door: Endlotus Door
+    block_name:betterend:end_lotus_trapdoor: Endlotus Trapdoor
+    block_name:betterend:end_lotus_gate: Endlotus Gate
+    block_name:betterend:end_lotus_plate: Endlotus Pressure Plate
+    block_name:betterend:umbrella_tree_door: Umbrella Tree Door
+    block_name:betterend:umbrella_tree_trapdoor: Umbrella Tree Trapdoor
+    block_name:betterend:umbrella_tree_gate: Umbrella Tree Gate
+    block_name:betterend:umbrella_tree_plate: Umbrella Tree Pressure Plate
+    block_name:betterend:terminite_door: Terminite Door
+    block_name:betterend:terminite_trapdoor: Terminite Trapdoor
+    block_name:betterend:thallasium_door: Thallasium Door
+    block_name:betterend:thallasium_trapdoor: Thallasium Trapdoor

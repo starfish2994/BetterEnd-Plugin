@@ -1,0 +1,15 @@
+# INTEGRATOR: append this entry to the root list of the live configuration/categories.yml
+# (betterend:betterend -> list:) -- it cannot be added from here, because CategoryParser is an
+# IdSectionConfigParser and byId.put (ItemBrowserManagerImpl.java:152) silently overwrites a
+# category declared twice.
+#betterend:flora
+categories:
+  betterend:flora:
+    name: '<!i><white><l10n:category.betterend.flora></white>'
+    hidden: true
+    icon: betterend:umbrella_moss
+    list: []
+
+translations#b4_categories:
+  en_us:
+    category.betterend.flora: Flora

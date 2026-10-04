@@ -1,0 +1,585 @@
+# B6 -- lanterns. 25 of the 73 ids of the manifest B6 batch; the 48 dyed bulb lanterns are
+# UNSHIPPED, see SHAPE DONORS below.
+#
+# ============================ SHAPE DONORS (2026 remap) ======================================
+# CraftEngine cannot override collision. BukkitBlockShape.java:20-26 forwards getShape and
+# getCollisionShape straight to the donor visual state bound at BukkitBlockManager.java:312, and
+# not one of the 37 keys in BlockSettingsModifiers.java is a shape or collision override. Every
+# lantern and chandelier in this file used to sit on `auto_state: solid` -- note_block and the three
+# mushroom blocks, a FULL SOLID CUBE. A hanging lantern therefore blocked the cell it hung in and a
+# floor lantern could not be walked through. That is the single most visible shape bug in the pack.
+#
+# The donors below are all non-waxed copper / lightning-rod states that internal/mappings.yml
+# collapses onto their waxed twins (:4072 rods, :4329 lanterns, :2117+ trapdoors). They belong to no
+# AutoStateGroup (AutoStateGroup.java:12-58), so they can only be taken by an explicit `state:` --
+# which means no other pack's auto-allocation can ever steal them, unlike a shared pool. Verified
+# unclaimed across all 8 packs on this server.
+#
+#   3 undyed bulb lanterns + end_stone_lantern -> copper_lantern[hanging=..,waterlogged=false]
+#       EXACT. The vanilla lantern box is the shape these blocks want, and the donor's `hanging`
+#       property lines up 1:1 with our own. Only 4 dry pairs exist, hence only 4 blocks get it.
+#   13 remaining stone lanterns -> <copper>_trapdoor[..,half=bottom|top,open=false,..]
+#       APPROXIMATE, and recorded as such: a closed trapdoor is a 3px pad, not a lantern box. What
+#       it buys is the thing players actually notice -- half=top puts the pad on the ceiling so you
+#       can walk UNDER a hanging lantern, and half=bottom puts it on the floor so a standing lantern
+#       no longer fills its cell. The visible model is ~12px tall over a 3px hitbox: you can clip
+#       through the upper body. Strictly better than a full cube, still not right.
+#   4 chandeliers -> <oxidation>_lightning_rod[facing=..,powered=false,waterlogged=false]
+#       facing maps 1:1, and this is an IMPROVEMENT, NOT A MATCH -- read the next four lines before
+#       quoting the boxes. The mod chandelier has NO COLLISION AT ALL: ChandelierBlock.java:39 calls
+#       .noCollision() in the constructor and Chandelier.java:43 calls .noCollission() again on the
+#       definition. ChandelierBlock.java:140-145's box(5,0,5,11,13,11) / (5,3,5,11,16,11) / half-cells
+#       are the OUTLINE (selection) shape only; you walk straight through a chandelier in the mod.
+#       CraftEngine cannot express "no collision" on a donor that has one, and every no-collision
+#       donor is a shared pool that is nearly full (tripwire 122/126, kelp 23/25, sugar_cane 14/15) --
+#       24 states are not there to take. So the rod is a deliberate downgrade from a full solid cube
+#       (4096 px^3 of obstruction) to a 4x4 rod (256 px^3, or a 4x4 bar across the cell on the wall
+#       facings). Better than what was here, still wrong. UNRESOLVED, revisit if a no-collision pool
+#       ever frees 24 states. The powered=true half of each rod family backs lumecorn in B5-flora-b.yml.
+#
+# WHY THE 48 DYED BULB LANTERNS ARE GONE. 65 lanterns x 2 appearances = 130 states of "small
+# non-occluding partial box". The entire server has 64 dry closed-trapdoor states plus 8 dry
+# copper_lantern states = 72, and 16 of those are already spent on ladders/pots/lotus leaves
+# elsewhere in the pack. The dyed variants are pure recolours of the three undyed lanterns, so they
+# are the cheapest 48 ids to drop; the alternative was 48 blocks that break player movement.
+# The FarmersDelight one-state + item_display trick does not rescue them: it only works on a donor
+# that renders as nothing (tripwire), and tripwire has NO collision at all -- a lantern you walk
+# straight through is not an improvement, and tripwire is the pack's tightest pool.
+# =============================================================================================
+#
+# THE bclib BLOCKER IS FALSE. The audit reported 65/73 models parenting to
+# bclib:block/{bulb,stone}_lantern_{floor,ceil} with no such file under Reference/. The mod ships
+# those four geometries ITSELF, as bclib "patterns":
+#   Reference/BetterEnd/src/main/resources/assets/betterend/patterns/block/bulb_lantern_ceil.json
+#                                                                        /bulb_lantern_floor.json
+#                                                                        /stone_lantern_ceil.json
+#                                                                        /stone_lantern_floor.json
+# They carry %glow% / %metal% / %block% placeholders in their `textures` map. Staging re-authors
+# them as betterend:block/<same name> with the placeholders replaced by "#glow" / "#side" / "#glass"
+# aliases onto the keys the generated child models already declare, and with `tintindex` stripped
+# (see the tint note below). Every child model is the mod-generated json with bclib: -> betterend:.
+#
+# TINTS ARE BAKED, NOT LIVE.
+#   * Dyed bulb lanterns. All 16 dye variants of a metal share ONE model and ONE near-greyscale
+#     texture (betterend:block/bulb_vine_lantern_bulb) and differ only by a BlockColor:
+#     ColoredMaterial.java:103-141 attaches TINT.constColor(boost(DyeColor.getMapColor().col)) and
+#     BulbVineLanternColoredBlock.boostLanternColor (:19-24) pushes value to 1.0 when saturation
+#     > 0.2. CE has no per-block tint for a solid, so staging bakes 16 recoloured PNGs
+#     (bulb_vine_lantern_bulb_<dye>.png, with the animation .mcmeta copied alongside) exactly as B8
+#     does for the hydralux petals. The three undyed lanterns carry no tint trait -- raw texture.
+#   * Stone lanterns. The crystal face is tinted from EndCrystalBlocks.AURORA_PALETTE through a
+#     PALETTE_CYCLE tinter (StoneLantern.java:50-53) -- a per-position colour cycle CE cannot
+#     express at all. aurora_crystal.png is already a coloured sprite, so the tint is dropped and
+#     the sprite ships as-is. DEBT: one fixed colour instead of cycling the aurora palette.
+#
+# STATE SHAPE. EndLanternBlock (blocks/basis/EndLanternBlock.java:37-50) is {is_floor, waterlogged}.
+# `waterlogged` is dropped: it would double every appearance (158 -> 316 SOLID candidates) to
+# reproduce a property the note_block host cannot honour anyway. `is_floor` is inverted into CE's
+# `hanging`, which is the property name HangableBlockBehavior.Factory hard-requires
+# (HangableBlockBehavior.java:87, getProperty(..., "hanging", Boolean.class)); that behavior's
+# canSurvive / updateStateForPlacement (:36-62) is EndLanternBlock own placement logic verbatim.
+#
+# STATE COST: 4 plant lanterns x1 = 4 SOLID. Everything else in this file is an explicit state:
+#   8 copper_lantern (4 blocks x2) + 26 copper trapdoor (13 blocks x2) + 24 lightning rod
+#   (4 chandeliers x6) = 58 states that belong to this pack alone. Down from 158 SOLID.
+#
+# Settings follow the batch convention: [default:sound/lantern, default:settings/transparent_1x1x1]
+# + merges. `merges:` never `overrides:` -- overrides is a shallow putAll that would drop the
+# template own tags (TemplateManagerImpl.java:143 vs deepMergeMaps :385-387).
+# luminance 15 everywhere: BulbLantern.java:48-52, StoneLantern.java:47, Chandelier.java:41.
+
+# ---------------------------------------------------------------------------------------------
+# 51 bulb lanterns = {iron,terminite,thallasium} x {undyed + 16 dyes}.
+# Blocks and items only; the recipes live in the two recipe factories below, because the undyed
+# and dyed forms take different recipe types.
+config_factory#b6_bulb_lanterns:
+  instances:
+    - {id: iron_bulb_lantern, map_color: metal,
+       floor_state: 'copper_lantern[hanging=false,waterlogged=false]', ceil_state: 'copper_lantern[hanging=true,waterlogged=false]'}
+    - {id: terminite_bulb_lantern, map_color: warped_wart_block,
+       floor_state: 'exposed_copper_lantern[hanging=false,waterlogged=false]', ceil_state: 'exposed_copper_lantern[hanging=true,waterlogged=false]'}
+    - {id: thallasium_bulb_lantern, map_color: color_blue,
+       floor_state: 'weathered_copper_lantern[hanging=false,waterlogged=false]', ceil_state: 'weathered_copper_lantern[hanging=true,waterlogged=false]'}
+  blueprint:
+    items:
+      betterend:${id}:
+        category: betterend:lights
+        settings:
+          tags:
+            - betterend:lanterns
+        data:
+          item_name: '<!i><white><lang:item.betterend.${id}></white>'
+        # BulbVineLanternBlock.java:96 delegateItemModel(block, floorModel) -- the item shows the
+        # standing form, not the hanging one.
+        model: betterend:block/${id}_floor
+        behavior:
+          type: block_item
+          block: betterend:${id}
+    blocks:
+      betterend:${id}:
+        # BulbLantern.java:48-52: destroyTime(1), explosionResistance(1), lightLevel 15,
+        # SoundType.LANTERN, noOcclusion, MINEABLE_WITH.needsPickAxe.
+        settings:
+          template:
+            - default:sound/lantern
+            - default:settings/transparent_1x1x1
+          merges:
+            hardness: 1.0
+            resistance: 1.0
+            luminance: 15
+            push_reaction: destroy
+            # NoteBlockInstrument.IRON_XYLOPHONE: MetalMaterial.java:186 for terminite/thallasium,
+            # and copied off Blocks.IRON_BLOCK by VanillaMetalSet.java:39-41 for iron.
+            instrument: iron_xylophone
+            # NOT `metal` for every id: the 3 undyed lanterns keep their family colour
+            # (MetalMaterial.java:184 / the vanilla source block), but all 48 dyed variants are
+            # forced to COLOR_BLACK by ColoredMaterial.java:108-110
+            # (.replacePropertiesWithCopy(source).mapColor(MapColor.COLOR_BLACK)).
+            map_color: ${map_color}
+            correct_tools: ['#minecraft:pickaxes']
+            required_break_power: 1
+            tags: [minecraft:mineable/pickaxe]
+        loot:
+          template: default:loot_table/self
+        behavior:
+          type: hangable_block
+        state:
+          properties:
+            hanging:
+              type: boolean
+              default: false
+          appearances:
+            floor:
+              state: ${floor_state}
+              model: betterend:block/${id}_floor
+            ceil:
+              state: ${ceil_state}
+              model: betterend:block/${id}
+          variants:
+            hanging=false:
+              appearance: floor
+            hanging=true:
+              appearance: ceil
+
+# The three undyed bulb lanterns. generated/data/betterend/recipe/<metal>_bulb_lantern.json.
+# CROSS-BATCH: betterend:glowing_bulb is a B5 item; the terminite/thallasium ingots and chains
+# are B7. Land B5 and B7 before this file or these three recipes have unresolvable ingredients.
+config_factory#b6_bulb_lantern_recipes:
+  instances:
+    - {metal: iron, chain: minecraft:iron_chain, ingot: minecraft:iron_ingot}
+    - {metal: terminite, chain: betterend:terminite_chain, ingot: betterend:terminite_ingot}
+    - {metal: thallasium, chain: betterend:thallasium_chain, ingot: betterend:thallasium_ingot}
+  blueprint:
+    recipes:
+      betterend:${metal}_bulb_lantern:
+        type: shaped
+        category: building
+        pattern:
+          - 'C'
+          - 'I'
+          - '#'
+        ingredients:
+          C: ${chain}
+          I: ${ingot}
+          '#': betterend:glowing_bulb
+        result:
+          id: betterend:${metal}_bulb_lantern
+          count: 1
+
+# UNSHIPPED (2026 remap): the 48 dyed bulb lanterns and their 48 shapeless dye recipes.
+# They are pure colour variants of the three undyed lanterns above and there is no shape-correct
+# donor left for them -- see the SHAPE DONORS note at the top of this file. Rule: a missing block
+# beats a lantern that is a full solid cube. To bring them back, 96 more small-partial-box states
+# have to exist first; today the whole server has 64.
+
+# ---------------------------------------------------------------------------------------------
+# 14 stone lanterns. hardness / resistance / map_color are the SOURCE family values, not the
+# lantern own: StoneLantern.startBlockDefinition (:33-40) inherits the set properties and only
+# adds noOcclusion + lightLevel(15). Vanilla-backed families take the vanilla stone numbers; the
+# seven BetterEnd families take 3.0/9.0, the same numbers the live stone_sets.yml already ships.
+config_factory#b6_stone_lanterns:
+  instances:
+    - {stone: andesite,        hardness: 1.5, resistance: 6.0, map_color: stone,
+       floor_state: 'exposed_copper_trapdoor[facing=north,half=bottom,open=false,powered=true,waterlogged=false]',
+       ceil_state: 'exposed_copper_trapdoor[facing=north,half=top,open=false,powered=true,waterlogged=false]'}
+    - {stone: azure_jadestone, hardness: 3.0, resistance: 9.0, map_color: color_light_blue,
+       floor_state: 'exposed_copper_trapdoor[facing=south,half=bottom,open=false,powered=true,waterlogged=false]',
+       ceil_state: 'exposed_copper_trapdoor[facing=south,half=top,open=false,powered=true,waterlogged=false]'}
+    - {stone: blackstone,      hardness: 1.5, resistance: 6.0, map_color: color_black,
+       floor_state: 'exposed_copper_trapdoor[facing=east,half=bottom,open=false,powered=true,waterlogged=false]',
+       ceil_state: 'exposed_copper_trapdoor[facing=east,half=top,open=false,powered=true,waterlogged=false]'}
+    - {stone: diorite,         hardness: 1.5, resistance: 6.0, map_color: quartz,
+       floor_state: 'exposed_copper_trapdoor[facing=west,half=bottom,open=false,powered=true,waterlogged=false]',
+       ceil_state: 'exposed_copper_trapdoor[facing=west,half=top,open=false,powered=true,waterlogged=false]'}
+    - {stone: end_stone,       hardness: 3.0, resistance: 9.0, map_color: sand,
+       floor_state: 'oxidized_copper_lantern[hanging=false,waterlogged=false]',
+       ceil_state: 'oxidized_copper_lantern[hanging=true,waterlogged=false]'}
+    - {stone: flavolite,       hardness: 3.0, resistance: 9.0, map_color: sand,
+       floor_state: 'weathered_copper_trapdoor[facing=north,half=bottom,open=false,powered=true,waterlogged=false]',
+       ceil_state: 'weathered_copper_trapdoor[facing=north,half=top,open=false,powered=true,waterlogged=false]'}
+    - {stone: granite,         hardness: 1.5, resistance: 6.0, map_color: dirt,
+       floor_state: 'weathered_copper_trapdoor[facing=south,half=bottom,open=false,powered=true,waterlogged=false]',
+       ceil_state: 'weathered_copper_trapdoor[facing=south,half=top,open=false,powered=true,waterlogged=false]'}
+    - {stone: purple,          hardness: 1.5, resistance: 6.0, map_color: color_magenta,
+       floor_state: 'weathered_copper_trapdoor[facing=east,half=bottom,open=false,powered=true,waterlogged=false]',
+       ceil_state: 'weathered_copper_trapdoor[facing=east,half=top,open=false,powered=true,waterlogged=false]'}
+    - {stone: quartz,          hardness: 0.8, resistance: 0.8, map_color: quartz,
+       floor_state: 'weathered_copper_trapdoor[facing=west,half=bottom,open=false,powered=true,waterlogged=false]',
+       ceil_state: 'weathered_copper_trapdoor[facing=west,half=top,open=false,powered=true,waterlogged=false]'}
+    - {stone: sandy_jadestone, hardness: 3.0, resistance: 9.0, map_color: color_yellow,
+       floor_state: 'oxidized_copper_trapdoor[facing=north,half=bottom,open=false,powered=true,waterlogged=false]',
+       ceil_state: 'oxidized_copper_trapdoor[facing=north,half=top,open=false,powered=true,waterlogged=false]'}
+    - {stone: sulphuric_rock,  hardness: 3.0, resistance: 9.0, map_color: color_brown,
+       floor_state: 'oxidized_copper_trapdoor[facing=south,half=bottom,open=false,powered=true,waterlogged=false]',
+       ceil_state: 'oxidized_copper_trapdoor[facing=south,half=top,open=false,powered=true,waterlogged=false]'}
+    - {stone: umbralith,       hardness: 3.0, resistance: 9.0, map_color: deepslate,
+       floor_state: 'oxidized_copper_trapdoor[facing=east,half=bottom,open=false,powered=true,waterlogged=false]',
+       ceil_state: 'oxidized_copper_trapdoor[facing=east,half=top,open=false,powered=true,waterlogged=false]'}
+    - {stone: violecite,       hardness: 3.0, resistance: 9.0, map_color: color_purple,
+       floor_state: 'oxidized_copper_trapdoor[facing=west,half=bottom,open=false,powered=true,waterlogged=false]',
+       ceil_state: 'oxidized_copper_trapdoor[facing=west,half=top,open=false,powered=true,waterlogged=false]'}
+    - {stone: virid_jadestone, hardness: 3.0, resistance: 9.0, map_color: color_green,
+       floor_state: 'waxed_copper_trapdoor[facing=north,half=bottom,open=false,powered=true,waterlogged=false]',
+       ceil_state: 'waxed_copper_trapdoor[facing=north,half=top,open=false,powered=true,waterlogged=false]'}
+  blueprint:
+    items:
+      betterend:${stone}_lantern:
+        category: betterend:lights
+        settings:
+          tags:
+            - betterend:lanterns
+        data:
+          item_name: '<!i><white><lang:item.betterend.${stone}_lantern></white>'
+        model: betterend:block/${stone}_lantern_floor
+        behavior:
+          type: block_item
+          block: betterend:${stone}_lantern
+    blocks:
+      betterend:${stone}_lantern:
+        settings:
+          template:
+            - default:sound/stone
+            - default:settings/transparent_1x1x1
+          merges:
+            hardness: ${hardness}
+            resistance: ${resistance}
+            instrument: basedrum
+            luminance: 15
+            push_reaction: destroy
+            map_color: ${map_color}
+            correct_tools: ['#minecraft:pickaxes']
+            required_break_power: 1
+            tags: [minecraft:mineable/pickaxe, minecraft:dragon_immune] # ponytail: over-tags the vanilla-stone instances too (mod tags only the 7 BetterEnd families, StoneMaterial.java:50). Per-instance ${dragon} arg if that ever matters.
+        loot:
+          template: default:loot_table/self
+        behavior:
+          type: hangable_block
+        state:
+          properties:
+            hanging:
+              type: boolean
+              default: false
+          appearances:
+            floor:
+              state: ${floor_state}
+              model: betterend:block/${stone}_lantern_floor
+            ceil:
+              state: ${ceil_state}
+              model: betterend:block/${stone}_lantern
+          variants:
+            hanging=false:
+              appearance: floor
+            hanging=true:
+              appearance: ceil
+
+# Only the 7 stone lanterns whose recipe uses a VANILLA slab can ship. The other seven
+# (azure_jadestone, flavolite, sandy_jadestone, sulphuric_rock, umbralith, violecite,
+# virid_jadestone) call for betterend:<family>_slab, and slabs are in the manifest SKIP set -- no
+# custom slab id will ever exist, so those recipes are omitted rather than faked with a full block.
+# CROSS-BATCH: betterend:crystal_shards is a B5 item.
+config_factory#b6_stone_lantern_recipes:
+  instances:
+    - {stone: andesite,   slab: minecraft:andesite_slab}
+    - {stone: blackstone, slab: minecraft:blackstone_slab}
+    - {stone: diorite,    slab: minecraft:diorite_slab}
+    - {stone: end_stone,  slab: minecraft:end_stone_brick_slab}
+    - {stone: granite,    slab: minecraft:granite_slab}
+    - {stone: purple,     slab: minecraft:purpur_slab}
+    - {stone: quartz,     slab: minecraft:quartz_slab}
+  blueprint:
+    recipes:
+      betterend:${stone}_lantern:
+        type: shaped
+        category: building
+        group: end_stone_lanterns
+        pattern:
+          - 'S'
+          - '#'
+          - 'S'
+        ingredients:
+          S: ${slab}
+          '#': betterend:crystal_shards
+        result:
+          id: betterend:${stone}_lantern
+          count: 1
+
+# ---------------------------------------------------------------------------------------------
+# 4 chandeliers. ChandelierBlock extends BaseAttachedBlock, a 6-way FACING attached block, so
+# `directional_attached_block` is the exact match: it requires a `facing` property whose value set
+# has 6 entries (DirectionalAttachedBlockBehavior.java:42, :107) and attaches to facing.opposite()
+# (:64-66). Its `blacklist` defaults to true with empty attached lists, i.e. "any sturdy face"
+# (:71-79), which is what BaseAttachedBlock does -- so no extra keys.
+# The four wall appearances are ONE model at four y rotations, matching the mod blockstate json;
+# applyOtherBlockStateProperties (AbstractBlockManager.java:1000-1007) is what accepts `y`.
+config_factory#b6_chandeliers:
+  instances:
+    - {metal: gold,       ingot: minecraft:gold_ingot,       hardness: 3.0, resistance: 6.0, map_color: gold,              instrument: bell, rod: lightning_rod}
+    - {metal: iron,       ingot: minecraft:iron_ingot,       hardness: 5.0, resistance: 6.0, map_color: metal,             instrument: iron_xylophone, rod: exposed_lightning_rod}
+    - {metal: terminite,  ingot: betterend:terminite_ingot,  hardness: 7.0, resistance: 9.0, map_color: warped_wart_block, instrument: iron_xylophone, rod: weathered_lightning_rod}
+    - {metal: thallasium, ingot: betterend:thallasium_ingot, hardness: 5.0, resistance: 6.0, map_color: color_blue,        instrument: iron_xylophone, rod: oxidized_lightning_rod}
+  blueprint:
+    items:
+      betterend:${metal}_chandelier:
+        category: betterend:lights
+        settings:
+          tags:
+            - betterend:lanterns
+        data:
+          item_name: '<!i><white><lang:item.betterend.${metal}_chandelier></white>'
+        # generated/assets/betterend/items/<metal>_chandelier.json binds
+        # betterend:item/<metal>_chandelier, an item/generated sprite -- unlike every other id in
+        # this batch the chandelier item is NOT its block model.
+        texture: betterend:item/${metal}_chandelier
+        behavior:
+          type: block_item
+          block: betterend:${metal}_chandelier
+    blocks:
+      betterend:${metal}_chandelier:
+        # Chandelier.java:40-46: RENDER_LAYER.cutout, lightLevel 15, noCollission, noOcclusion,
+        # requiresCorrectToolForDrops, LOOT_TABLE.dropSelf. CE has no no-collision setting -- the
+        # note_block host keeps its full cube hitbox. DEBT, cosmetic only.
+        # hardness/resistance: terminite 7/9 (EndMetalBlocks.java:85-95), the rest 5/6
+        # (MetalMaterial.java:186 .strength(5.0F, 6.0F)); gold takes vanilla gold_block 3/6.
+        settings:
+          template:
+            - default:sound/metal
+            - default:settings/transparent_1x1x1
+          merges:
+            hardness: ${hardness}
+            resistance: ${resistance}
+            luminance: 15
+            push_reaction: destroy
+            # gold copies Blocks.GOLD_BLOCK (BELL); the other three are IRON_XYLOPHONE
+            # (MetalMaterial.java:186 / Blocks.IRON_BLOCK via VanillaMetalSet.java:39-41).
+            instrument: ${instrument}
+            map_color: ${map_color}
+            require_correct_tools: true
+            correct_tools: ['#minecraft:pickaxes']
+            required_break_power: 1
+            tags: [minecraft:mineable/pickaxe]
+        loot:
+          template: default:loot_table/self
+        behavior:
+          type: directional_attached_block
+        state:
+          properties:
+            facing:
+              type: 6-direction
+              default: up
+          appearances:
+            up:
+              state: ${rod}[facing=up,powered=false,waterlogged=false]
+              model: betterend:block/${metal}_chandelier_floor
+            down:
+              state: ${rod}[facing=down,powered=false,waterlogged=false]
+              model: betterend:block/${metal}_chandelier_ceil
+            south:
+              state: ${rod}[facing=south,powered=false,waterlogged=false]
+              model: betterend:block/${metal}_chandelier_wall
+            west:
+              state: ${rod}[facing=west,powered=false,waterlogged=false]
+              model:
+                path: betterend:block/${metal}_chandelier_wall
+                y: 90
+            north:
+              state: ${rod}[facing=north,powered=false,waterlogged=false]
+              model:
+                path: betterend:block/${metal}_chandelier_wall
+                y: 180
+            east:
+              state: ${rod}[facing=east,powered=false,waterlogged=false]
+              model:
+                path: betterend:block/${metal}_chandelier_wall
+                y: 270
+          variants:
+            facing=up:
+              appearance: up
+            facing=down:
+              appearance: down
+            facing=north:
+              appearance: north
+            facing=south:
+              appearance: south
+            facing=west:
+              appearance: west
+            facing=east:
+              appearance: east
+    recipes:
+      # generated/data/betterend/recipe/<metal>_chandelier.json.
+      # CROSS-BATCH: betterend:lumecorn_rod is a B5 item; terminite/thallasium ingots are B7.
+      betterend:${metal}_chandelier:
+        type: shaped
+        category: building
+        group: end_metal_chandelier
+        pattern:
+          - 'I#I'
+          - ' # '
+        ingredients:
+          I: betterend:lumecorn_rod
+          '#': ${ingot}
+        result:
+          id: betterend:${metal}_chandelier
+          count: 1
+
+# ---------------------------------------------------------------------------------------------
+# 4 plant-derived light blocks. All four are genuine full cubes -- their blockstate json has the
+# single variant "" and their model is a plain cube -- so one appearance each. amaranita_lantern,
+# blue_vine_lantern and glowing_pillar_luminophor use the mod own betterend:block/cube_noshade
+# (shade:false on every face, so the glow reads flat); filalux_lantern uses minecraft:block/cube_all.
+# Both parents are staged, so the models are referenced rather than regenerated from `texture:`.
+items:
+  betterend:amaranita_lantern:
+    category: betterend:lights
+    settings:
+      tags:
+        - betterend:lanterns
+    data:
+      item_name: '<!i><white><lang:item.betterend.amaranita_lantern></white>'
+    model: betterend:block/amaranita_lantern
+    behavior:
+      type: block_item
+      block: betterend:amaranita_lantern
+  betterend:blue_vine_lantern:
+    category: betterend:lights
+    settings:
+      tags:
+        - betterend:lanterns
+    data:
+      item_name: '<!i><white><lang:item.betterend.blue_vine_lantern></white>'
+    model: betterend:block/blue_vine_lantern
+    behavior:
+      type: block_item
+      block: betterend:blue_vine_lantern
+  betterend:filalux_lantern:
+    category: betterend:lights
+    settings:
+      tags:
+        - betterend:lanterns
+    data:
+      item_name: '<!i><white><lang:item.betterend.filalux_lantern></white>'
+    model: betterend:block/filalux_lantern
+    behavior:
+      type: block_item
+      block: betterend:filalux_lantern
+  betterend:glowing_pillar_luminophor:
+    category: betterend:lights
+    settings:
+      tags:
+        - betterend:lanterns
+    data:
+      item_name: '<!i><white><lang:item.betterend.glowing_pillar_luminophor></white>'
+    model: betterend:block/glowing_pillar_luminophor
+    behavior:
+      type: block_item
+      block: betterend:glowing_pillar_luminophor
+blocks:
+  # EndLightBlocks.java:76,92,108 -- BlockTraits.PLANT_LIGHT_BLOCK (the shroomlight archetype:
+  # strength 1.0/1.0, hoe-mineable, light 15) + CompostableBlockTrait 0.65. The archetype itself
+  # lives in wover, which is not under Reference/, so the numbers here are shroomlight own.
+  # CE has no compost behavior and this batch ships no composter, so the compost chance is dropped.
+  betterend:amaranita_lantern:
+    settings:
+      template:
+        - default:sound/grass
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 1.0
+        resistance: 1.0
+        luminance: 15
+        map_color: wood
+        tags: [minecraft:mineable/hoe]
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      model: betterend:block/amaranita_lantern
+  betterend:blue_vine_lantern:
+    settings:
+      template:
+        - default:sound/grass
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 1.0
+        resistance: 1.0
+        luminance: 15
+        map_color: wood
+        tags: [minecraft:mineable/hoe]
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      model: betterend:block/blue_vine_lantern
+  # EndLightBlocks.java:123-129 -- BlockTraits.WOOD_BLOCK, SoundType.WOOD, lightLevel 15.
+  betterend:filalux_lantern:
+    settings:
+      template:
+        - default:sound/wood
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 2.0
+        resistance: 3.0
+        luminance: 15
+        instrument: bass
+        map_color: wood
+        tags: [minecraft:mineable/axe]
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      model: betterend:block/filalux_lantern
+  # EndLightBlocks.java:87-100 -- PLANT_LIGHT_BLOCK + MINEABLE_WITH.needsShears + mapColor
+  # COLOR_ORANGE. The archetype's own minecraft:mineable/hoe is kept; needsShears has NO vanilla
+  # block-tag equivalent (shears are hardcoded tool rules, not a mineable/* tag) and is dropped.
+  # No correct_tools either -- the block is not requiresCorrectToolForDrops.
+  betterend:glowing_pillar_luminophor:
+    settings:
+      template:
+        - default:sound/grass
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 1.0
+        resistance: 1.0
+        luminance: 15
+        map_color: color_orange
+        tags: [minecraft:mineable/hoe]
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      model: betterend:block/glowing_pillar_luminophor
+recipes:
+  # generated/data/betterend/recipe/filalux_lantern.json -- 3x3 of betterend:filalux (a B5 vine).
+  # amaranita_lantern, blue_vine_lantern and glowing_pillar_luminophor have NO recipe json: they
+  # are worldgen-only (mushroom caps / vine tips) and stay creative-only until the terrain pass.
+  betterend:filalux_lantern:
+    type: shaped
+    category: building
+    pattern:
+      - '###'
+      - '###'
+      - '###'
+    ingredients:
+      '#': betterend:filalux
+    result:
+      id: betterend:filalux_lantern
+      count: 1

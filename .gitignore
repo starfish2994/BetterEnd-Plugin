@@ -1,0 +1,24 @@
+# Gradle
+.gradle/
+build/
+*/build/
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+out/
+
+# Local working copies kept next to the project (pre-conversion dumps, .bak files)
+.backup/
+
+# Local test servers
+run/
+server/
+
+# OS noise
+.DS_Store
+Thumbs.db
+desktop.ini

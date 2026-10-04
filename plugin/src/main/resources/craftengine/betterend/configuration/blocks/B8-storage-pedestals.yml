@@ -1,0 +1,323 @@
+# BetterEnd B8-storage -- pedestals (15) and flower pots (8).
+#
+# ONE STATE EACH, deliberately.
+#  * The mod's pedestals carry a 6-value `state` enum (bottom / column / column_top / default /
+#    pedestal_top / pillar) that EndPedestal picks from its vertical neighbours so a stack of
+#    them reads as one column. CE has no neighbour-driven shape behavior, so five of the six
+#    values would be states nothing could ever set. Shipping only `default` costs 15 visual
+#    states instead of 90 and loses nothing that would actually have worked.
+#  * eternal_pedestal additionally has `active` (lit by the Eternal Crystal ritual) and 7 random
+#    rune variants; infusion_pedestal has its own base/top meshes. Both ship as the inactive
+#    variant-1 mesh, matching how the live pack handled brimstone's unreachable `active`
+#    (basic_blocks.yml).
+#  * The mod's flower pots carry pot_light 0-3, which tracks the light level of the PLANT in the
+#    pot; all four values map to the same model in the generated blockstate json. One state.
+#
+# display_item_block keys verified in DisplayItemBlockBehavior.java:145-174 --
+# position (block-local 0..1, default 0.5,0.5,0.5 per ConfigConstants.java:13), sounds.put /
+# sounds.take, has_signal, tint_source, data_key, plus an optional `facing` property we do not
+# need here. The pedestal mesh's top face is at y=14/16, so the item sits at y 0.95.
+
+config_factory#b8_pedestals:
+  instances:
+    - ped: andesite_pedestal
+      ped_model: andesite_pedestal_default
+      ped_hardness: 1.5
+      ped_resistance: 6.0
+      ped_map_color: stone
+    - ped: azure_jadestone_pedestal
+      ped_model: azure_jadestone_pedestal_default
+      ped_hardness: 3.0
+      ped_resistance: 9.0
+      ped_map_color: color_light_blue
+    - ped: diorite_pedestal
+      ped_model: diorite_pedestal_default
+      ped_hardness: 1.5
+      ped_resistance: 6.0
+      ped_map_color: quartz
+    - ped: flavolite_pedestal
+      ped_model: flavolite_pedestal_default
+      ped_hardness: 3.0
+      ped_resistance: 9.0
+      ped_map_color: sand
+    - ped: granite_pedestal
+      ped_model: granite_pedestal_default
+      ped_hardness: 1.5
+      ped_resistance: 6.0
+      ped_map_color: dirt
+    - ped: purple_pedestal
+      ped_model: purple_pedestal_default
+      ped_hardness: 1.5
+      ped_resistance: 6.0
+      ped_map_color: color_magenta
+    - ped: quartz_pedestal
+      ped_model: quartz_pedestal_default
+      ped_hardness: 0.8
+      ped_resistance: 0.8
+      ped_map_color: quartz
+    - ped: sandy_jadestone_pedestal
+      ped_model: sandy_jadestone_pedestal_default
+      ped_hardness: 3.0
+      ped_resistance: 9.0
+      ped_map_color: color_yellow
+    - ped: smaragdant_crystal_pedestal
+      ped_model: smaragdant_crystal_pedestal_default
+      ped_hardness: 1.0
+      ped_resistance: 1.0
+      ped_map_color: color_green
+    - ped: sulphuric_rock_pedestal
+      ped_model: sulphuric_rock_pedestal_default
+      ped_hardness: 3.0
+      ped_resistance: 9.0
+      ped_map_color: color_brown
+    - ped: umbralith_pedestal
+      ped_model: umbralith_pedestal_default
+      ped_hardness: 3.0
+      ped_resistance: 9.0
+      ped_map_color: deepslate
+    - ped: violecite_pedestal
+      ped_model: violecite_pedestal_default
+      ped_hardness: 3.0
+      ped_resistance: 9.0
+      ped_map_color: color_purple
+    - ped: virid_jadestone_pedestal
+      ped_model: virid_jadestone_pedestal_default
+      ped_hardness: 3.0
+      ped_resistance: 9.0
+      ped_map_color: color_green
+    # eternal_pedestal: 7 random rune meshes x active/inactive in the mod; ships as inactive #1.
+    - ped: eternal_pedestal
+      ped_model: eternal_pedestal_default_1
+      ped_hardness: 1.5
+      ped_resistance: 6.0
+      ped_map_color: stone
+    - ped: infusion_pedestal
+      ped_model: infusion_pedestal_default
+      ped_hardness: 1.5
+      ped_resistance: 6.0
+      ped_map_color: stone
+  blueprint:
+    items:
+      betterend:${ped}:
+        category: betterend:furnishings
+        data:
+          item_name: '<!i><white><lang:item.betterend.${ped}></white>'
+        model: betterend:block/${ped_model}
+        behavior:
+          type: block_item
+          block: betterend:${ped}
+    blocks:
+      betterend:${ped}:
+        behavior:
+          type: display_item_block
+          position: 0.5,0.95,0.5
+          has_signal: true
+          sounds:
+            put: minecraft:block.stone.place
+            take: minecraft:block.stone.hit
+        settings:
+          template:
+            - default:sound/stone
+            - default:settings/transparent_1x1x1
+          merges:
+            # Each pedestal copies its own family's stone (SlotFromDefinition ->
+            # StoneMaterial/VanillaStoneSet base-property copy), so hardness, resistance and
+            # map colour are per-instance, not one shared guess. The 7 BetterEnd families are
+            # 3.0/9.0, matching the live pack's stone_sets.yml.
+            hardness: ${ped_hardness}
+            resistance: ${ped_resistance}
+            instrument: basedrum
+            map_color: ${ped_map_color}
+            correct_tools: ['#minecraft:pickaxes']
+            required_break_power: 1
+            tags: [minecraft:mineable/pickaxe, minecraft:dragon_immune] # ponytail: over-tags the vanilla-stone instances too (mod tags only the 7 BetterEnd families, StoneMaterial.java:50). Per-instance ${dragon} arg if that ever matters.
+        loot:
+          template: default:loot_table/self
+        state:
+          auto_state: solid
+          model: betterend:block/${ped_model}
+
+config_factory#b8_flower_pots:
+  instances:
+    - pot: azure_jadestone_flower_pot
+      pot_ingredient: betterend:azure_jadestone_brick
+      pot_map_color: color_light_blue
+      pot_state: 'waxed_copper_trapdoor[facing=south,half=bottom,open=false,powered=true,waterlogged=false]'
+    - pot: end_stone_flower_pot
+      pot_ingredient: minecraft:end_stone_bricks
+      pot_map_color: sand
+      pot_state: 'waxed_copper_trapdoor[facing=east,half=bottom,open=false,powered=true,waterlogged=false]'
+    - pot: flavolite_flower_pot
+      pot_ingredient: betterend:flavolite_brick
+      pot_map_color: sand
+      pot_state: 'waxed_copper_trapdoor[facing=west,half=bottom,open=false,powered=true,waterlogged=false]'
+    - pot: sandy_jadestone_flower_pot
+      pot_ingredient: betterend:sandy_jadestone_brick
+      pot_map_color: color_yellow
+      pot_state: 'waxed_exposed_copper_trapdoor[facing=north,half=bottom,open=false,powered=true,waterlogged=false]'
+    - pot: sulphuric_rock_flower_pot
+      pot_ingredient: betterend:sulphuric_rock_brick
+      pot_map_color: color_brown
+      pot_state: 'waxed_exposed_copper_trapdoor[facing=south,half=bottom,open=false,powered=true,waterlogged=false]'
+    - pot: umbralith_flower_pot
+      pot_ingredient: betterend:umbralith_brick
+      pot_map_color: deepslate
+      pot_state: 'waxed_exposed_copper_trapdoor[facing=east,half=bottom,open=false,powered=true,waterlogged=false]'
+    - pot: violecite_flower_pot
+      pot_ingredient: betterend:violecite_brick
+      pot_map_color: color_purple
+      pot_state: 'waxed_exposed_copper_trapdoor[facing=west,half=bottom,open=false,powered=true,waterlogged=false]'
+    - pot: virid_jadestone_flower_pot
+      pot_ingredient: betterend:virid_jadestone_brick
+      pot_map_color: color_green
+      pot_state: 'waxed_weathered_copper_trapdoor[facing=north,half=bottom,open=false,powered=true,waterlogged=false]'
+  blueprint:
+    items:
+      betterend:${pot}:
+        category: betterend:furnishings
+        data:
+          item_name: '<!i><white><lang:item.betterend.${pot}></white>'
+        model: betterend:block/${pot}
+        behavior:
+          type: block_item
+          block: betterend:${pot}
+    blocks:
+      betterend:${pot}:
+        behavior:
+          type: display_item_block
+          position: 0.5,0.55,0.5
+          has_signal: true
+          sounds:
+            put: minecraft:block.stone.place
+            take: minecraft:block.stone.hit
+        settings:
+          template:
+            - default:sound/stone
+            - default:settings/transparent_1x1x1
+          merges:
+            # END_STONE base, same 3.0/9.0 the live pack gives every BetterEnd stone
+            # (stone_sets.yml:96-97). end_stone_flower_pot's own base is vanilla end_stone,
+            # which is 3.0/9.0 too.
+            hardness: 3.0
+            resistance: 9.0
+            instrument: basedrum
+            map_color: ${pot_map_color}
+            push_reaction: destroy
+            correct_tools: ['#minecraft:pickaxes']
+            required_break_power: 1
+            tags: [minecraft:mineable/pickaxe, minecraft:dragon_immune] # ponytail: over-tags the vanilla-stone instances too (mod tags only the 7 BetterEnd families, StoneMaterial.java:50). Per-instance ${dragon} arg if that ever matters.
+        loot:
+          template: default:loot_table/self
+        # SHAPE (2026 remap). FlowerPotBlock.java:270-271 is
+        # or(box(4,1,4,12,8,12), box(5,0,5,11,1,11)) and :223 returns it as the COLLISION shape too --
+        # an 8px pot, not a cube. On `auto_state: solid` it was a full solid cube: you stood a whole
+        # block above the rim and the pot blocked its own cell. Collision is not overridable
+        # (BukkitBlockShape.java:20-26), so this pins a closed trapdoor state -- a 3px floor pad from
+        # the copper trapdoor families freed at internal/mappings.yml:2117+, in no AutoStateGroup and
+        # unclaimed by any pack here. APPROXIMATE: 3px of hitbox under an 8px model, so you can clip
+        # into the pot's upper half. There is no 8px donor left -- crabbersdelight already holds the
+        # only three dry cut_copper_slab bottom states (blocks.yml:421-429).
+        state:
+          state: ${pot_state}
+          model: betterend:block/${pot}
+    recipes:
+      # Every <x>_flower_pot.json in generated/data/betterend/recipe is the same shape over that
+      # family's brick, group end_pots.
+      betterend:${pot}:
+        type: shaped
+        group: end_pots
+        # FlowerPot.java:53 -- .shape("# #", " # "). NOT a 2x2; verified against
+        # generated/data/betterend/recipe/end_stone_flower_pot.json.
+        pattern:
+          - '# #'
+          - ' # '
+        ingredients:
+          '#': ${pot_ingredient}
+        result:
+          id: betterend:${pot}
+          count: 3
+
+recipes:
+  # Only the 6 pedestals whose recipe json uses ingredients this port can actually supply.
+  # The remaining 9 are listed under the comment at the bottom.
+  betterend:andesite_pedestal:
+    type: shaped
+    pattern:
+      - 'S'
+      - '#'
+      - 'S'
+    ingredients:
+      '#': minecraft:polished_andesite
+      S: minecraft:polished_andesite_slab
+    result:
+      id: betterend:andesite_pedestal
+      count: 2
+  betterend:diorite_pedestal:
+    type: shaped
+    pattern:
+      - 'S'
+      - '#'
+      - 'S'
+    ingredients:
+      '#': minecraft:polished_diorite
+      S: minecraft:polished_diorite_slab
+    result:
+      id: betterend:diorite_pedestal
+      count: 2
+  betterend:granite_pedestal:
+    type: shaped
+    pattern:
+      - 'S'
+      - '#'
+      - 'S'
+    ingredients:
+      '#': minecraft:polished_granite
+      S: minecraft:polished_granite_slab
+    result:
+      id: betterend:granite_pedestal
+      count: 2
+  betterend:purple_pedestal:
+    type: shaped
+    pattern:
+      - 'S'
+      - '#'
+      - 'S'
+    ingredients:
+      '#': minecraft:purpur_pillar
+      S: minecraft:purpur_slab
+    result:
+      id: betterend:purple_pedestal
+      count: 2
+  betterend:quartz_pedestal:
+    type: shaped
+    pattern:
+      - 'S'
+      - '#'
+      - 'S'
+    ingredients:
+      '#': minecraft:quartz_pillar
+      S: minecraft:quartz_slab
+    result:
+      id: betterend:quartz_pedestal
+      count: 2
+  # infusion_pedestal.json -- all-vanilla ingredients, ships as written.
+  betterend:infusion_pedestal:
+    type: shaped
+    pattern:
+      - ' Y '
+      - 'O#O'
+      - ' # '
+    ingredients:
+      '#': minecraft:obsidian
+      O: minecraft:ender_pearl
+      Y: minecraft:ender_eye
+    result:
+      id: betterend:infusion_pedestal
+      count: 1
+# NO RECIPE for azure_jadestone / flavolite / sandy_jadestone / smaragdant_crystal /
+# sulphuric_rock / umbralith / violecite / virid_jadestone pedestals: every one of those recipe
+# jsons keys S to betterend:<family>_slab, and slabs are unportable in this pass. They become
+# craftable the day slabs exist -- the recipe json is already correct in the mod, do not invent
+# a slab-free substitute.
+# NO RECIPE for eternal_pedestal at all: generated/data/betterend/recipe has no json for it.
+# It is structure-loot only (the Eternal Portal ritual), and that is the intended progression.

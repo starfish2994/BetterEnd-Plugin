@@ -1,0 +1,2981 @@
+﻿# BetterEnd -- batch B5 "flora-b": vines, wall plants, mushrooms, crystals and stalactites.
+# 41 of the 42 ids the manifest assigns to B5 (vent_bubble_column is unportable; see the tail of
+# this file), plus the 8 standalone B5 items.
+#
+# STYLE: settings are always `template:` + `merges:` -- merges deep-merges and concatenates lists
+# (TemplateManagerImpl.java:145-146), so the template's own tags survive. `overrides:` is a shallow
+# putAll and is never used here, even though CE's shipped examples do.
+# Display names live in configuration/langs/b5_en_us.yml, never inline.
+#
+# AUTO-STATE POOLS THIS FILE CONSUMES (AutoStateGroup.java:11-58; one appearance = one candidate,
+# AbstractBlockManager.java:615-648 -- a weighted `models:` list still costs exactly one).
+# Pools are chosen so B5 leaves the big `tripwire` pool (126) almost untouched for B2/B4. B4
+# consumes two cave_vines states with its already-luminous umbrella mosses:
+#   cave_vines     48 / 50   9 wall plants x4 facing, small_jellyshroom 6, filalux_wings 6
+#   weeping_vines  24 / 25   8 hanging vines x3 shape
+#   twisting_vines  3 / 25   large_amaranita 3        (WAS 24; see the 2026 remap note below)
+#   kelp           18 / 25   sulphur_crystal 3 age x6 facing
+#   sapling         5 /  8   glowing_pillar_roots 3, bolux 1, small_amaranita 1
+#   higher_tripwire 6        smaragdant_crystal_shard 6 facing
+#   tripwire       12 / 126  blue_vine_fur 6, amaranita_fur 6
+#   solid          45        2 stalactites x16, amaranita pillars/cubes 9, budding 3,
+#                            aurora_crystal 1, hydrothermal_vent 1
+#   explicit        7        lumecorn, on lightning-rod states (see its own note)
+#
+# 2026 REMAP. FarmersDelight holds 20 of the 25 twisting_vines states and 5 of the 25 kelp states
+# on this server, so B5's old 24/25 in each was oversubscribed the moment fd loaded -- latest.log
+# recorded 7 twisting_vines and 1 kelp exhaustion failures out of this file alone. Four *_seed
+# growth blocks (16 states) were unshipped with the deferred growth blocks; glowing_pillar_roots,
+# bolux_mushroom and small_amaranita_mushroom moved to the idle `sapling` pool (8 states, 1 used by
+# CrabbersDelight) and smaragdant_crystal_shard moved to higher_tripwire. All four donors are
+# NO-collision, which is the developer's standing ruling for sulphur_crystal and
+# smaragdant_crystal_shard: they must never land on a donor that has a hitbox.
+# CHORUS is not used anywhere here -- the pool is empty (mappings.yml:4411-4474 all commented out)
+# and chorus_plant's hitbox is unusable for flora.
+
+items:
+  # --- standalone items (loot drops with no block of their own) ------------
+  betterend:amber_gem:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.amber_gem></white>'
+    texture: betterend:item/amber_gem
+  betterend:bolux_mushroom_cooked:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.bolux_mushroom_cooked></white>'
+    texture: betterend:item/bolux_mushroom_cooked
+  betterend:crystal_shards:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.crystal_shards></white>'
+    texture: betterend:item/crystal_shards
+  betterend:crystalline_sulphur:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.crystalline_sulphur></white>'
+    texture: betterend:item/crystalline_sulphur
+  betterend:ender_dust:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.ender_dust></white>'
+    texture: betterend:item/ender_dust
+  betterend:eternal_crystal:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.eternal_crystal></white>'
+    texture: betterend:item/eternal_crystal
+  betterend:glowing_bulb:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.glowing_bulb></white>'
+    texture: betterend:item/glowing_bulb
+  betterend:lumecorn_rod:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.lumecorn_rod></white>'
+    texture: betterend:item/lumecorn_rod
+
+  # --- block items ---------------------------------------------------------
+  # blue_vine, glowing_pillar_roots and lumecorn are EndBlocks.defineBlockOnly in the mod
+  # (EndVineBlocks.java:92, EndMushroomBlocks.java:98, EndMushroomBlocks.java:179): no item
+  # there, so no item here. Every item icon below is the mod's own models/item/<id>.json
+  # layer0, or its block model where the mod generated a parent-block item model.
+  betterend:amaranita_cap:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.amaranita_cap></white>'
+    model: betterend:block/amaranita_cap
+    behavior:
+      type: block_item
+      block: betterend:amaranita_cap
+  betterend:amaranita_fur:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.amaranita_fur></white>'
+    texture: betterend:block/amaranita_fur
+    behavior:
+      type: block_item
+      block: betterend:amaranita_fur
+  betterend:amaranita_hymenophore:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.amaranita_hymenophore></white>'
+    model: betterend:block/amaranita_hymenophore
+    behavior:
+      type: block_item
+      block: betterend:amaranita_hymenophore
+  betterend:amaranita_hyphae:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.amaranita_hyphae></white>'
+    model: betterend:block/amaranita_hyphae
+    behavior:
+      type: block_item
+      block: betterend:amaranita_hyphae
+  betterend:amaranita_stem:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.amaranita_stem></white>'
+    model: betterend:block/amaranita_stem
+    behavior:
+      type: block_item
+      block: betterend:amaranita_stem
+  betterend:aurant_polypore:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.aurant_polypore></white>'
+    texture: betterend:item/aurant_polypore
+    behavior:
+      type: block_item
+      block: betterend:aurant_polypore
+  betterend:aurora_crystal:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.aurora_crystal></white>'
+    model: betterend:block/aurora_crystal
+    behavior:
+      type: block_item
+      block: betterend:aurora_crystal
+  betterend:blue_vine_fur:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.blue_vine_fur></white>'
+    texture: betterend:block/blue_vine_fur
+    behavior:
+      type: block_item
+      block: betterend:blue_vine_fur
+  betterend:bolux_mushroom:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.bolux_mushroom></white>'
+    texture: betterend:item/bolux_mushroom
+    behavior:
+      type: block_item
+      block: betterend:bolux_mushroom
+  betterend:budding_smaragdant_crystal:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.budding_smaragdant_crystal></white>'
+    model: betterend:block/budding_smaragdant_crystal
+    behavior:
+      type: block_item
+      block: betterend:budding_smaragdant_crystal
+  betterend:bulb_moss:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.bulb_moss></white>'
+    texture: betterend:block/bulb_moss_leaves
+    behavior:
+      type: block_item
+      block: betterend:bulb_moss
+  betterend:bulb_vine:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.bulb_vine></white>'
+    texture: betterend:block/bulb_vine_middle
+    behavior:
+      type: block_item
+      block: betterend:bulb_vine
+  betterend:cyan_moss:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.cyan_moss></white>'
+    texture: betterend:block/cyan_moss
+    behavior:
+      type: block_item
+      block: betterend:cyan_moss
+  betterend:dense_vine:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.dense_vine></white>'
+    texture: betterend:block/dense_vine_bottom
+    behavior:
+      type: block_item
+      block: betterend:dense_vine
+  betterend:end_stone_stalactite:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.end_stone_stalactite></white>'
+    texture: betterend:item/end_stone_stalactite
+    behavior:
+      type: block_item
+      block: betterend:end_stone_stalactite
+  betterend:end_stone_stalactite_cavemoss:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.end_stone_stalactite_cavemoss></white>'
+    texture: betterend:item/end_stone_stalactite_cavemoss
+    behavior:
+      type: block_item
+      block: betterend:end_stone_stalactite_cavemoss
+  betterend:filalux:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.filalux></white>'
+    texture: betterend:block/filalux_bottom
+    behavior:
+      type: block_item
+      block: betterend:filalux
+  betterend:filalux_wings:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.filalux_wings></white>'
+    texture: betterend:item/filalux_wings
+    behavior:
+      type: block_item
+      block: betterend:filalux_wings
+  betterend:hydrothermal_vent:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.hydrothermal_vent></white>'
+    model: betterend:block/hydrothermal_vent
+    behavior:
+      type: block_item
+      block: betterend:hydrothermal_vent
+  betterend:jungle_fern:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.jungle_fern></white>'
+    texture: betterend:item/jungle_fern
+    behavior:
+      type: block_item
+      block: betterend:jungle_fern
+  betterend:jungle_vine:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.jungle_vine></white>'
+    texture: betterend:block/jungle_vine_bottom
+    behavior:
+      type: block_item
+      block: betterend:jungle_vine
+  betterend:large_amaranita_mushroom:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.large_amaranita_mushroom></white>'
+    model: betterend:block/large_amaranita_cap
+    behavior:
+      type: block_item
+      block: betterend:large_amaranita_mushroom
+  betterend:magnula:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.magnula></white>'
+    texture: betterend:block/magnula_bottom
+    behavior:
+      type: block_item
+      block: betterend:magnula
+  betterend:purple_polypore:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.purple_polypore></white>'
+    texture: betterend:item/purple_polypore
+    behavior:
+      type: block_item
+      block: betterend:purple_polypore
+  betterend:rubinea:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.rubinea></white>'
+    texture: betterend:block/rubinea_bottom
+    behavior:
+      type: block_item
+      block: betterend:rubinea
+  betterend:ruscus:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.ruscus></white>'
+    texture: betterend:block/ruscus
+    behavior:
+      type: block_item
+      block: betterend:ruscus
+  betterend:small_amaranita_mushroom:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.small_amaranita_mushroom></white>'
+    texture: betterend:item/small_amaranita_mushroom
+    behavior:
+      type: block_item
+      block: betterend:small_amaranita_mushroom
+  betterend:small_jellyshroom:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.small_jellyshroom></white>'
+    texture: betterend:item/small_jellyshroom
+    behavior:
+      type: block_item
+      block: betterend:small_jellyshroom
+  betterend:smaragdant_crystal_shard:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.smaragdant_crystal_shard></white>'
+    texture: betterend:block/smaragdant_crystal_shard
+    behavior:
+      type: block_item
+      block: betterend:smaragdant_crystal_shard
+  betterend:sulphur_crystal:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.sulphur_crystal></white>'
+    texture: betterend:block/sulphur_crystal_2
+    behavior:
+      type: block_item
+      block: betterend:sulphur_crystal
+  betterend:tail_moss:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.tail_moss></white>'
+    texture: betterend:block/tail_moss
+    behavior:
+      type: block_item
+      block: betterend:tail_moss
+  betterend:tube_worm:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.tube_worm></white>'
+    texture: betterend:item/tube_worm
+    behavior:
+      type: block_item
+      block: betterend:tube_worm
+  betterend:twisted_moss:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.twisted_moss></white>'
+    texture: betterend:block/twisted_moss
+    behavior:
+      type: block_item
+      block: betterend:twisted_moss
+  betterend:twisted_vine:
+    category: betterend:growths
+    data:
+      item_name: '<!i><white><lang:item.betterend.twisted_vine></white>'
+    texture: betterend:block/twisted_vine_bottom
+    behavior:
+      type: block_item
+      block: betterend:twisted_vine
+
+blocks:
+  # === WALL PLANTS =========================================================
+  # All nine are bclib BaseWallPlantBlock + SurvivesOnSolidTrait.DEFAULT
+  # (EndWallPlantBlocks.java:71-140). CE equivalent: directional_attached_block, whose factory
+  # defaults `blacklist` to true (DirectionalAttachedBlockBehavior.java:114), so an EMPTY
+  # attached_blocks list means "sticks to any sturdy face" -- exactly SurvivesOnSolidTrait.DEFAULT
+  # (mayPlaceOn falls through to `return this.blacklistMode`, :77).
+  # The four rotations are the mod's own blockstate json: south y0 / west y90 / north y180 /
+  # east y270. Random model variants cost nothing: one appearance holds the whole `models:` list.
+  betterend:aurant_polypore:
+    behavior:
+      type: directional_attached_block
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: color_orange
+        luminance: 13
+        tags:
+          - minecraft:mineable/hoe
+          - minecraft:sword_efficient
+    loot:
+      template: default:loot_table/self
+    state:
+      properties:
+        facing:
+          type: horizontal_direction
+          default: north
+      appearances:
+        north:
+          auto_state: cave_vines
+          models:
+            - path: betterend:block/aurant_polypore_1
+              y: 180
+              weight: 1
+            - path: betterend:block/aurant_polypore_2
+              y: 180
+              weight: 1
+            - path: betterend:block/aurant_polypore_3
+              y: 180
+              weight: 1
+        east:
+          auto_state: cave_vines
+          models:
+            - path: betterend:block/aurant_polypore_1
+              y: 270
+              weight: 1
+            - path: betterend:block/aurant_polypore_2
+              y: 270
+              weight: 1
+            - path: betterend:block/aurant_polypore_3
+              y: 270
+              weight: 1
+        south:
+          auto_state: cave_vines
+          models:
+            - path: betterend:block/aurant_polypore_1
+              weight: 1
+            - path: betterend:block/aurant_polypore_2
+              weight: 1
+            - path: betterend:block/aurant_polypore_3
+              weight: 1
+        west:
+          auto_state: cave_vines
+          models:
+            - path: betterend:block/aurant_polypore_1
+              y: 90
+              weight: 1
+            - path: betterend:block/aurant_polypore_2
+              y: 90
+              weight: 1
+            - path: betterend:block/aurant_polypore_3
+              y: 90
+              weight: 1
+      variants:
+        facing=north:
+          appearance: north
+        facing=east:
+          appearance: east
+        facing=south:
+          appearance: south
+        facing=west:
+          appearance: west
+  betterend:bulb_moss:
+    behavior:
+      type: directional_attached_block
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: terracotta_orange
+        luminance: 12
+        tags:
+          - minecraft:mineable/hoe
+          - minecraft:sword_efficient
+    loot:
+      template: default:loot_table/self
+    state:
+      properties:
+        facing:
+          type: horizontal_direction
+          default: north
+      appearances:
+        north:
+          auto_state: cave_vines
+          models:
+            - path: betterend:block/bulb_moss_01
+              y: 180
+              weight: 1
+            - path: betterend:block/bulb_moss_02
+              y: 180
+              weight: 1
+            - path: betterend:block/bulb_moss_03
+              y: 180
+              weight: 1
+        east:
+          auto_state: cave_vines
+          models:
+            - path: betterend:block/bulb_moss_01
+              y: 270
+              weight: 1
+            - path: betterend:block/bulb_moss_02
+              y: 270
+              weight: 1
+            - path: betterend:block/bulb_moss_03
+              y: 270
+              weight: 1
+        south:
+          auto_state: cave_vines
+          models:
+            - path: betterend:block/bulb_moss_01
+              weight: 1
+            - path: betterend:block/bulb_moss_02
+              weight: 1
+            - path: betterend:block/bulb_moss_03
+              weight: 1
+        west:
+          auto_state: cave_vines
+          models:
+            - path: betterend:block/bulb_moss_01
+              y: 90
+              weight: 1
+            - path: betterend:block/bulb_moss_02
+              y: 90
+              weight: 1
+            - path: betterend:block/bulb_moss_03
+              y: 90
+              weight: 1
+      variants:
+        facing=north:
+          appearance: north
+        facing=east:
+          appearance: east
+        facing=south:
+          appearance: south
+        facing=west:
+          appearance: west
+  betterend:cyan_moss:
+    behavior:
+      type: directional_attached_block
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: color_cyan
+        tags:
+          - minecraft:mineable/hoe
+          - minecraft:sword_efficient
+    loot:
+      template: default:loot_table/self
+    state:
+      properties:
+        facing:
+          type: horizontal_direction
+          default: north
+      appearances:
+        north:
+          auto_state: cave_vines
+          models:
+            - path: betterend:block/cyan_moss_01
+              y: 180
+              weight: 1
+            - path: betterend:block/cyan_moss_02
+              y: 180
+              weight: 1
+            - path: betterend:block/cyan_moss_03
+              y: 180
+              weight: 1
+        east:
+          auto_state: cave_vines
+          models:
+            - path: betterend:block/cyan_moss_01
+              y: 270
+              weight: 1
+            - path: betterend:block/cyan_moss_02
+              y: 270
+              weight: 1
+            - path: betterend:block/cyan_moss_03
+              y: 270
+              weight: 1
+        south:
+          auto_state: cave_vines
+          models:
+            - path: betterend:block/cyan_moss_01
+              weight: 1
+            - path: betterend:block/cyan_moss_02
+              weight: 1
+            - path: betterend:block/cyan_moss_03
+              weight: 1
+        west:
+          auto_state: cave_vines
+          models:
+            - path: betterend:block/cyan_moss_01
+              y: 90
+              weight: 1
+            - path: betterend:block/cyan_moss_02
+              y: 90
+              weight: 1
+            - path: betterend:block/cyan_moss_03
+              y: 90
+              weight: 1
+      variants:
+        facing=north:
+          appearance: north
+        facing=east:
+          appearance: east
+        facing=south:
+          appearance: south
+        facing=west:
+          appearance: west
+  betterend:jungle_fern:
+    behavior:
+      type: directional_attached_block
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: color_green
+        tags:
+          - minecraft:mineable/hoe
+          - minecraft:sword_efficient
+    loot:
+      template: default:loot_table/self
+    state:
+      properties:
+        facing:
+          type: horizontal_direction
+          default: north
+      appearances:
+        north:
+          auto_state: cave_vines
+          models:
+            - path: betterend:block/jungle_fern_1
+              y: 180
+              weight: 1
+            - path: betterend:block/jungle_fern_2
+              y: 180
+              weight: 1
+            - path: betterend:block/jungle_fern_3
+              y: 180
+              weight: 1
+            - path: betterend:block/jungle_fern_t0
+              y: 180
+              weight: 1
+            - path: betterend:block/jungle_fern_t1
+              y: 180
+              weight: 1
+            - path: betterend:block/jungle_fern_t2
+              y: 180
+              weight: 1
+            - path: betterend:block/jungle_fern_t3
+              y: 180
+              weight: 1
+            - path: betterend:block/jungle_fern_t4
+              y: 180
+              weight: 1
+            - path: betterend:block/jungle_fern_t5
+              y: 180
+              weight: 1
+        east:
+          auto_state: cave_vines
+          models:
+            - path: betterend:block/jungle_fern_1
+              y: 270
+              weight: 1
+            - path: betterend:block/jungle_fern_2
+              y: 270
+              weight: 1
+            - path: betterend:block/jungle_fern_3
+              y: 270
+              weight: 1
+            - path: betterend:block/jungle_fern_t0
+              y: 270
+              weight: 1
+            - path: betterend:block/jungle_fern_t1
+              y: 270
+              weight: 1
+            - path: betterend:block/jungle_fern_t2
+              y: 270
+              weight: 1
+            - path: betterend:block/jungle_fern_t3
+              y: 270
+              weight: 1
+            - path: betterend:block/jungle_fern_t4
+              y: 270
+              weight: 1
+            - path: betterend:block/jungle_fern_t5
+              y: 270
+              weight: 1
+        south:
+          auto_state: cave_vines
+          models:
+            - path: betterend:block/jungle_fern_1
+              weight: 1
+            - path: betterend:block/jungle_fern_2
+              weight: 1
+            - path: betterend:block/jungle_fern_3
+              weight: 1
+            - path: betterend:block/jungle_fern_t0
+              weight: 1
+            - path: betterend:block/jungle_fern_t1
+              weight: 1
+            - path: betterend:block/jungle_fern_t2
+              weight: 1
+            - path: betterend:block/jungle_fern_t3
+              weight: 1
+            - path: betterend:block/jungle_fern_t4
+              weight: 1
+            - path: betterend:block/jungle_fern_t5
+              weight: 1
+        west:
+          auto_state: cave_vines
+          models:
+            - path: betterend:block/jungle_fern_1
+              y: 90
+              weight: 1
+            - path: betterend:block/jungle_fern_2
+              y: 90
+              weight: 1
+            - path: betterend:block/jungle_fern_3
+              y: 90
+              weight: 1
+            - path: betterend:block/jungle_fern_t0
+              y: 90
+              weight: 1
+            - path: betterend:block/jungle_fern_t1
+              y: 90
+              weight: 1
+            - path: betterend:block/jungle_fern_t2
+              y: 90
+              weight: 1
+            - path: betterend:block/jungle_fern_t3
+              y: 90
+              weight: 1
+            - path: betterend:block/jungle_fern_t4
+              y: 90
+              weight: 1
+            - path: betterend:block/jungle_fern_t5
+              y: 90
+              weight: 1
+      variants:
+        facing=north:
+          appearance: north
+        facing=east:
+          appearance: east
+        facing=south:
+          appearance: south
+        facing=west:
+          appearance: west
+  betterend:purple_polypore:
+    behavior:
+      type: directional_attached_block
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: color_purple
+        luminance: 13
+        tags:
+          - minecraft:mineable/hoe
+          - minecraft:sword_efficient
+    loot:
+      template: default:loot_table/self
+    state:
+      properties:
+        facing:
+          type: horizontal_direction
+          default: north
+      appearances:
+        north:
+          auto_state: cave_vines
+          models:
+            - path: betterend:block/purple_polypore_01
+              y: 180
+              weight: 1
+            - path: betterend:block/purple_polypore_02
+              y: 180
+              weight: 1
+            - path: betterend:block/purple_polypore_03
+              y: 180
+              weight: 1
+        east:
+          auto_state: cave_vines
+          models:
+            - path: betterend:block/purple_polypore_01
+              y: 270
+              weight: 1
+            - path: betterend:block/purple_polypore_02
+              y: 270
+              weight: 1
+            - path: betterend:block/purple_polypore_03
+              y: 270
+              weight: 1
+        south:
+          auto_state: cave_vines
+          models:
+            - path: betterend:block/purple_polypore_01
+              weight: 1
+            - path: betterend:block/purple_polypore_02
+              weight: 1
+            - path: betterend:block/purple_polypore_03
+              weight: 1
+        west:
+          auto_state: cave_vines
+          models:
+            - path: betterend:block/purple_polypore_01
+              y: 90
+              weight: 1
+            - path: betterend:block/purple_polypore_02
+              y: 90
+              weight: 1
+            - path: betterend:block/purple_polypore_03
+              y: 90
+              weight: 1
+      variants:
+        facing=north:
+          appearance: north
+        facing=east:
+          appearance: east
+        facing=south:
+          appearance: south
+        facing=west:
+          appearance: west
+  betterend:ruscus:
+    behavior:
+      type: directional_attached_block
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: color_red
+        tags:
+          - minecraft:mineable/hoe
+          - minecraft:sword_efficient
+    loot:
+      template: default:loot_table/self
+    state:
+      properties:
+        facing:
+          type: horizontal_direction
+          default: north
+      appearances:
+        north:
+          auto_state: cave_vines
+          models:
+            - path: betterend:block/ruscus_t0
+              y: 180
+              weight: 1
+            - path: betterend:block/ruscus_t1
+              y: 180
+              weight: 1
+            - path: betterend:block/ruscus_t2
+              y: 180
+              weight: 1
+        east:
+          auto_state: cave_vines
+          models:
+            - path: betterend:block/ruscus_t0
+              y: 270
+              weight: 1
+            - path: betterend:block/ruscus_t1
+              y: 270
+              weight: 1
+            - path: betterend:block/ruscus_t2
+              y: 270
+              weight: 1
+        south:
+          auto_state: cave_vines
+          models:
+            - path: betterend:block/ruscus_t0
+              weight: 1
+            - path: betterend:block/ruscus_t1
+              weight: 1
+            - path: betterend:block/ruscus_t2
+              weight: 1
+        west:
+          auto_state: cave_vines
+          models:
+            - path: betterend:block/ruscus_t0
+              y: 90
+              weight: 1
+            - path: betterend:block/ruscus_t1
+              y: 90
+              weight: 1
+            - path: betterend:block/ruscus_t2
+              y: 90
+              weight: 1
+      variants:
+        facing=north:
+          appearance: north
+        facing=east:
+          appearance: east
+        facing=south:
+          appearance: south
+        facing=west:
+          appearance: west
+  betterend:tail_moss:
+    behavior:
+      type: directional_attached_block
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: color_black
+        tags:
+          - minecraft:mineable/hoe
+          - minecraft:sword_efficient
+    loot:
+      template: default:loot_table/self
+    state:
+      properties:
+        facing:
+          type: horizontal_direction
+          default: north
+      appearances:
+        north:
+          auto_state: cave_vines
+          models:
+            - path: betterend:block/tail_moss_01
+              y: 180
+              weight: 1
+            - path: betterend:block/tail_moss_02
+              y: 180
+              weight: 1
+            - path: betterend:block/tail_moss_03
+              y: 180
+              weight: 1
+        east:
+          auto_state: cave_vines
+          models:
+            - path: betterend:block/tail_moss_01
+              y: 270
+              weight: 1
+            - path: betterend:block/tail_moss_02
+              y: 270
+              weight: 1
+            - path: betterend:block/tail_moss_03
+              y: 270
+              weight: 1
+        south:
+          auto_state: cave_vines
+          models:
+            - path: betterend:block/tail_moss_01
+              weight: 1
+            - path: betterend:block/tail_moss_02
+              weight: 1
+            - path: betterend:block/tail_moss_03
+              weight: 1
+        west:
+          auto_state: cave_vines
+          models:
+            - path: betterend:block/tail_moss_01
+              y: 90
+              weight: 1
+            - path: betterend:block/tail_moss_02
+              y: 90
+              weight: 1
+            - path: betterend:block/tail_moss_03
+              y: 90
+              weight: 1
+      variants:
+        facing=north:
+          appearance: north
+        facing=east:
+          appearance: east
+        facing=south:
+          appearance: south
+        facing=west:
+          appearance: west
+  betterend:twisted_moss:
+    behavior:
+      type: directional_attached_block
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: color_light_blue
+        tags:
+          - minecraft:mineable/hoe
+          - minecraft:sword_efficient
+    loot:
+      template: default:loot_table/self
+    state:
+      properties:
+        facing:
+          type: horizontal_direction
+          default: north
+      appearances:
+        north:
+          auto_state: cave_vines
+          models:
+            - path: betterend:block/twisted_moss_t0
+              y: 180
+              weight: 1
+            - path: betterend:block/twisted_moss_t1
+              y: 180
+              weight: 1
+            - path: betterend:block/twisted_moss_t2
+              y: 180
+              weight: 1
+        east:
+          auto_state: cave_vines
+          models:
+            - path: betterend:block/twisted_moss_t0
+              y: 270
+              weight: 1
+            - path: betterend:block/twisted_moss_t1
+              y: 270
+              weight: 1
+            - path: betterend:block/twisted_moss_t2
+              y: 270
+              weight: 1
+        south:
+          auto_state: cave_vines
+          models:
+            - path: betterend:block/twisted_moss_t0
+              weight: 1
+            - path: betterend:block/twisted_moss_t1
+              weight: 1
+            - path: betterend:block/twisted_moss_t2
+              weight: 1
+        west:
+          auto_state: cave_vines
+          models:
+            - path: betterend:block/twisted_moss_t0
+              y: 90
+              weight: 1
+            - path: betterend:block/twisted_moss_t1
+              y: 90
+              weight: 1
+            - path: betterend:block/twisted_moss_t2
+              y: 90
+              weight: 1
+      variants:
+        facing=north:
+          appearance: north
+        facing=east:
+          appearance: east
+        facing=south:
+          appearance: south
+        facing=west:
+          appearance: west
+  betterend:tube_worm:
+    behavior:
+      type: directional_attached_block
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: terracotta_brown
+        tags:
+          - minecraft:mineable/hoe
+          - minecraft:sword_efficient
+    loot:
+      template: default:loot_table/self
+    state:
+      properties:
+        facing:
+          type: horizontal_direction
+          default: north
+      appearances:
+        north:
+          auto_state: cave_vines
+          models:
+            - path: betterend:block/tube_worm_01
+              y: 180
+              weight: 1
+            - path: betterend:block/tube_worm_02
+              y: 180
+              weight: 1
+            - path: betterend:block/tube_worm_03
+              y: 180
+              weight: 1
+        east:
+          auto_state: cave_vines
+          models:
+            - path: betterend:block/tube_worm_01
+              y: 270
+              weight: 1
+            - path: betterend:block/tube_worm_02
+              y: 270
+              weight: 1
+            - path: betterend:block/tube_worm_03
+              y: 270
+              weight: 1
+        south:
+          auto_state: cave_vines
+          models:
+            - path: betterend:block/tube_worm_01
+              weight: 1
+            - path: betterend:block/tube_worm_02
+              weight: 1
+            - path: betterend:block/tube_worm_03
+              weight: 1
+        west:
+          auto_state: cave_vines
+          models:
+            - path: betterend:block/tube_worm_01
+              y: 90
+              weight: 1
+            - path: betterend:block/tube_worm_02
+              y: 90
+              weight: 1
+            - path: betterend:block/tube_worm_03
+              y: 90
+              weight: 1
+      variants:
+        facing=north:
+          appearance: north
+        facing=east:
+          appearance: east
+        facing=south:
+          appearance: south
+        facing=west:
+          appearance: west
+
+  # === SIX-FACE ATTACHED PLANTS ============================================
+  # SmallJellyshroomBlock and FilaluxWingsBlock keep the full 6-direction FACING and have a
+  # distinct model per face group. Same behavior, but with a 6-direction property, which
+  # DirectionalAttachedBlockBehavior.java:42 detects via possibleValues().size() == 6 and then
+  # allows floor and ceiling placement as well as walls.
+  betterend:small_jellyshroom:
+    behavior:
+      type: directional_attached_block
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: color_light_blue
+        luminance: 13
+        tags:
+          - minecraft:mineable/hoe
+          - minecraft:sword_efficient
+    loot:
+      # EndMushroomBlocks.java:137 BlockTraits.LOOT_TABLE.dropWithSilktouch().
+      template: default:loot_table/silk_touch
+      arguments:
+        item: betterend:small_jellyshroom
+    state:
+      properties:
+        facing:
+          type: 6-direction
+          default: up
+      appearances:
+        up:
+          auto_state: cave_vines
+          models:
+            - path: betterend:block/small_jellyshroom_floor
+              weight: 1
+            - path: betterend:block/small_jellyshroom_floor
+              y: 90
+              weight: 1
+            - path: betterend:block/small_jellyshroom_floor
+              y: 180
+              weight: 1
+            - path: betterend:block/small_jellyshroom_floor
+              y: 270
+              weight: 1
+        down:
+          auto_state: cave_vines
+          model: betterend:block/small_jellyshroom_ceil
+        north:
+          auto_state: cave_vines
+          models:
+            - path: betterend:block/small_jellyshroom_wall_1
+              y: 180
+              weight: 1
+            - path: betterend:block/small_jellyshroom_wall_2
+              y: 180
+              weight: 1
+        east:
+          auto_state: cave_vines
+          models:
+            - path: betterend:block/small_jellyshroom_wall_1
+              y: 270
+              weight: 1
+            - path: betterend:block/small_jellyshroom_wall_2
+              y: 270
+              weight: 1
+        south:
+          auto_state: cave_vines
+          models:
+            - path: betterend:block/small_jellyshroom_wall_1
+              weight: 1
+            - path: betterend:block/small_jellyshroom_wall_2
+              weight: 1
+        west:
+          auto_state: cave_vines
+          models:
+            - path: betterend:block/small_jellyshroom_wall_1
+              y: 90
+              weight: 1
+            - path: betterend:block/small_jellyshroom_wall_2
+              y: 90
+              weight: 1
+      variants:
+        facing=up:
+          appearance: up
+        facing=down:
+          appearance: down
+        facing=north:
+          appearance: north
+        facing=east:
+          appearance: east
+        facing=south:
+          appearance: south
+        facing=west:
+          appearance: west
+  betterend:filalux_wings:
+    behavior:
+      type: directional_attached_block
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: color_red
+        tags:
+          - minecraft:mineable/hoe
+          - minecraft:sword_efficient
+    loot:
+      template: default:loot_table/self
+    state:
+      properties:
+        facing:
+          type: 6-direction
+          default: up
+      appearances:
+        up:
+          auto_state: cave_vines
+          model: betterend:block/filalux_wings_top
+        down:
+          auto_state: cave_vines
+          model:
+            path: betterend:block/filalux_wings_bottom
+            x: 180
+        north:
+          auto_state: cave_vines
+          model:
+            path: betterend:block/filalux_wings
+            y: 180
+        east:
+          auto_state: cave_vines
+          model:
+            path: betterend:block/filalux_wings
+            y: 270
+        south:
+          auto_state: cave_vines
+          model: betterend:block/filalux_wings
+        west:
+          auto_state: cave_vines
+          model:
+            path: betterend:block/filalux_wings
+            y: 90
+      variants:
+        facing=up:
+          appearance: up
+        facing=down:
+          appearance: down
+        facing=north:
+          appearance: north
+        facing=east:
+          appearance: east
+        facing=south:
+          appearance: south
+        facing=west:
+          appearance: west
+
+  # === FUR BLOCKS ==========================================================
+  # bclib FurBlock: 6-direction decorative fuzz that sits on any face. Not a cube, so it goes on
+  # the tripwire pool, not solid.
+  # LOOT DEVIATION: the mod's LeavesBlockTrait drops the family seed at 1/15 on top of a
+  # shears-or-silk-touch self-drop (EndVineBlocks.java:110, EndMushroomBlocks.java:246). CE ships
+  # no leaves template that omits vanilla sticks, so only the silk-touch self-drop half is ported;
+  # the 1/15 seed drop is recorded debt rather than faked with default:loot_table/leaves.
+  betterend:blue_vine_fur:
+    behavior:
+      type: directional_attached_block
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: color_blue
+        tags:
+          - minecraft:mineable/hoe
+          - minecraft:sword_efficient
+    loot:
+      template: default:loot_table/silk_touch
+      arguments:
+        item: betterend:blue_vine_fur
+    state:
+      properties:
+        facing:
+          type: 6-direction
+          default: up
+      appearances:
+        up:
+          auto_state: tripwire
+          model: betterend:block/blue_vine_fur_t0
+        down:
+          auto_state: tripwire
+          model:
+            path: betterend:block/blue_vine_fur_t0
+            x: 180
+        north:
+          auto_state: tripwire
+          model:
+            path: betterend:block/blue_vine_fur_t0
+            x: 90
+        east:
+          auto_state: tripwire
+          model:
+            path: betterend:block/blue_vine_fur_t0
+            x: 90
+            y: 90
+        south:
+          auto_state: tripwire
+          model:
+            path: betterend:block/blue_vine_fur_t0
+            x: 90
+            y: 180
+        west:
+          auto_state: tripwire
+          model:
+            path: betterend:block/blue_vine_fur_t0
+            x: 90
+            y: 270
+      variants:
+        facing=up:
+          appearance: up
+        facing=down:
+          appearance: down
+        facing=north:
+          appearance: north
+        facing=east:
+          appearance: east
+        facing=south:
+          appearance: south
+        facing=west:
+          appearance: west
+  betterend:amaranita_fur:
+    behavior:
+      type: directional_attached_block
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: color_cyan
+        tags:
+          - minecraft:mineable/hoe
+          - minecraft:sword_efficient
+    loot:
+      template: default:loot_table/silk_touch
+      arguments:
+        item: betterend:amaranita_fur
+    state:
+      properties:
+        facing:
+          type: 6-direction
+          default: up
+      appearances:
+        up:
+          auto_state: tripwire
+          model: betterend:block/amaranita_fur
+        down:
+          auto_state: tripwire
+          model:
+            path: betterend:block/amaranita_fur
+            x: 180
+        north:
+          auto_state: tripwire
+          model:
+            path: betterend:block/amaranita_fur
+            x: 90
+        east:
+          auto_state: tripwire
+          model:
+            path: betterend:block/amaranita_fur
+            x: 90
+            y: 90
+        south:
+          auto_state: tripwire
+          model:
+            path: betterend:block/amaranita_fur
+            x: 90
+            y: 180
+        west:
+          auto_state: tripwire
+          model:
+            path: betterend:block/amaranita_fur
+            x: 90
+            y: 270
+      variants:
+        facing=up:
+          appearance: up
+        facing=down:
+          appearance: down
+        facing=north:
+          appearance: north
+        facing=east:
+          appearance: east
+        facing=south:
+          appearance: south
+        facing=west:
+          appearance: west
+
+  # === HANGING VINES =======================================================
+  # bclib BaseVineBlock: a TripleShape (top/middle/bottom) column hanging from the block above.
+  # CE has no triple_shape property type (Properties.java:16-31), so `shape` is a plain string
+  # property carrying the mod's own three value names -- byte-identical to its blockstate keys.
+  # Survival is hanging_block, which checks the block ABOVE (HangingBlockBehavior.java:31-33):
+  #   blacklist: true + above_block_tags [minecraft:replaceable]  ==  "dies when what is above
+  #   turns into air/water/grass, survives under anything solid", which is BaseVineBlock's rule.
+  # Self-stacking is free: BushBlockBehavior.java:80-85 short-circuits a custom state of the same
+  # block to the stackable/max_height check.
+  # NOT ported: vine tip growth. vine_crop_head_block + vine_crop_body_block need TWO ids per vine
+  # and the mod gives each vine exactly one. `shape` is inert -- worldgen writes it.
+  betterend:blue_vine:
+    behavior:
+      type: hanging_block
+      blacklist: true
+      stackable: true
+      max_height: 16
+      above_block_tags:
+        - minecraft:replaceable
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/vine
+      merges:
+        push_reaction: destroy
+        map_color: color_blue
+        luminance: 15
+        tags:
+          - minecraft:mineable/hoe
+          - minecraft:sword_efficient
+    loot:
+      template: default:loot_table/self
+    state:
+      properties:
+        shape:
+          type: string
+          values:
+            - top
+            - middle
+            - bottom
+          default: bottom
+      appearances:
+        top:
+          auto_state: weeping_vines
+          model: betterend:block/blue_vine_top
+        middle:
+          auto_state: weeping_vines
+          model: betterend:block/blue_vine
+        bottom:
+          auto_state: weeping_vines
+          model: betterend:block/blue_vine_roots
+      variants:
+        shape=top:
+          appearance: top
+        shape=middle:
+          appearance: middle
+        shape=bottom:
+          appearance: bottom
+  betterend:bulb_vine:
+    behavior:
+      type: hanging_block
+      blacklist: true
+      stackable: true
+      max_height: 16
+      above_block_tags:
+        - minecraft:replaceable
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/vine
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        luminance: 15
+        tags:
+          - minecraft:mineable/hoe
+          - minecraft:sword_efficient
+    loot:
+      template: default:loot_table/self
+    state:
+      properties:
+        shape:
+          type: string
+          values:
+            - top
+            - middle
+            - bottom
+          default: bottom
+      appearances:
+        top:
+          auto_state: weeping_vines
+          model: betterend:block/bulb_vine_top
+        middle:
+          auto_state: weeping_vines
+          models:
+            - path: betterend:block/bulb_vine_middle_1
+              weight: 1
+            - path: betterend:block/bulb_vine_middle_2
+              weight: 1
+        bottom:
+          auto_state: weeping_vines
+          model: betterend:block/bulb_vine_bottom
+      variants:
+        shape=top:
+          appearance: top
+        shape=middle:
+          appearance: middle
+        shape=bottom:
+          appearance: bottom
+  betterend:dense_vine:
+    behavior:
+      type: hanging_block
+      blacklist: true
+      stackable: true
+      max_height: 16
+      above_block_tags:
+        - minecraft:replaceable
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/vine
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        tags:
+          - minecraft:mineable/hoe
+          - minecraft:sword_efficient
+    loot:
+      template: default:loot_table/self
+    state:
+      properties:
+        shape:
+          type: string
+          values:
+            - top
+            - middle
+            - bottom
+          default: bottom
+      appearances:
+        top:
+          auto_state: weeping_vines
+          model: betterend:block/dense_vine_top
+        middle:
+          auto_state: weeping_vines
+          models:
+            - path: betterend:block/dense_vine_middle_1
+              weight: 1
+            - path: betterend:block/dense_vine_middle_2
+              weight: 1
+        bottom:
+          auto_state: weeping_vines
+          models:
+            - path: betterend:block/dense_vine_bottom_1
+              weight: 1
+            - path: betterend:block/dense_vine_bottom_2
+              weight: 1
+      variants:
+        shape=top:
+          appearance: top
+        shape=middle:
+          appearance: middle
+        shape=bottom:
+          appearance: bottom
+  betterend:filalux:
+    behavior:
+      type: hanging_block
+      blacklist: true
+      stackable: true
+      max_height: 16
+      above_block_tags:
+        - minecraft:replaceable
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/vine
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        luminance: 15
+        tags:
+          - minecraft:mineable/hoe
+          - minecraft:sword_efficient
+    loot:
+      template: default:loot_table/self
+    state:
+      properties:
+        shape:
+          type: string
+          values:
+            - top
+            - middle
+            - bottom
+          default: bottom
+      appearances:
+        top:
+          auto_state: weeping_vines
+          model: betterend:block/filalux_top
+        middle:
+          auto_state: weeping_vines
+          model: betterend:block/filalux_middle
+        bottom:
+          auto_state: weeping_vines
+          model: betterend:block/filalux_bottom
+      variants:
+        shape=top:
+          appearance: top
+        shape=middle:
+          appearance: middle
+        shape=bottom:
+          appearance: bottom
+  betterend:jungle_vine:
+    behavior:
+      type: hanging_block
+      blacklist: true
+      stackable: true
+      max_height: 16
+      above_block_tags:
+        - minecraft:replaceable
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/vine
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        tags:
+          - minecraft:mineable/hoe
+          - minecraft:sword_efficient
+    loot:
+      template: default:loot_table/self
+    state:
+      properties:
+        shape:
+          type: string
+          values:
+            - top
+            - middle
+            - bottom
+          default: bottom
+      appearances:
+        top:
+          auto_state: weeping_vines
+          model: betterend:block/jungle_vine_top
+        middle:
+          auto_state: weeping_vines
+          model: betterend:block/jungle_vine_middle
+        bottom:
+          auto_state: weeping_vines
+          model: betterend:block/jungle_vine_bottom
+      variants:
+        shape=top:
+          appearance: top
+        shape=middle:
+          appearance: middle
+        shape=bottom:
+          appearance: bottom
+  betterend:magnula:
+    behavior:
+      type: hanging_block
+      blacklist: true
+      stackable: true
+      max_height: 16
+      above_block_tags:
+        - minecraft:replaceable
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/vine
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        tags:
+          - minecraft:mineable/hoe
+          - minecraft:sword_efficient
+    loot:
+      template: default:loot_table/self
+    state:
+      properties:
+        shape:
+          type: string
+          values:
+            - top
+            - middle
+            - bottom
+          default: bottom
+      appearances:
+        top:
+          auto_state: weeping_vines
+          model: betterend:block/magnula_top
+        middle:
+          auto_state: weeping_vines
+          model: betterend:block/magnula_middle
+        bottom:
+          auto_state: weeping_vines
+          model: betterend:block/magnula_bottom
+      variants:
+        shape=top:
+          appearance: top
+        shape=middle:
+          appearance: middle
+        shape=bottom:
+          appearance: bottom
+  betterend:rubinea:
+    behavior:
+      type: hanging_block
+      blacklist: true
+      stackable: true
+      max_height: 16
+      above_block_tags:
+        - minecraft:replaceable
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/vine
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        tags:
+          - minecraft:mineable/hoe
+          - minecraft:sword_efficient
+    loot:
+      template: default:loot_table/self
+    state:
+      properties:
+        shape:
+          type: string
+          values:
+            - top
+            - middle
+            - bottom
+          default: bottom
+      appearances:
+        top:
+          auto_state: weeping_vines
+          model: betterend:block/rubinea_top
+        middle:
+          auto_state: weeping_vines
+          model: betterend:block/rubinea_middle
+        bottom:
+          auto_state: weeping_vines
+          model: betterend:block/rubinea_bottom
+      variants:
+        shape=top:
+          appearance: top
+        shape=middle:
+          appearance: middle
+        shape=bottom:
+          appearance: bottom
+  betterend:twisted_vine:
+    behavior:
+      type: hanging_block
+      blacklist: true
+      stackable: true
+      max_height: 16
+      above_block_tags:
+        - minecraft:replaceable
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/vine
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        tags:
+          - minecraft:mineable/hoe
+          - minecraft:sword_efficient
+    loot:
+      template: default:loot_table/self
+    state:
+      properties:
+        shape:
+          type: string
+          values:
+            - top
+            - middle
+            - bottom
+          default: bottom
+      appearances:
+        top:
+          auto_state: weeping_vines
+          model: betterend:block/twisted_vine_top
+        middle:
+          auto_state: weeping_vines
+          models:
+            - path: betterend:block/twisted_vine_middle_1
+              weight: 1
+            - path: betterend:block/twisted_vine_middle_2
+              weight: 1
+        bottom:
+          auto_state: weeping_vines
+          models:
+            - path: betterend:block/twisted_vine_bottom_1
+              weight: 1
+            - path: betterend:block/twisted_vine_bottom_2
+              weight: 1
+      variants:
+        shape=top:
+          appearance: top
+        shape=middle:
+          appearance: middle
+        shape=bottom:
+          appearance: bottom
+
+  # === GLOWING PILLAR ROOTS ================================================
+  # Same TripleShape column as the vines, but GlowingPillarRootsBlock grows UPWARD out of amber
+  # moss, so it is a bush_block, not a hanging_block. No item and no loot section: the mod
+  # registers it with defineBlockOnly and an explicitly EMPTY loot table
+  # (EndMushroomBlocks.java:98,108).
+  betterend:glowing_pillar_roots:
+    behavior:
+      - type: liquid_flowable_block
+      - type: bush_block
+        stackable: true
+        max_height: 4
+        bottom_blocks:
+          - betterend:amber_moss
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: color_orange
+        luminance: 15
+        tags:
+          - minecraft:mineable/hoe
+          - minecraft:sword_efficient
+    state:
+      properties:
+        shape:
+          type: string
+          values:
+            - top
+            - middle
+            - bottom
+          default: bottom
+      appearances:
+        top:
+          auto_state: sapling
+          model: betterend:block/glowing_pillar_roots_top
+        middle:
+          auto_state: sapling
+          model: betterend:block/glowing_pillar_roots_middle
+        bottom:
+          auto_state: sapling
+          model: betterend:block/glowing_pillar_roots_bottom
+      variants:
+        shape=top:
+          appearance: top
+        shape=middle:
+          appearance: middle
+        shape=bottom:
+          appearance: bottom
+
+
+  # === GROUND MUSHROOMS ====================================================
+  betterend:bolux_mushroom:
+    # EndMushroomBlocks.java:150 withTag(SURVIVES_ON_RUTISCUS); survives_on/rutiscus.json.
+    behavior:
+      - type: liquid_flowable_block
+      - type: bush_block
+        bottom_blocks:
+          - betterend:pallidium_full
+          - betterend:pallidium_heavy
+          - betterend:pallidium_thin
+          - betterend:pallidium_tiny
+          - betterend:rutiscus
+          - betterend:sangnum
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: color_orange
+        luminance: 10
+        tags:
+          - minecraft:mineable/hoe
+          - minecraft:sword_efficient
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: sapling
+      models:
+        - path: betterend:block/bolux_mushroom_1
+          weight: 1
+        - path: betterend:block/bolux_mushroom_2
+          weight: 1
+        - path: betterend:block/bolux_mushroom_3
+          weight: 1
+        - path: betterend:block/bolux_mushroom_1
+          y: 90
+          weight: 1
+        - path: betterend:block/bolux_mushroom_2
+          y: 90
+          weight: 1
+        - path: betterend:block/bolux_mushroom_3
+          y: 90
+          weight: 1
+        - path: betterend:block/bolux_mushroom_1
+          y: 180
+          weight: 1
+        - path: betterend:block/bolux_mushroom_2
+          y: 180
+          weight: 1
+        - path: betterend:block/bolux_mushroom_3
+          y: 180
+          weight: 1
+        - path: betterend:block/bolux_mushroom_1
+          y: 270
+          weight: 1
+        - path: betterend:block/bolux_mushroom_2
+          y: 270
+          weight: 1
+        - path: betterend:block/bolux_mushroom_3
+          y: 270
+          weight: 1
+  betterend:small_amaranita_mushroom:
+    # EndMushroomBlocks.java:200 withTag(SURVIVES_ON_END_BONE); survives_on/end_bone.json.
+    behavior:
+      - type: liquid_flowable_block
+      - type: bush_block
+        bottom_blocks:
+          - betterend:mossy_dragon_bone
+          - betterend:mossy_obsidian
+          - betterend:sangnum
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: color_red
+        tags:
+          - minecraft:mineable/hoe
+          - minecraft:sword_efficient
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: twisting_vines
+      model: betterend:block/small_amaranita_mushroom
+  betterend:large_amaranita_mushroom:
+    # LargeAmaranitaBlock: a 3-tall TripleShape stack whose TOP segment alone is lit 15
+    # (EndMushroomBlocks.java:213-216). CE luminance is per BLOCK, not per state, so the whole
+    # stack glows -- recorded deviation.
+    behavior:
+      - type: bush_block
+        stackable: true
+        max_height: 3
+        bottom_blocks:
+          - betterend:mossy_dragon_bone
+          - betterend:mossy_obsidian
+          - betterend:sangnum
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: color_red
+        luminance: 15
+        tags:
+          - minecraft:mineable/hoe
+          - minecraft:sword_efficient
+    loot:
+      template: default:loot_table/self
+    state:
+      properties:
+        shape:
+          type: string
+          values:
+            - top
+            - middle
+            - bottom
+          default: bottom
+      appearances:
+        top:
+          auto_state: twisting_vines
+          model: betterend:block/large_amaranita_cap
+        middle:
+          auto_state: twisting_vines
+          model: betterend:block/large_amaranita_stem
+        bottom:
+          auto_state: twisting_vines
+          model: betterend:block/large_amaranita_roots
+      variants:
+        shape=top:
+          appearance: top
+        shape=middle:
+          appearance: middle
+        shape=bottom:
+          appearance: bottom
+
+  # === LUMECORN ============================================================
+  # LumecornBlock.java:44 EnumProperty<LumecornShape>, 7 values; the names below are verbatim from
+  # the mod's own blockstates/lumecorn.json. No item (defineBlockOnly, EndMushroomBlocks.java:179).
+  # Loot is LumecornBlock.buildLoot (:104-123) reproduced literally: the three stem shapes give
+  # 1-2 lumecorn_seed, the four light shapes give lumecorn_rod at 50%. lumecorn_rod has no other
+  # source in the mod, so this table is load-bearing.
+  # A tripwire host has no collision, so the mod's 4x16x4 stalk hitbox is lost -- recorded.
+  betterend:lumecorn:
+    settings:
+      template:
+        - default:hardness/wood
+        - default:sound/wood
+      merges:
+        hardness: 0.5
+        resistance: 0.5
+        push_reaction: destroy
+        map_color: color_light_blue
+        luminance: 15
+        tags:
+          - minecraft:mineable/axe
+    # The mod's first pool (1-2 lumecorn_seed from bottom_big / bottom_small / middle) is dropped:
+    # lumecorn_seed was unshipped with the deferred growth blocks. The rod pool below is unchanged.
+    loot:
+      pools:
+        - rolls: 1
+          conditions:
+            - type: inverted
+              term:
+                type: any_of
+                terms:
+                  - type: match_block_property
+                    properties:
+                      shape: bottom_big
+                  - type: match_block_property
+                    properties:
+                      shape: bottom_small
+                  - type: match_block_property
+                    properties:
+                      shape: middle
+            - type: random
+              value: 0.5
+          entries:
+            - type: item
+              item: betterend:lumecorn_rod
+    state:
+      properties:
+        shape:
+          type: string
+          values:
+            - bottom_big
+            - bottom_small
+            - middle
+            - light_bottom
+            - light_middle
+            - light_top_middle
+            - light_top
+          default: bottom_small
+      # REVERSE MISMATCH, fixed. LumecornBlock.java:43,48-49 extends Block with
+      # SHAPE = box(6,0,6,10,16,10) and NO noCollission -- a lumecorn trunk is solid and standable in
+      # the mod, but `auto_state: tripwire` gave it the tripwire donor's NO collision, so you walked
+      # straight through it and could not stand on one. Collision is not overridable
+      # (BukkitBlockShape.java:20-26), so the donor has to be the right shape: a lightning rod, whose
+      # vanilla box for a vertical facing is box(6,0,6,10,16,10) -- byte-identical to the mod's.
+      # facing=up and facing=down both resolve to the Y box (RodBlock keys off facing.getAxis()), so
+      # all seven appearances stay vertical. The powered=true half of each family is used here; the
+      # powered=false half backs the four chandeliers in B6.
+      # These states are freed by internal/mappings.yml:4072+ onto their waxed twins, sit in no
+      # AutoStateGroup, and are claimed by no pack on this server -- and moving lumecorn off tripwire
+      # also returns 7 slots to the oversubscribed 126-state tripwire pool.
+      appearances:
+        bottom_big:
+          state: lightning_rod[facing=up,powered=true,waterlogged=false]
+          model: betterend:block/lumecorn_roots_big
+        bottom_small:
+          state: lightning_rod[facing=down,powered=true,waterlogged=false]
+          model: betterend:block/lumecorn_roots_small
+        middle:
+          state: exposed_lightning_rod[facing=up,powered=true,waterlogged=false]
+          model: betterend:block/lumecorn_middle
+        light_bottom:
+          state: exposed_lightning_rod[facing=down,powered=true,waterlogged=false]
+          model: betterend:block/lumecorn_light_bottom
+        light_middle:
+          state: weathered_lightning_rod[facing=up,powered=true,waterlogged=false]
+          model: betterend:block/lumecorn_light_middle
+        light_top_middle:
+          state: weathered_lightning_rod[facing=down,powered=true,waterlogged=false]
+          model: betterend:block/lumecorn_light_top_middle
+        light_top:
+          state: oxidized_lightning_rod[facing=up,powered=true,waterlogged=false]
+          model: betterend:block/lumecorn_light_top
+      variants:
+        shape=bottom_big:
+          appearance: bottom_big
+        shape=bottom_small:
+          appearance: bottom_small
+        shape=middle:
+          appearance: middle
+        shape=light_bottom:
+          appearance: light_bottom
+        shape=light_middle:
+          appearance: light_middle
+        shape=light_top_middle:
+          appearance: light_top_middle
+        shape=light_top:
+          appearance: light_top
+
+  # === CRYSTALS ============================================================
+  # SulphurCrystalBlock: AGE 0-2 x 6-direction FACING, grows on brimstone
+  # (EndStoneBlocks.java:150 withTag(SURVIVES_ON_BRIMSTONE)). That tag also lists
+  # minecraft:cinnabar and minecraft:sulfur, which do not exist in this build, so only
+  # betterend:brimstone (a live Phase-2 id) is listed.
+  # WATERLOGGED is NOT ported: it would double 18 appearances to 36 for no visual gain.
+  betterend:sulphur_crystal:
+    behavior:
+      type: directional_attached_block
+      blacklist: false
+      attached_blocks:
+        - betterend:brimstone
+    settings:
+      template:
+        - default:hardness/stone
+        - default:sound/stone
+      merges:
+        hardness: 0.5
+        resistance: 0.5
+        push_reaction: destroy
+        map_color: color_yellow
+        # No require_correct_tools: EndStoneBlocks.java:148-154 registers sulphur_crystal with
+        # MINEABLE_WITH.needsPickAxe() only -- it never calls requiresCorrectToolForDrops(),
+        # unlike hydrothermal_vent five entries above it (:290). correct_tools below is kept
+        # because it still governs mining speed.
+        correct_tools:
+          - '#minecraft:pickaxes'
+        tags:
+          - minecraft:mineable/pickaxe
+    loot:
+      # SulphurCrystalBlock.buildLoot (:87-125). The mod's second pool is gated on age==3 while
+      # AGE only reaches 2 (:55) -- a dead condition, so in the mod the block silently drops
+      # nothing without silk touch. Ported to the evident intent: ripe age 2 yields sulfur.
+      pools:
+        - rolls: 1
+          conditions:
+            - type: enchantment
+              predicate: minecraft:silk_touch>=1
+          entries:
+            - type: item
+              item: betterend:sulphur_crystal
+        - rolls: 1
+          conditions:
+            - type: inverted
+              term:
+                type: enchantment
+                predicate: minecraft:silk_touch>=1
+            - type: match_block_property
+              properties:
+                age: 2
+          entries:
+            - type: item
+              item: betterend:crystalline_sulphur
+              functions:
+                - type: set_count
+                  add: false
+                  count: 1~3
+                - type: explosion_decay
+    state:
+      properties:
+        age:
+          type: int
+          default: 0
+          min: 0
+          max: 2
+        facing:
+          type: 6-direction
+          default: up
+      appearances:
+        a0_up:
+          auto_state: kelp
+          model: betterend:block/sulphur_crystal_0_up
+        a0_down:
+          auto_state: kelp
+          model:
+            path: betterend:block/sulphur_crystal_0_down
+            x: 180
+        a0_north:
+          auto_state: kelp
+          model:
+            path: betterend:block/sulphur_crystal_0_north
+            x: 90
+        a0_east:
+          auto_state: kelp
+          model:
+            path: betterend:block/sulphur_crystal_0_east
+            x: 90
+            y: 90
+        a0_south:
+          auto_state: kelp
+          model:
+            path: betterend:block/sulphur_crystal_0_south
+            x: 90
+            y: 180
+        a0_west:
+          auto_state: kelp
+          model:
+            path: betterend:block/sulphur_crystal_0_west
+            x: 90
+            y: 270
+        a1_up:
+          auto_state: kelp
+          model: betterend:block/sulphur_crystal_1_up
+        a1_down:
+          auto_state: kelp
+          model:
+            path: betterend:block/sulphur_crystal_1_down
+            x: 180
+        a1_north:
+          auto_state: kelp
+          model:
+            path: betterend:block/sulphur_crystal_1_north
+            x: 90
+        a1_east:
+          auto_state: kelp
+          model:
+            path: betterend:block/sulphur_crystal_1_east
+            x: 90
+            y: 90
+        a1_south:
+          auto_state: kelp
+          model:
+            path: betterend:block/sulphur_crystal_1_south
+            x: 90
+            y: 180
+        a1_west:
+          auto_state: kelp
+          model:
+            path: betterend:block/sulphur_crystal_1_west
+            x: 90
+            y: 270
+        a2_up:
+          auto_state: kelp
+          model: betterend:block/sulphur_crystal_2_up
+        a2_down:
+          auto_state: kelp
+          model:
+            path: betterend:block/sulphur_crystal_2_down
+            x: 180
+        a2_north:
+          auto_state: kelp
+          model:
+            path: betterend:block/sulphur_crystal_2_north
+            x: 90
+        a2_east:
+          auto_state: kelp
+          model:
+            path: betterend:block/sulphur_crystal_2_east
+            x: 90
+            y: 90
+        a2_south:
+          auto_state: kelp
+          model:
+            path: betterend:block/sulphur_crystal_2_south
+            x: 90
+            y: 180
+        a2_west:
+          auto_state: kelp
+          model:
+            path: betterend:block/sulphur_crystal_2_west
+            x: 90
+            y: 270
+      variants:
+        age=0,facing=up:
+          appearance: a0_up
+        age=0,facing=down:
+          appearance: a0_down
+        age=0,facing=north:
+          appearance: a0_north
+        age=0,facing=east:
+          appearance: a0_east
+        age=0,facing=south:
+          appearance: a0_south
+        age=0,facing=west:
+          appearance: a0_west
+        age=1,facing=up:
+          appearance: a1_up
+        age=1,facing=down:
+          appearance: a1_down
+        age=1,facing=north:
+          appearance: a1_north
+        age=1,facing=east:
+          appearance: a1_east
+        age=1,facing=south:
+          appearance: a1_south
+        age=1,facing=west:
+          appearance: a1_west
+        age=2,facing=up:
+          appearance: a2_up
+        age=2,facing=down:
+          appearance: a2_down
+        age=2,facing=north:
+          appearance: a2_north
+        age=2,facing=east:
+          appearance: a2_east
+        age=2,facing=south:
+          appearance: a2_south
+        age=2,facing=west:
+          appearance: a2_west
+  betterend:smaragdant_crystal_shard:
+    # SmaragdantCrystalShardBlock -- a 6-direction cross clinging to any sturdy face
+    # (EndCrystalBlocks.java:54-95).
+    behavior:
+      type: directional_attached_block
+    settings:
+      template:
+        - default:hardness/stone
+        - default:sound/amethyst_block
+      merges:
+        hardness: 1.0
+        resistance: 1.0
+        push_reaction: destroy
+        map_color: color_green
+        luminance: 15
+        require_correct_tools: true
+        required_break_power: 0
+        correct_tools:
+          - '#minecraft:pickaxes'
+        tags:
+          - minecraft:mineable/pickaxe
+    loot:
+      template: default:loot_table/self
+    state:
+      properties:
+        facing:
+          type: 6-direction
+          default: up
+      appearances:
+        up:
+          auto_state: higher_tripwire
+          model: betterend:block/smaragdant_crystal_shard_up
+        down:
+          auto_state: higher_tripwire
+          model:
+            path: betterend:block/smaragdant_crystal_shard_down
+            x: 180
+        north:
+          auto_state: higher_tripwire
+          model:
+            path: betterend:block/smaragdant_crystal_shard_north
+            x: 90
+        east:
+          auto_state: higher_tripwire
+          model:
+            path: betterend:block/smaragdant_crystal_shard_east
+            x: 90
+            y: 90
+        south:
+          auto_state: higher_tripwire
+          model:
+            path: betterend:block/smaragdant_crystal_shard_south
+            x: 90
+            y: 180
+        west:
+          auto_state: higher_tripwire
+          model:
+            path: betterend:block/smaragdant_crystal_shard_west
+            x: 90
+            y: 270
+      variants:
+        facing=up:
+          appearance: up
+        facing=down:
+          appearance: down
+        facing=north:
+          appearance: north
+        facing=east:
+          appearance: east
+        facing=south:
+          appearance: south
+        facing=west:
+          appearance: west
+  betterend:aurora_crystal:
+    # AuroraCrystalBlock, EndCrystalBlocks.java:34-52.
+    # VISUAL DEVIATION: the mod tints a near-greyscale texture with a 4-colour position cycle
+    # (ClientBlockTraits.TINT.worldAndItem, :46). CE has no per-position block tint, so this ships
+    # untinted; baking recoloured PNGs could not reproduce a per-position cycle anyway.
+    settings:
+      template:
+        - default:hardness/stone
+        - default:sound/amethyst_block
+        - default:settings/transparent_1x1x1
+      merges:
+        hardness: 1.0
+        resistance: 1.0
+        map_color: color_purple
+        luminance: 15
+        # No require_correct_tools: EndCrystalBlocks.java:92-107 never calls
+        # requiresCorrectToolForDrops() on aurora_crystal, while smaragdant_crystal_shard in the
+        # same file (:118) does. correct_tools below is kept for mining speed only.
+        correct_tools:
+          - '#minecraft:pickaxes'
+        tags:
+          - minecraft:mineable/pickaxe
+    loot:
+      # EndCrystalBlocks.java:44-47 provider.dropOre(block, CRYSTAL_SHARDS, uniform(1,4)).
+      template: default:loot_table/ore
+      arguments:
+        ore_block: betterend:aurora_crystal
+        ore_drop: betterend:crystal_shards
+        ore_drop_count: 1~4
+    state:
+      auto_state: solid
+      model: betterend:block/aurora_crystal
+  betterend:budding_smaragdant_crystal:
+    # BuddingSmaragdantCrystalBlock, EndCrystalBlocks.java:97-120. The mod deliberately gives it
+    # NO loot table (its own comment says a budding block is not obtainable), so none here.
+    behavior:
+      type: budding_block
+      growth_chance: 0.2
+      blocks:
+        - betterend:smaragdant_crystal_shard
+    settings:
+      template:
+        - default:hardness/stone
+        - default:sound/amethyst_block
+        - default:settings/transparent_1x1x1
+      merges:
+        hardness: 1.0
+        resistance: 1.0
+        map_color: color_green
+        luminance: 15
+        push_reaction: destroy
+        is_randomly_ticking: true
+        # No require_correct_tools: EndCrystalBlocks.java:163-186 does not call
+        # requiresCorrectToolForDrops(). Moot anyway -- a budding block has no loot table.
+        correct_tools:
+          - '#minecraft:pickaxes'
+        tags:
+          - minecraft:mineable/pickaxe
+    state:
+      template: default:block_state/pillar
+      arguments:
+        pillar_model: betterend:block/budding_smaragdant_crystal
+        pillar_texture_top: betterend:block/budding_smaragdant_crystal_top
+        pillar_texture_side: betterend:block/budding_smaragdant_crystal_side
+
+  # === AMARANITA STRUCTURAL BLOCKS =========================================
+  # All four carry BlockTraits.WOOD_BLOCK + LOOT_TABLE.dropSelf (EndMushroomBlocks.java:224-262).
+  # default:settings/wood is deliberately NOT used: it stamps minecraft:logs and
+  # minecraft:logs_that_burn on them, which the mod does not.
+  betterend:amaranita_cap:
+    settings:
+      template:
+        - default:hardness/wood
+        - default:sound/wood
+        - default:settings/solid_1x1x1
+      merges:
+        map_color: color_light_green
+        instrument: bass
+        tags:
+          - minecraft:mineable/axe
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      texture: betterend:block/amaranita_cap
+  betterend:amaranita_hymenophore:
+    settings:
+      template:
+        - default:hardness/wood
+        - default:sound/wood
+        - default:settings/transparent_1x1x1
+      merges:
+        map_color: color_light_green
+        instrument: bass
+        tags:
+          - minecraft:mineable/axe
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      texture: betterend:block/amaranita_hymenophore
+  betterend:amaranita_hyphae:
+    settings:
+      template:
+        - default:hardness/wood
+        - default:sound/wood
+        - default:settings/solid_1x1x1
+      merges:
+        map_color: color_light_green
+        instrument: bass
+        tags:
+          - minecraft:mineable/axe
+    loot:
+      template: default:loot_table/self
+    state:
+      template: default:block_state/pillar
+      arguments:
+        pillar_model: betterend:block/amaranita_hyphae
+        pillar_texture_top: betterend:block/amaranita_hyphae_top
+        pillar_texture_side: betterend:block/amaranita_hyphae_side
+  betterend:amaranita_stem:
+    # The mod's hand-authored models/block/amaranita_stem.json is a plain minecraft:block/cube
+    # whose six faces are the hyphae textures -- i.e. the same cube_column the pillar template
+    # generates. Reusing the template instead of shipping a duplicate model json.
+    settings:
+      template:
+        - default:hardness/wood
+        - default:sound/wood
+        - default:settings/solid_1x1x1
+      merges:
+        map_color: color_light_green
+        instrument: bass
+        tags:
+          - minecraft:mineable/axe
+    loot:
+      template: default:loot_table/self
+    state:
+      template: default:block_state/pillar
+      arguments:
+        pillar_model: betterend:block/amaranita_stem
+        pillar_texture_top: betterend:block/amaranita_hyphae_top
+        pillar_texture_side: betterend:block/amaranita_hyphae_side
+
+  # === STALACTITES =========================================================
+  # bclib StalactiteBlock: IS_FLOOR boolean + SIZE 0-7. IS_FLOOR is renamed to its inverse
+  # `hanging` so hangable_block can bind it -- HangableBlockBehavior.java:88 demands a boolean
+  # property literally named "hanging". hanging=true is the mod's is_floor=false variant (model
+  # x:180); hanging=false is is_floor=true (unrotated). 16 solid states each.
+  # `size` is inert: worldgen picks the taper, nothing maintains it at runtime.
+  betterend:end_stone_stalactite:
+    behavior:
+      type: hangable_block
+    settings:
+      template:
+        - default:hardness/stone
+        - default:sound/stone
+        - default:settings/transparent_1x1x1
+      merges:
+        hardness: 0.5
+        resistance: 0.5
+        map_color: pale_yellow
+        instrument: basedrum
+        require_correct_tools: true
+        required_break_power: 0
+        correct_tools:
+          - '#minecraft:pickaxes'
+        tags:
+          - minecraft:mineable/pickaxe
+    loot:
+      template: default:loot_table/self
+    state:
+      properties:
+        hanging:
+          type: boolean
+          default: false
+        size:
+          type: int
+          default: 0
+          min: 0
+          max: 7
+      appearances:
+        floor0:
+          auto_state: solid
+          model: betterend:block/end_stone_stalactite_0
+        floor1:
+          auto_state: solid
+          model: betterend:block/end_stone_stalactite_1
+        floor2:
+          auto_state: solid
+          model: betterend:block/end_stone_stalactite_2
+        floor3:
+          auto_state: solid
+          model: betterend:block/end_stone_stalactite_3
+        floor4:
+          auto_state: solid
+          model: betterend:block/end_stone_stalactite_4
+        floor5:
+          auto_state: solid
+          model: betterend:block/end_stone_stalactite_5
+        floor6:
+          auto_state: solid
+          model: betterend:block/end_stone_stalactite_6
+        floor7:
+          auto_state: solid
+          model: betterend:block/end_stone_stalactite_7
+        hang0:
+          auto_state: solid
+          model:
+            path: betterend:block/end_stone_stalactite_0
+            x: 180
+        hang1:
+          auto_state: solid
+          model:
+            path: betterend:block/end_stone_stalactite_1
+            x: 180
+        hang2:
+          auto_state: solid
+          model:
+            path: betterend:block/end_stone_stalactite_2
+            x: 180
+        hang3:
+          auto_state: solid
+          model:
+            path: betterend:block/end_stone_stalactite_3
+            x: 180
+        hang4:
+          auto_state: solid
+          model:
+            path: betterend:block/end_stone_stalactite_4
+            x: 180
+        hang5:
+          auto_state: solid
+          model:
+            path: betterend:block/end_stone_stalactite_5
+            x: 180
+        hang6:
+          auto_state: solid
+          model:
+            path: betterend:block/end_stone_stalactite_6
+            x: 180
+        hang7:
+          auto_state: solid
+          model:
+            path: betterend:block/end_stone_stalactite_7
+            x: 180
+      variants:
+        hanging=false,size=0:
+          appearance: floor0
+        hanging=false,size=1:
+          appearance: floor1
+        hanging=false,size=2:
+          appearance: floor2
+        hanging=false,size=3:
+          appearance: floor3
+        hanging=false,size=4:
+          appearance: floor4
+        hanging=false,size=5:
+          appearance: floor5
+        hanging=false,size=6:
+          appearance: floor6
+        hanging=false,size=7:
+          appearance: floor7
+        hanging=true,size=0:
+          appearance: hang0
+        hanging=true,size=1:
+          appearance: hang1
+        hanging=true,size=2:
+          appearance: hang2
+        hanging=true,size=3:
+          appearance: hang3
+        hanging=true,size=4:
+          appearance: hang4
+        hanging=true,size=5:
+          appearance: hang5
+        hanging=true,size=6:
+          appearance: hang6
+        hanging=true,size=7:
+          appearance: hang7
+  betterend:end_stone_stalactite_cavemoss:
+    behavior:
+      type: hangable_block
+    settings:
+      template:
+        - default:hardness/stone
+        - default:sound/stone
+        - default:settings/transparent_1x1x1
+      merges:
+        hardness: 0.5
+        resistance: 0.5
+        map_color: plant
+        instrument: basedrum
+        require_correct_tools: true
+        required_break_power: 0
+        correct_tools:
+          - '#minecraft:pickaxes'
+        tags:
+          - minecraft:mineable/pickaxe
+    loot:
+      template: default:loot_table/self
+    state:
+      properties:
+        hanging:
+          type: boolean
+          default: false
+        size:
+          type: int
+          default: 0
+          min: 0
+          max: 7
+      appearances:
+        floor0:
+          auto_state: solid
+          model: betterend:block/end_stone_stalactite_cavemoss_0
+        floor1:
+          auto_state: solid
+          model: betterend:block/end_stone_stalactite_cavemoss_1
+        floor2:
+          auto_state: solid
+          model: betterend:block/end_stone_stalactite_cavemoss_2
+        floor3:
+          auto_state: solid
+          model: betterend:block/end_stone_stalactite_cavemoss_3
+        floor4:
+          auto_state: solid
+          model: betterend:block/end_stone_stalactite_cavemoss_4
+        floor5:
+          auto_state: solid
+          model: betterend:block/end_stone_stalactite_cavemoss_5
+        floor6:
+          auto_state: solid
+          model: betterend:block/end_stone_stalactite_cavemoss_6
+        floor7:
+          auto_state: solid
+          model: betterend:block/end_stone_stalactite_cavemoss_7
+        hang0:
+          auto_state: solid
+          model:
+            path: betterend:block/end_stone_stalactite_cavemoss_0
+            x: 180
+        hang1:
+          auto_state: solid
+          model:
+            path: betterend:block/end_stone_stalactite_cavemoss_1
+            x: 180
+        hang2:
+          auto_state: solid
+          model:
+            path: betterend:block/end_stone_stalactite_cavemoss_2
+            x: 180
+        hang3:
+          auto_state: solid
+          model:
+            path: betterend:block/end_stone_stalactite_cavemoss_3
+            x: 180
+        hang4:
+          auto_state: solid
+          model:
+            path: betterend:block/end_stone_stalactite_cavemoss_4
+            x: 180
+        hang5:
+          auto_state: solid
+          model:
+            path: betterend:block/end_stone_stalactite_cavemoss_5
+            x: 180
+        hang6:
+          auto_state: solid
+          model:
+            path: betterend:block/end_stone_stalactite_cavemoss_6
+            x: 180
+        hang7:
+          auto_state: solid
+          model:
+            path: betterend:block/end_stone_stalactite_cavemoss_7
+            x: 180
+      variants:
+        hanging=false,size=0:
+          appearance: floor0
+        hanging=false,size=1:
+          appearance: floor1
+        hanging=false,size=2:
+          appearance: floor2
+        hanging=false,size=3:
+          appearance: floor3
+        hanging=false,size=4:
+          appearance: floor4
+        hanging=false,size=5:
+          appearance: floor5
+        hanging=false,size=6:
+          appearance: floor6
+        hanging=false,size=7:
+          appearance: floor7
+        hanging=true,size=0:
+          appearance: hang0
+        hanging=true,size=1:
+          appearance: hang1
+        hanging=true,size=2:
+          appearance: hang2
+        hanging=true,size=3:
+          appearance: hang3
+        hanging=true,size=4:
+          appearance: hang4
+        hanging=true,size=5:
+          appearance: hang5
+        hanging=true,size=6:
+          appearance: hang6
+        hanging=true,size=7:
+          appearance: hang7
+
+  # === HYDROTHERMAL VENT ===================================================
+  # EndStoneBlocks.java:285-294, a decorative sulphuric-rock geyser. The mod's blockstate json is
+  # one variant with four y rotations, folded here into a SINGLE appearance holding four weighted
+  # models -- one visual state, not four. The mod's noCollission() has no analogue on a solid host,
+  # so the vent is walk-on-able. NOT ported: the paired vent_bubble_column emitter (see the tail).
+  betterend:hydrothermal_vent:
+    settings:
+      template:
+        - default:hardness/stone
+        - default:sound/stone
+        - default:settings/transparent_1x1x1
+      merges:
+        hardness: 1.5
+        resistance: 6.0
+        map_color: color_yellow
+        instrument: basedrum
+        require_correct_tools: true
+        required_break_power: 0
+        correct_tools:
+          - '#minecraft:pickaxes'
+        tags:
+          - minecraft:mineable/pickaxe
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      models:
+        - path: betterend:block/hydrothermal_vent
+          weight: 1
+        - path: betterend:block/hydrothermal_vent
+          y: 90
+          weight: 1
+        - path: betterend:block/hydrothermal_vent
+          y: 180
+          weight: 1
+        - path: betterend:block/hydrothermal_vent
+          y: 270
+          weight: 1
+
+recipes:
+  # Only recipes that exist under generated/data/betterend/recipe/. Nothing invented.
+  # amber_gem.json
+  betterend:amber_gem:
+    type: shaped
+    category: misc
+    pattern:
+      - '##'
+      - '##'
+    ingredients:
+      '#': betterend:raw_amber
+    result:
+      id: betterend:amber_gem
+      count: 1
+  # bolux_mushroom_smoker.json (vanilla smoking defaults: 100 ticks)
+  betterend:bolux_mushroom_cooked_smoking:
+    type: smoking
+    category: food
+    time: 100
+    experience: 0.0    # the mod's json has no experience field -> vanilla default
+    ingredient: betterend:bolux_mushroom
+    result:
+      id: betterend:bolux_mushroom_cooked
+      count: 1
+  # bolux_mushroom_campfire.json (cookingtime 600)
+  betterend:bolux_mushroom_cooked_campfire:
+    type: campfire_cooking
+    category: food
+    time: 600
+    experience: 0.0    # the mod's json has no experience field -> vanilla default
+    ingredient: betterend:bolux_mushroom
+    result:
+      id: betterend:bolux_mushroom_cooked
+      count: 1
+
+  # aurora_block.json -- the only way back from crystal_shards to the block.
+  betterend:aurora_block:
+    type: shaped
+    category: building
+    pattern:
+      - '##'
+      - '##'
+    ingredients:
+      '#': betterend:crystal_shards
+    result:
+      id: betterend:aurora_crystal
+      count: 1
+  # amber_gem_block.json -- unpacks the B7 block back into 4 gems.
+  betterend:amber_gem_block:
+    type: shapeless
+    category: misc
+    ingredients:
+      - betterend:amber_block
+    result:
+      id: betterend:amber_gem
+      count: 4
+  # ender_eye_amber.json
+  betterend:ender_eye_amber:
+    type: shaped
+    category: misc
+    pattern:
+      - 'SAS'
+      - 'APA'
+      - 'SAS'
+    ingredients:
+      A: betterend:amber_gem
+      P: minecraft:ender_pearl
+      S: betterend:crystal_shards
+    result:
+      id: minecraft:ender_eye
+      count: 1
+  # tined_glass_from_smaragdant.json (the mod's own spelling of the file name)
+  betterend:tined_glass_from_smaragdant:
+    type: shaped
+    category: building
+    pattern:
+      - ' # '
+      - '#G#'
+      - ' # '
+    ingredients:
+      '#': betterend:smaragdant_crystal_shard
+      G: minecraft:glass
+    result:
+      id: minecraft:tinted_glass
+      count: 1
+  # sulphur_gunpowder.json -- the only sink for crystalline_sulphur that CE can express.
+  betterend:sulphur_gunpowder:
+    type: shapeless
+    category: misc
+    ingredients:
+      - minecraft:bone_meal
+      - betterend:crystalline_sulphur
+      - - minecraft:coal
+        - minecraft:charcoal
+    result:
+      id: minecraft:gunpowder
+      count: 1
+  betterend:purple_polypore_dye:
+    type: shapeless
+    category: misc
+    ingredients:
+      - betterend:purple_polypore
+    result:
+      id: minecraft:purple_dye
+      count: 1
+  betterend:tail_moss_dye:
+    type: shapeless
+    category: misc
+    ingredients:
+      - betterend:tail_moss
+    result:
+      id: minecraft:gray_dye
+      count: 1
+  betterend:twisted_moss_dye:
+    type: shapeless
+    category: misc
+    ingredients:
+      - betterend:twisted_moss
+    result:
+      id: minecraft:pink_dye
+      count: 1
+
+# ============================================================================
+# RECIPES THE MOD DEFINES AND CE CANNOT EXPRESS -- deliberately NOT written:
+#   ender_dust        ender_pearl_to_dust.json / ender_shard_to_dust.json are `bclib:smithing`
+#                     on a LeveledAnvil (anvilLevel 2). No CE behavior implements a leveled anvil
+#                     and the anvils themselves are in the SKIP set. ender_dust therefore ships as
+#                     an item with no obtaining route until that lands.
+#   eternal_crystal   eternal_crystal.json is `betterend:infusion`, an 8-catalyst pedestal ritual
+#                     (infusion_pedestal is a B8 id). No CE recipe type comes close.
+#   crystalline_sulphur -> minecraft:sulfur_spike (crystalline_sulphur_to_sulfur_spike.json): the
+#                     result item does not exist in this build, so the recipe is dropped.
+#   crystal_shards / glowing_bulb / lumecorn_rod are loot-only and their tables are above.
+#
+# IDS IN B5 NOT CONVERTED (1 of 42):
+#   vent_bubble_column -- VentBubbleColumnBlock (EndStoneBlocks.java:296-299) is a
+#                     replacePropertiesWithCopy(Blocks.BUBBLE_COLUMN) emitter registered with
+#                     defineBlockOnly + noLootTable: no item, no texture, no model and no
+#                     blockstate anywhere in the mod's assets, and no CE behavior produces a
+#                     bubble column. There is literally nothing to convert.
+#
+# DEVIATIONS RECORDED (all deliberate, none blocking):
+#   * OffsetType.XZ / XYZ -- the mod's per-plant random jitter (e.g. small_jellyshroom,
+#     EndMushroomBlocks.java:143) has no CE analogue; plants sit grid-aligned.
+#   * per-state luminance (large_amaranita top-only, glowing_pillar_seed age*3+3, filalux and
+#     bulb_vine bottom-only) collapses to one per-block value.
+#   * vine `shape`, stalactite `size`/`hanging` and seed growth targets are inert properties:
+#     worldgen writes them, nothing maintains them at runtime.
+#   * aurora_crystal ships untinted.
+#   * blue_vine_fur / amaranita_fur lose their 1/15 seed drop (see the FUR BLOCKS note).
+#   * sulphur_crystal loses its waterlogged state.
+
+
+
+

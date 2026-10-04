@@ -1,0 +1,1367 @@
+# BetterEnd -- batch B4 (flora-a): ground cross-plants, mosses and bushes
+# Generated from the mod's own blockstate/model json; every `models:` list is a verbatim
+# transcription of the mod's weighted variant list (AbstractBlockManager.java:988-1022 accepts
+# path/x/y/z/uvlock/weight on a block-state model entry, exactly as vanilla does).
+# One appearance = one visual state no matter how many weighted models it holds
+# (AbstractBlockManager.java:615-648), so the random variants are free.
+#
+# AUTO-STATE POOLS (revised after the cross-batch audit): B4 uses two cave_vines states for its
+# already-luminous twisted_umbrella_moss and umbrella_moss blocks. B5-flora-b claims 48/50
+# cave_vines (and 24/25 weeping_vines); the two cave_vines draws therefore fill that pool without
+# introducing a new non-luminous plant into a berries=true donor.
+# (VisualBlockStateAllocator.java:137-155 -> StateExhaustedException). B4's plants sit on the
+# tripwire pool instead, split so the halves cannot starve each other: AutoStateGroup.values()
+# (AutoStateGroup.java:38-39,46) puts LOWER_TRIPWIRE and HIGHER_TRIPWIRE before generic TRIPWIRE.
+# BetterEnd-local usage: cave_vines 50/50 (B5 48 + B4 2); lower_tripwire 42/63 (B1 1 + B2 20
+# + B4 21); higher_tripwire 32/63 (B4 26 + B5 6); generic tripwire 12/126 (B5).
+
+items:
+  betterend:aeridium:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.aeridium></white>'
+    texture: betterend:block/aeridium
+    behavior:
+      type: block_item
+      block: betterend:aeridium
+  betterend:amber_grass:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.amber_grass></white>'
+    texture: betterend:block/amber_grass
+    behavior:
+      type: block_item
+      block: betterend:amber_grass
+  betterend:blooming_cooksonia:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.blooming_cooksonia></white>'
+    texture: betterend:block/blooming_cooksonia
+    behavior:
+      type: block_item
+      block: betterend:blooming_cooksonia
+  betterend:bushy_grass:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.bushy_grass></white>'
+    texture: betterend:block/bushy_grass_2
+    behavior:
+      type: block_item
+      block: betterend:bushy_grass
+  betterend:cave_grass:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.cave_grass></white>'
+    texture: betterend:block/cave_grass_1
+    behavior:
+      type: block_item
+      block: betterend:cave_grass
+  betterend:chorus_grass:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.chorus_grass></white>'
+    texture: betterend:block/chorus_grass_01
+    behavior:
+      type: block_item
+      block: betterend:chorus_grass
+  betterend:clawfern:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.clawfern></white>'
+    texture: betterend:block/clawfern
+    behavior:
+      type: block_item
+      block: betterend:clawfern
+  betterend:creeping_moss:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.creeping_moss></white>'
+    texture: betterend:item/creeping_moss
+    behavior:
+      type: block_item
+      block: betterend:creeping_moss
+  betterend:crystal_grass:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.crystal_grass></white>'
+    texture: betterend:block/crystal_grass_5
+    behavior:
+      type: block_item
+      block: betterend:crystal_grass
+  betterend:flammalix:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.flammalix></white>'
+    model: betterend:block/flammalix_1
+    behavior:
+      type: block_item
+      block: betterend:flammalix
+  betterend:fracturn:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.fracturn></white>'
+    texture: betterend:block/fracturn
+    behavior:
+      type: block_item
+      block: betterend:fracturn
+  betterend:globulagus:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.globulagus></white>'
+    texture: betterend:block/globulagus
+    behavior:
+      type: block_item
+      block: betterend:globulagus
+  betterend:inflexia:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.inflexia></white>'
+    texture: betterend:block/inflexia
+    behavior:
+      type: block_item
+      block: betterend:inflexia
+  betterend:jungle_grass:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.jungle_grass></white>'
+    texture: betterend:block/jungle_grass
+    behavior:
+      type: block_item
+      block: betterend:jungle_grass
+  betterend:lamellarium:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.lamellarium></white>'
+    texture: betterend:block/lamellarium
+    behavior:
+      type: block_item
+      block: betterend:lamellarium
+  betterend:lutebus:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.lutebus></white>'
+    texture: betterend:block/lutebus
+    behavior:
+      type: block_item
+      block: betterend:lutebus
+  betterend:murkweed:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.murkweed></white>'
+    texture: betterend:item/murkweed
+    behavior:
+      type: block_item
+      block: betterend:murkweed
+  betterend:needlegrass:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.needlegrass></white>'
+    texture: betterend:block/needlegrass_01
+    behavior:
+      type: block_item
+      block: betterend:needlegrass
+  betterend:orango:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.orango></white>'
+    texture: betterend:block/orango
+    behavior:
+      type: block_item
+      block: betterend:orango
+  betterend:salteago:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.salteago></white>'
+    texture: betterend:block/salteago
+    behavior:
+      type: block_item
+      block: betterend:salteago
+  betterend:shadow_plant:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.shadow_plant></white>'
+    texture: betterend:block/shadow_plant
+    behavior:
+      type: block_item
+      block: betterend:shadow_plant
+  betterend:twisted_umbrella_moss:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.twisted_umbrella_moss></white>'
+    texture: betterend:item/twisted_umbrella_moss_small
+    behavior:
+      type: block_item
+      block: betterend:twisted_umbrella_moss
+  betterend:umbrella_moss:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.umbrella_moss></white>'
+    texture: betterend:item/umbrella_moss_small
+    behavior:
+      type: block_item
+      block: betterend:umbrella_moss
+  betterend:vaiolush_fern:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.vaiolush_fern></white>'
+    texture: betterend:block/vaiolush_fern
+    behavior:
+      type: block_item
+      block: betterend:vaiolush_fern
+  betterend:cave_bush:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.cave_bush></white>'
+    model: betterend:block/cave_bush_01
+    behavior:
+      type: block_item
+      block: betterend:cave_bush
+  betterend:tenanea_flowers:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.tenanea_flowers></white>'
+    texture: betterend:item/tenanea_flowers
+    behavior:
+      type: block_item
+      block: betterend:tenanea_flowers
+  betterend:umbrella_moss_tall:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.umbrella_moss_tall></white>'
+    texture: betterend:item/umbrella_moss_large
+    behavior:
+      type: block_item
+      block: betterend:umbrella_moss_tall
+  betterend:twisted_umbrella_moss_tall:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.twisted_umbrella_moss_tall></white>'
+    texture: betterend:item/twisted_umbrella_moss_large
+    behavior:
+      type: block_item
+      block: betterend:twisted_umbrella_moss_tall
+  betterend:lanceleaf:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.lanceleaf></white>'
+    model: betterend:block/lanceleaf_leaf_top
+    behavior:
+      type: block_item
+      block: betterend:lanceleaf
+
+# NO RECIPES: all of these are worldgen/bone-meal plants; the mod ships no recipe json
+# for any of them.
+blocks:
+  betterend:aeridium:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        replaceable: true
+        tags:
+          - minecraft:sword_efficient
+    behavior:
+      - type: liquid_flowable_block
+      - type: bush_block
+        bottom_blocks:
+          - betterend:pallidium_full
+          - betterend:pallidium_heavy
+          - betterend:pallidium_thin
+          - betterend:pallidium_tiny
+          - betterend:rutiscus
+          - betterend:sangnum
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: sugar_cane
+      models:
+        - path: betterend:block/aeridium_0
+        - path: betterend:block/aeridium_1
+  betterend:amber_grass:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        replaceable: true
+        tags:
+          - minecraft:sword_efficient
+    behavior:
+      - type: liquid_flowable_block
+      - type: bush_block
+        bottom_blocks:
+          - betterend:amber_moss
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: sugar_cane
+      models:
+        - path: betterend:block/amber_grass_0
+        - path: betterend:block/amber_grass_1
+        - path: betterend:block/amber_grass_2
+        - path: betterend:block/amber_grass_3
+  betterend:blooming_cooksonia:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        replaceable: true
+        tags:
+          - minecraft:sword_efficient
+    behavior:
+      - type: liquid_flowable_block
+      - type: bush_block
+        bottom_blocks:
+          - betterend:end_moss
+          - betterend:pallidium_full
+          - betterend:pallidium_heavy
+          - betterend:pallidium_thin
+          - betterend:pallidium_tiny
+          - betterend:sangnum
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: sugar_cane
+      models:
+        - path: betterend:block/blooming_cooksonia_0
+        - path: betterend:block/blooming_cooksonia_1
+        - path: betterend:block/blooming_cooksonia_2
+        - path: betterend:block/blooming_cooksonia_3
+  betterend:bushy_grass:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        replaceable: true
+        tags:
+          - minecraft:sword_efficient
+    behavior:
+      - type: liquid_flowable_block
+      - type: bush_block
+        bottom_blocks:
+          - betterend:pink_moss
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: sugar_cane
+      models:
+        - path: betterend:block/bushy_grass_0
+        - path: betterend:block/bushy_grass_1
+        - path: betterend:block/bushy_grass_2
+        - path: betterend:block/bushy_grass_3
+        - path: betterend:block/bushy_grass_4
+        - path: betterend:block/bushy_grass_5
+        - path: betterend:block/bushy_grass_6
+        - path: betterend:block/bushy_grass_7
+  betterend:cave_grass:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        replaceable: true
+        tags:
+          - minecraft:sword_efficient
+    behavior:
+      - type: liquid_flowable_block
+      - type: bush_block
+        bottom_blocks:
+          - betterend:cave_moss
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: sugar_cane
+      models:
+        - path: betterend:block/cave_grass_0
+        - path: betterend:block/cave_grass_1
+        - path: betterend:block/cave_grass_2
+        - path: betterend:block/cave_grass_3
+        - path: betterend:block/cave_grass_4
+        - path: betterend:block/cave_grass_5
+        - path: betterend:block/cave_grass_6
+        - path: betterend:block/cave_grass_7
+  betterend:chorus_grass:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        replaceable: true
+        tags:
+          - minecraft:sword_efficient
+    behavior:
+      - type: liquid_flowable_block
+      - type: bush_block
+        bottom_blocks:
+          - betterend:chorus_nylium
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: sugar_cane
+      models:
+        - path: betterend:block/chorus_grass_0
+        - path: betterend:block/chorus_grass_1
+        - path: betterend:block/chorus_grass_2
+        - path: betterend:block/chorus_grass_3
+        - path: betterend:block/chorus_grass_4
+        - path: betterend:block/chorus_grass_5
+        - path: betterend:block/chorus_grass_6
+        - path: betterend:block/chorus_grass_7
+  betterend:clawfern:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        replaceable: true
+        tags:
+          - minecraft:sword_efficient
+    behavior:
+      - type: liquid_flowable_block
+      - type: bush_block
+        bottom_blocks:
+          - betterend:mossy_dragon_bone
+          - betterend:mossy_obsidian
+          - betterend:sangnum
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: sugar_cane
+      models:
+        - path: betterend:block/clawfern_0
+        - path: betterend:block/clawfern_1
+  betterend:creeping_moss:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        luminance: 11
+        tags:
+          - minecraft:sword_efficient
+    behavior:
+      - type: liquid_flowable_block
+      - type: bush_block
+        bottom_blocks:
+          - betterend:end_moss
+          - betterend:end_mycelium
+          - betterend:pallidium_full
+          - betterend:pallidium_heavy
+          - betterend:pallidium_thin
+          - betterend:pallidium_tiny
+          - betterend:sangnum
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: sapling
+      models:
+        - path: betterend:block/creeping_moss
+        - path: betterend:block/creeping_moss
+          y: 90
+        - path: betterend:block/creeping_moss
+          y: 180
+        - path: betterend:block/creeping_moss
+          y: 270
+  betterend:crystal_grass:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        replaceable: true
+        tags:
+          - minecraft:sword_efficient
+    behavior:
+      - type: liquid_flowable_block
+      - type: bush_block
+        bottom_blocks:
+          - betterend:crystal_moss
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: sapling
+      models:
+        - path: betterend:block/crystal_grass_1
+        - path: betterend:block/crystal_grass_2
+        - path: betterend:block/crystal_grass_3
+          weight: 2
+        - path: betterend:block/crystal_grass_4
+          weight: 3
+        - path: betterend:block/crystal_grass_1
+          y: 90
+        - path: betterend:block/crystal_grass_2
+          y: 90
+        - path: betterend:block/crystal_grass_3
+          y: 90
+          weight: 2
+        - path: betterend:block/crystal_grass_4
+          y: 90
+          weight: 3
+        - path: betterend:block/crystal_grass_1
+          y: 180
+        - path: betterend:block/crystal_grass_2
+          y: 180
+        - path: betterend:block/crystal_grass_3
+          y: 180
+          weight: 2
+        - path: betterend:block/crystal_grass_4
+          y: 180
+          weight: 3
+        - path: betterend:block/crystal_grass_1
+          y: 270
+        - path: betterend:block/crystal_grass_2
+          y: 270
+        - path: betterend:block/crystal_grass_3
+          y: 270
+          weight: 2
+        - path: betterend:block/crystal_grass_4
+          y: 270
+          weight: 3
+  betterend:flammalix:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        luminance: 12
+        tags:
+          - minecraft:sword_efficient
+    behavior:
+      - type: liquid_flowable_block
+      - type: bush_block
+        bottom_blocks:
+          - betterend:pallidium_full
+          - betterend:pallidium_heavy
+          - betterend:pallidium_thin
+          - betterend:pallidium_tiny
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: higher_tripwire
+      models:
+        - path: betterend:block/flammalix_1
+        - path: betterend:block/flammalix_1
+          y: 90
+        - path: betterend:block/flammalix_1
+          y: 180
+        - path: betterend:block/flammalix_1
+          y: 270
+        - path: betterend:block/flammalix_2
+        - path: betterend:block/flammalix_2
+          y: 90
+        - path: betterend:block/flammalix_2
+          y: 180
+        - path: betterend:block/flammalix_2
+          y: 270
+        - path: betterend:block/flammalix_3
+        - path: betterend:block/flammalix_3
+          y: 90
+        - path: betterend:block/flammalix_3
+          y: 180
+        - path: betterend:block/flammalix_3
+          y: 270
+        - path: betterend:block/flammalix_4
+        - path: betterend:block/flammalix_4
+          y: 90
+        - path: betterend:block/flammalix_4
+          y: 180
+        - path: betterend:block/flammalix_4
+          y: 270
+  betterend:fracturn:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        replaceable: true
+        tags:
+          - minecraft:sword_efficient
+    behavior:
+      - type: liquid_flowable_block
+      - type: bush_block
+        bottom_blocks:
+          - betterend:end_moss
+          - betterend:pallidium_full
+          - betterend:pallidium_heavy
+          - betterend:pallidium_thin
+          - betterend:pallidium_tiny
+          - betterend:sangnum
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: higher_tripwire
+      models:
+        - path: betterend:block/fracturn_0
+        - path: betterend:block/fracturn_1
+        - path: betterend:block/fracturn_2
+        - path: betterend:block/fracturn_3
+  betterend:globulagus:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        replaceable: true
+        tags:
+          - minecraft:sword_efficient
+    behavior:
+      - type: liquid_flowable_block
+      - type: bush_block
+        bottom_blocks:
+          - betterend:mossy_dragon_bone
+          - betterend:mossy_obsidian
+          - betterend:sangnum
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: higher_tripwire
+      models:
+        - path: betterend:block/globulagus_0
+        - path: betterend:block/globulagus_1
+        - path: betterend:block/globulagus_2
+        - path: betterend:block/globulagus_3
+  betterend:inflexia:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        replaceable: true
+        tags:
+          - minecraft:sword_efficient
+    behavior:
+      - type: liquid_flowable_block
+      - type: bush_block
+        bottom_blocks:
+          - betterend:pallidium_full
+          - betterend:pallidium_heavy
+          - betterend:pallidium_thin
+          - betterend:pallidium_tiny
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: lower_tripwire
+      model: betterend:block/inflexia
+  betterend:jungle_grass:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        replaceable: true
+        tags:
+          - minecraft:sword_efficient
+    behavior:
+      - type: liquid_flowable_block
+      - type: bush_block
+        bottom_blocks:
+          - betterend:amber_moss
+          - betterend:cave_moss
+          - betterend:chorus_nylium
+          - betterend:crystal_moss
+          - betterend:end_moss
+          - betterend:end_mycelium
+          - betterend:jungle_moss
+          - betterend:pink_moss
+          - betterend:rutiscus
+          - betterend:sangnum
+          - betterend:shadow_grass
+          - betterend:pallidium_full
+          - betterend:pallidium_heavy
+          - betterend:pallidium_thin
+          - betterend:pallidium_tiny
+        bottom_block_tags:
+          - minecraft:dirt
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: lower_tripwire
+      models:
+        - path: betterend:block/jungle_grass_0
+        - path: betterend:block/jungle_grass_1
+        - path: betterend:block/jungle_grass_2
+        - path: betterend:block/jungle_grass_3
+        - path: betterend:block/jungle_grass_4
+        - path: betterend:block/jungle_grass_5
+        - path: betterend:block/jungle_grass_6
+        - path: betterend:block/jungle_grass_7
+        - path: betterend:block/jungle_grass_8
+        - path: betterend:block/jungle_grass_9
+        - path: betterend:block/jungle_grass_10
+        - path: betterend:block/jungle_grass_11
+  betterend:lamellarium:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        replaceable: true
+        tags:
+          - minecraft:sword_efficient
+    behavior:
+      - type: liquid_flowable_block
+      - type: bush_block
+        bottom_blocks:
+          - betterend:pallidium_full
+          - betterend:pallidium_heavy
+          - betterend:pallidium_thin
+          - betterend:pallidium_tiny
+          - betterend:rutiscus
+          - betterend:sangnum
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: lower_tripwire
+      models:
+        - path: betterend:block/lamellarium_0
+        - path: betterend:block/lamellarium_1
+        - path: betterend:block/lamellarium_2
+        - path: betterend:block/lamellarium_3
+  betterend:lutebus:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        replaceable: true
+        tags:
+          - minecraft:sword_efficient
+    behavior:
+      - type: liquid_flowable_block
+      - type: bush_block
+        bottom_blocks:
+          - betterend:pallidium_full
+          - betterend:pallidium_heavy
+          - betterend:pallidium_thin
+          - betterend:pallidium_tiny
+          - betterend:rutiscus
+          - betterend:sangnum
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: lower_tripwire
+      models:
+        - path: betterend:block/lutebus_0
+        - path: betterend:block/lutebus_1
+  betterend:murkweed:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        tags:
+          - minecraft:sword_efficient
+    behavior:
+      - type: liquid_flowable_block
+      - type: bush_block
+        bottom_blocks:
+          - betterend:shadow_grass
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: lower_tripwire
+      models:
+        - path: betterend:block/murkweed_01
+        - path: betterend:block/murkweed_02
+        - path: betterend:block/murkweed_03
+        - path: betterend:block/murkweed_01
+          y: 90
+        - path: betterend:block/murkweed_02
+          y: 90
+        - path: betterend:block/murkweed_03
+          y: 90
+        - path: betterend:block/murkweed_01
+          y: 180
+        - path: betterend:block/murkweed_02
+          y: 180
+        - path: betterend:block/murkweed_03
+          y: 180
+        - path: betterend:block/murkweed_01
+          y: 270
+        - path: betterend:block/murkweed_02
+          y: 270
+        - path: betterend:block/murkweed_03
+          y: 270
+  betterend:needlegrass:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        tags:
+          - minecraft:sword_efficient
+    behavior:
+      - type: liquid_flowable_block
+      - type: bush_block
+        bottom_blocks:
+          - betterend:shadow_grass
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: lower_tripwire
+      models:
+        - path: betterend:block/needlegrass_0
+        - path: betterend:block/needlegrass_1
+        - path: betterend:block/needlegrass_2
+        - path: betterend:block/needlegrass_3
+        - path: betterend:block/needlegrass_4
+        - path: betterend:block/needlegrass_5
+        - path: betterend:block/needlegrass_6
+        - path: betterend:block/needlegrass_7
+  betterend:orango:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        replaceable: true
+        tags:
+          - minecraft:sword_efficient
+    behavior:
+      - type: liquid_flowable_block
+      - type: bush_block
+        bottom_blocks:
+          - betterend:pallidium_full
+          - betterend:pallidium_heavy
+          - betterend:pallidium_thin
+          - betterend:pallidium_tiny
+          - betterend:rutiscus
+          - betterend:sangnum
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: lower_tripwire
+      models:
+        - path: betterend:block/orango_0
+        - path: betterend:block/orango_1
+        - path: betterend:block/orango_2
+        - path: betterend:block/orango_3
+  betterend:salteago:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        replaceable: true
+        tags:
+          - minecraft:sword_efficient
+    behavior:
+      - type: liquid_flowable_block
+      - type: bush_block
+        bottom_blocks:
+          - betterend:end_moss
+          - betterend:pallidium_full
+          - betterend:pallidium_heavy
+          - betterend:pallidium_thin
+          - betterend:pallidium_tiny
+          - betterend:sangnum
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: lower_tripwire
+      models:
+        - path: betterend:block/salteago_0
+        - path: betterend:block/salteago_1
+        - path: betterend:block/salteago_2
+        - path: betterend:block/salteago_3
+  betterend:shadow_plant:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        replaceable: true
+        tags:
+          - minecraft:sword_efficient
+    behavior:
+      - type: liquid_flowable_block
+      - type: bush_block
+        bottom_blocks:
+          - betterend:shadow_grass
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: lower_tripwire
+      models:
+        - path: betterend:block/shadow_plant_0
+        - path: betterend:block/shadow_plant_1
+        - path: betterend:block/shadow_plant_2
+        - path: betterend:block/shadow_plant_3
+  betterend:twisted_umbrella_moss:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        luminance: 12
+        tags:
+          - minecraft:sword_efficient
+    behavior:
+      - type: liquid_flowable_block
+      - type: bush_block
+        bottom_blocks:
+          - betterend:end_moss
+          - betterend:end_mycelium
+          - betterend:jungle_moss
+          - betterend:pallidium_full
+          - betterend:pallidium_heavy
+          - betterend:pallidium_thin
+          - betterend:pallidium_tiny
+          - betterend:sangnum
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: cave_vines
+      models:
+        - path: betterend:block/twisted_umbrella_moss_t0
+        - path: betterend:block/twisted_umbrella_moss_t0
+          y: 90
+        - path: betterend:block/twisted_umbrella_moss_t0
+          y: 180
+        - path: betterend:block/twisted_umbrella_moss_t0
+          y: 270
+        - path: betterend:block/twisted_umbrella_moss_t1
+        - path: betterend:block/twisted_umbrella_moss_t1
+          y: 90
+        - path: betterend:block/twisted_umbrella_moss_t1
+          y: 180
+        - path: betterend:block/twisted_umbrella_moss_t1
+          y: 270
+        - path: betterend:block/twisted_umbrella_moss_t2
+        - path: betterend:block/twisted_umbrella_moss_t2
+          y: 90
+        - path: betterend:block/twisted_umbrella_moss_t2
+          y: 180
+        - path: betterend:block/twisted_umbrella_moss_t2
+          y: 270
+        - path: betterend:block/twisted_umbrella_moss_t3
+        - path: betterend:block/twisted_umbrella_moss_t3
+          y: 90
+        - path: betterend:block/twisted_umbrella_moss_t3
+          y: 180
+        - path: betterend:block/twisted_umbrella_moss_t3
+          y: 270
+  betterend:umbrella_moss:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        luminance: 11
+        tags:
+          - minecraft:sword_efficient
+    behavior:
+      - type: liquid_flowable_block
+      - type: bush_block
+        bottom_blocks:
+          - betterend:amber_moss
+          - betterend:cave_moss
+          - betterend:chorus_nylium
+          - betterend:crystal_moss
+          - betterend:end_moss
+          - betterend:end_mycelium
+          - betterend:jungle_moss
+          - betterend:pink_moss
+          - betterend:rutiscus
+          - betterend:sangnum
+          - betterend:shadow_grass
+          - betterend:pallidium_full
+          - betterend:pallidium_heavy
+          - betterend:pallidium_thin
+          - betterend:pallidium_tiny
+        bottom_block_tags:
+          - minecraft:dirt
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: cave_vines
+      models:
+        - path: betterend:block/umbrella_moss_small
+        - path: betterend:block/umbrella_moss_small
+          y: 90
+        - path: betterend:block/umbrella_moss_small
+          y: 180
+        - path: betterend:block/umbrella_moss_small
+          y: 270
+        - path: betterend:block/umbrella_moss_small_2
+        - path: betterend:block/umbrella_moss_small_2
+          y: 90
+        - path: betterend:block/umbrella_moss_small_2
+          y: 180
+        - path: betterend:block/umbrella_moss_small_2
+          y: 270
+        - path: betterend:block/umbrella_moss_small_3
+        - path: betterend:block/umbrella_moss_small_3
+          y: 90
+        - path: betterend:block/umbrella_moss_small_3
+          y: 180
+        - path: betterend:block/umbrella_moss_small_3
+          y: 270
+        - path: betterend:block/umbrella_moss_small_4
+        - path: betterend:block/umbrella_moss_small_4
+          y: 90
+        - path: betterend:block/umbrella_moss_small_4
+          y: 180
+        - path: betterend:block/umbrella_moss_small_4
+          y: 270
+  betterend:vaiolush_fern:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        replaceable: true
+        tags:
+          - minecraft:sword_efficient
+    behavior:
+      - type: liquid_flowable_block
+      - type: bush_block
+        bottom_blocks:
+          - betterend:end_moss
+          - betterend:pallidium_full
+          - betterend:pallidium_heavy
+          - betterend:pallidium_thin
+          - betterend:pallidium_tiny
+          - betterend:sangnum
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: lower_tripwire
+      models:
+        - path: betterend:block/vaiolush_fern_0
+        - path: betterend:block/vaiolush_fern_1
+        - path: betterend:block/vaiolush_fern_2
+        - path: betterend:block/vaiolush_fern_3
+  # EndPlantBlocks.java:462-467 -- a plain Block with LeavesBlockTrait, not a BasePlantBlock:
+  # walkable, and with no soil requirement at all.
+  betterend:cave_bush:
+    settings:
+      template:
+        - default:settings/leaves
+      merges:
+        map_color: plant
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      models:
+        - path: betterend:block/cave_bush_01
+          weight: 4
+        - path: betterend:block/cave_bush_02
+        - path: betterend:block/cave_bush_03
+          weight: 2
+        - path: betterend:block/cave_bush_04
+          weight: 2
+  # EndWoodBlocks.java:202-211 -- VineBlockTrait.withColor(PLANT, 15, ...), hangs under tenanea
+  # leaves. The mod tints the petals per-position from a palette (ClientBlockTraits.TINT);
+  # CraftEngine has no per-block tint source for a plant model, so the flowers ship in the
+  # texture's own colour.
+  betterend:tenanea_flowers:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        luminance: 15
+        tags:
+          - minecraft:sword_efficient
+          - minecraft:mineable/hoe
+          - minecraft:climbable
+    behavior:
+      - type: hanging_block
+        stackable: true
+        above_blocks:
+          - betterend:tenanea_leaves
+          - betterend:tenanea_outer_leaves
+    loot:
+      template: default:loot_table/self
+    state:
+      properties:
+        shape:
+          type: string
+          values: [bottom, middle, top]
+          default: middle
+      appearances:
+        middle:
+          auto_state: lower_tripwire
+          model: betterend:block/tenanea_flowers_middle
+        bottom:
+          auto_state: lower_tripwire
+          model: betterend:block/tenanea_flowers_bottom
+      variants:
+        shape=top:
+          appearance: middle
+        shape=middle:
+          appearance: middle
+        shape=bottom:
+          appearance: bottom
+  # BaseDoublePlantBlock. The mod's `rotation` 0-3 property is folded into the weighted
+  # model list as y rotations, which costs no extra visual state -- only `half` stays a
+  # real property.
+  betterend:umbrella_moss_tall:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        luminance: 12
+        tags:
+          - minecraft:sword_efficient
+    behavior:
+      - type: liquid_flowable_block
+      - type: double_high_block
+      - type: bush_block
+        bottom_blocks:
+          - betterend:end_moss
+          - betterend:end_mycelium
+          - betterend:jungle_moss
+          - betterend:pallidium_full
+          - betterend:pallidium_heavy
+          - betterend:pallidium_thin
+          - betterend:pallidium_tiny
+          - betterend:sangnum
+    loot:
+      template: default:loot_table/self
+    state:
+      properties:
+        half:
+          type: double_block_half
+          default: lower
+      appearances:
+        lower:
+          auto_state: lower_tripwire
+          models:
+            - path: betterend:block/umbrella_moss_bottom
+            - path: betterend:block/umbrella_moss_bottom
+              y: 90
+            - path: betterend:block/umbrella_moss_bottom
+              y: 180
+            - path: betterend:block/umbrella_moss_bottom
+              y: 270
+        upper:
+          auto_state: lower_tripwire
+          models:
+            - path: betterend:block/umbrella_moss_top
+            - path: betterend:block/umbrella_moss_top_2
+            - path: betterend:block/umbrella_moss_top_3
+            - path: betterend:block/umbrella_moss_top
+              y: 90
+            - path: betterend:block/umbrella_moss_top_2
+              y: 90
+            - path: betterend:block/umbrella_moss_top_3
+              y: 90
+            - path: betterend:block/umbrella_moss_top
+              y: 180
+            - path: betterend:block/umbrella_moss_top_2
+              y: 180
+            - path: betterend:block/umbrella_moss_top_3
+              y: 180
+            - path: betterend:block/umbrella_moss_top
+              y: 270
+            - path: betterend:block/umbrella_moss_top_2
+              y: 270
+            - path: betterend:block/umbrella_moss_top_3
+              y: 270
+      variants:
+        half=lower:
+          appearance: lower
+        half=upper:
+          appearance: upper
+  # BaseDoublePlantBlock. The mod's `rotation` 0-3 property is folded into the weighted
+  # model list as y rotations, which costs no extra visual state -- only `half` stays a
+  # real property.
+  betterend:twisted_umbrella_moss_tall:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        luminance: 12
+        tags:
+          - minecraft:sword_efficient
+    behavior:
+      - type: liquid_flowable_block
+      - type: double_high_block
+      - type: bush_block
+        bottom_blocks:
+          - betterend:end_moss
+          - betterend:end_mycelium
+          - betterend:jungle_moss
+          - betterend:pallidium_full
+          - betterend:pallidium_heavy
+          - betterend:pallidium_thin
+          - betterend:pallidium_tiny
+          - betterend:sangnum
+    loot:
+      template: default:loot_table/self
+    state:
+      properties:
+        half:
+          type: double_block_half
+          default: lower
+      appearances:
+        lower:
+          auto_state: lower_tripwire
+          models:
+            - path: betterend:block/twisted_umbrella_moss_bottom
+            - path: betterend:block/twisted_umbrella_moss_bottom
+              y: 90
+            - path: betterend:block/twisted_umbrella_moss_bottom
+              y: 180
+            - path: betterend:block/twisted_umbrella_moss_bottom
+              y: 270
+        upper:
+          auto_state: lower_tripwire
+          models:
+            - path: betterend:block/twisted_umbrella_moss_top
+            - path: betterend:block/twisted_umbrella_moss_top_2
+            - path: betterend:block/twisted_umbrella_moss_top_3
+            - path: betterend:block/twisted_umbrella_moss_top
+              y: 90
+            - path: betterend:block/twisted_umbrella_moss_top_2
+              y: 90
+            - path: betterend:block/twisted_umbrella_moss_top_3
+              y: 90
+            - path: betterend:block/twisted_umbrella_moss_top
+              y: 180
+            - path: betterend:block/twisted_umbrella_moss_top_2
+              y: 180
+            - path: betterend:block/twisted_umbrella_moss_top_3
+              y: 180
+            - path: betterend:block/twisted_umbrella_moss_top
+              y: 270
+            - path: betterend:block/twisted_umbrella_moss_top_2
+              y: 270
+            - path: betterend:block/twisted_umbrella_moss_top_3
+              y: 270
+      variants:
+        half=lower:
+          appearance: lower
+        half=upper:
+          appearance: upper
+  # LanceleafBlock -- 5 stacked segments grown from betterend:lanceleaf_seed. The mod's
+  # `rotation` 0-3 is dropped (the segments have to stay aligned with each other), and there is
+  # no CraftEngine behavior that grows a 5-segment column, so the segments are decorative:
+  # the seed below grows but does not build the stack.
+  betterend:lanceleaf:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        tags:
+          - minecraft:sword_efficient
+    behavior:
+      - type: liquid_flowable_block
+      - type: bush_block
+        bottom_blocks:
+          - betterend:amber_moss
+    # LanceleafBlock.buildLoot drops seeds, never itself. DEVIATION: lanceleaf_seed was unshipped
+    # with the deferred growth blocks, so the plant self-drops rather than dropping nothing.
+    loot:
+      template: default:loot_table/self
+    state:
+      properties:
+        shape:
+          type: string
+          values: [bottom, pre_bottom, middle, pre_top, top]
+          default: bottom
+      appearances:
+        bottom:
+          auto_state: lower_tripwire
+          model: betterend:block/lanceleaf_leaf_bottom
+        pre_bottom:
+          auto_state: lower_tripwire
+          model: betterend:block/lanceleaf_leaf_pre_bottom
+        middle:
+          auto_state: lower_tripwire
+          model: betterend:block/lanceleaf_leaf_middle
+        pre_top:
+          auto_state: lower_tripwire
+          model: betterend:block/lanceleaf_leaf_pre_top
+        top:
+          auto_state: lower_tripwire
+          model: betterend:block/lanceleaf_leaf_top
+      variants:
+        shape=bottom:
+          appearance: bottom
+        shape=pre_bottom:
+          appearance: pre_bottom
+        shape=middle:
+          appearance: middle
+        shape=pre_top:
+          appearance: pre_top
+        shape=top:
+          appearance: top
+
+# ---------------------------------------------------------------------------
+# NOT PORTED from B4 (recorded here by the cross-batch pass -- they were dropped
+# silently before):
+#   * neon_cactus         - NeonCactusPlantBlock is 54 blockstate variants (shape x facing x age).
+#                           betterend:neon_cactus_block ships in B8 as a plain pillar; its 2x2
+#                           crafting recipe was removed there because this ingredient does not exist.
+#   * crystal_moss_cover  - MultifaceSpreadeableBlock, 6-face multiface. No multiface behavior in
+#                           BukkitBlockBehaviors, and its blockstate json is 12 multipart cases.
+#   * pearlberry_seed     - commented out in the mod itself, EndCropBlocks.java:159. Lang key only.
+#   * amber_grass_path    - no java, no texture, no model, no blockstate. Dead lang key.
+#   * nightshade_moss     - BYG-integration only (integration/byg/BYGBlocks.java); not registered
+#                           in a vanilla install.

@@ -1,0 +1,24 @@
+# INTEGRATOR: append this line, and only this line, to the root `list:` of
+# configuration/categories.yml in the live pack, under betterend:betterend:
+#
+#   - '#betterend:furnishings'
+#
+# Do NOT redeclare betterend:betterend / stones / woods / misc here.
+# ItemBrowserManagerImpl.CategoryParser is an IdSectionConfigParser and does a plain
+# byId.put(id, category) (:152): a category id defined in two files is SILENTLY overwritten by
+# whichever file loads last, and the loser's members vanish from the browser with no error.
+#
+# `list: []` is deliberate. Membership arrives from each item's own `category:` key via
+# AbstractItemManager.java:429-432 addExternalCategoryMember, exactly as CE's own tree.yml:33-37
+# does and as the live pack's three leaf categories already do.
+
+categories:
+  betterend:furnishings:
+    name: '<!i><white><l10n:category.betterend.furnishings></white>'
+    hidden: true
+    icon: betterend:dragon_tree_chest
+    list: []
+
+translations#b8_categories:
+  en_us:
+    category.betterend.furnishings: BetterEnd Furnishings

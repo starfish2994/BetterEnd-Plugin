@@ -1,0 +1,655 @@
+# B7-metals -- the 12 metal/resource BLOCKS. Items live in configuration/items/B7-metals.yml.
+#
+# Mod truth:
+#   EndMetalBlocks.java:69-146 (AETERNIUM_BLOCK / CHARCOAL_BLOCK / ENDER_BLOCK / AMBER_BLOCK and the
+#   TERMINITE / THALLASIUM MetalMaterials) and MetalMaterial.java:181-196 addCommonBlockDefinitions,
+#   which gives every block of a metal family: METAL_BLOCK, instrument IRON_XYLOPHONE, strength(5,6),
+#   requiresCorrectToolForDrops, SoundType.IRON, then the family's own mapColor/strength on top.
+#     TERMINITE  makeOreless(hardness 7, resistance 9, mapColor WARPED_WART_BLOCK, NEEDS_IRON_TOOL)
+#     THALLASIUM makeNormal(mapColor COLOR_BLUE, NEEDS_STONE_TOOL) -> keeps strength(5,6)
+#   required_break_power follows the live pack's scale (basic_blocks.yml: obsidian = 3, i.e. diamond),
+#   so NEEDS_STONE_TOOL=1, NEEDS_IRON_TOOL=2, NEEDS_DIAMOND_TOOL=3.
+#
+# State budget: 8 cubes x1 = 8 SOLID candidates. The 2 chains (3 each) and 2 bars (2 each) no
+# longer touch a pool at all -- they pin explicit copper states, see below.
+#
+# SHAPE DONORS (2026 remap). Collision is NOT overridable in CraftEngine: BukkitBlockShape.java:20-26
+# delegates getShape/getCollisionShape straight to the donor visual state bound at
+# BukkitBlockManager.java:312, and none of the 37 keys in BlockSettingsModifiers.java is a shape or
+# collision override. So a bar or a chain on `auto_state: solid` (note_block / mushroom blocks) was a
+# FULL SOLID CUBE you could not walk past. Both now pin non-waxed copper states, which
+# internal/mappings.yml:4171+,4302+ collapses onto their waxed twins, so the states are free and --
+# being in no AutoStateGroup (AutoStateGroup.java:12-58) -- unreachable by any other pack's
+# auto-allocation. Verified unclaimed across all 8 packs on the server.
+#   *_chain  -> copper_chain[axis=..]   : vanilla chain, a 3x3 rod on the axis. Exact match.
+#   *_bars   -> copper_bars[..]         : vanilla pane, 2px thick. The chosen CONNECTION pattern is
+#                                         what gives the collision, so the north/south pair backs the
+#                                         z run and the east/west pair backs the x run -- the hitbox
+#                                         now follows the rendered run.
+#
+# STILL UNPORTABLE, recorded rather than faked:
+#   terminite_bars / thallasium_bars still do not CONNECT to neighbours. CE has no pane/connection
+#   behavior (BukkitBlockBehaviors.java lists fence_block but nothing 4-way-connecting for a thin
+#   block), and one appearance takes exactly one model, not a multipart list -- the mod's blockstate
+#   json is a 16-way multipart. They ship as a straight run on an `axis` property. Making them
+#   connect would need one custom property plus one stolen state per connection combination.
+#   Waterlogging is still not offered: the copper donors all carry `waterlogged`, but exposing it
+#   would double the state cost and CE would need `settings.fluid_state: water` per variant.
+#   ender_block's client-side tint (EnderBlock.java:20 getColor -> 0xFF005548) has no CE equivalent
+#   for a solid block; the texture ships untinted.
+
+items:
+  betterend:aeternium_block:
+    category: betterend:metals
+    data:
+      item_name: '<!i><white><lang:item.betterend.aeternium_block></white>'
+    model: betterend:block/aeternium_block
+    behavior:
+      type: block_item
+      block: betterend:aeternium_block
+  betterend:amber_block:
+    category: betterend:metals
+    data:
+      item_name: '<!i><white><lang:item.betterend.amber_block></white>'
+    model: betterend:block/amber_block
+    behavior:
+      type: block_item
+      block: betterend:amber_block
+  # CharcoalBlock.java:12-14 implements Fuel, getFuelTime() == 16000 ticks.
+  betterend:charcoal_block:
+    category: betterend:metals
+    settings:
+      fuel_time: 16000
+    data:
+      item_name: '<!i><white><lang:item.betterend.charcoal_block></white>'
+    model: betterend:block/charcoal_block
+    behavior:
+      type: block_item
+      block: betterend:charcoal_block
+  betterend:ender_block:
+    category: betterend:metals
+    data:
+      item_name: '<!i><white><lang:item.betterend.ender_block></white>'
+    model: betterend:block/ender_block
+    behavior:
+      type: block_item
+      block: betterend:ender_block
+  betterend:terminite_block:
+    category: betterend:metals
+    data:
+      item_name: '<!i><white><lang:item.betterend.terminite_block></white>'
+    model: betterend:block/terminite_block
+    behavior:
+      type: block_item
+      block: betterend:terminite_block
+  betterend:terminite_tile:
+    category: betterend:metals
+    data:
+      item_name: '<!i><white><lang:item.betterend.terminite_tile></white>'
+    model: betterend:block/terminite_tile
+    behavior:
+      type: block_item
+      block: betterend:terminite_tile
+  betterend:terminite_chain:
+    category: betterend:metals
+    data:
+      item_name: '<!i><white><lang:item.betterend.terminite_chain></white>'
+    texture: betterend:item/terminite_chain
+    behavior:
+      type: block_item
+      block: betterend:terminite_chain
+  # The mod's own item model is flat and reuses the BLOCK texture (models/item/terminite_bars.json).
+  betterend:terminite_bars:
+    category: betterend:metals
+    data:
+      item_name: '<!i><white><lang:item.betterend.terminite_bars></white>'
+    texture: betterend:block/terminite_bars
+    behavior:
+      type: block_item
+      block: betterend:terminite_bars
+  betterend:thallasium_block:
+    category: betterend:metals
+    data:
+      item_name: '<!i><white><lang:item.betterend.thallasium_block></white>'
+    model: betterend:block/thallasium_block
+    behavior:
+      type: block_item
+      block: betterend:thallasium_block
+  betterend:thallasium_tile:
+    category: betterend:metals
+    data:
+      item_name: '<!i><white><lang:item.betterend.thallasium_tile></white>'
+    model: betterend:block/thallasium_tile
+    behavior:
+      type: block_item
+      block: betterend:thallasium_tile
+  betterend:thallasium_chain:
+    category: betterend:metals
+    data:
+      item_name: '<!i><white><lang:item.betterend.thallasium_chain></white>'
+    texture: betterend:item/thallasium_chain
+    behavior:
+      type: block_item
+      block: betterend:thallasium_chain
+  betterend:thallasium_bars:
+    category: betterend:metals
+    data:
+      item_name: '<!i><white><lang:item.betterend.thallasium_bars></white>'
+    texture: betterend:block/thallasium_bars
+    behavior:
+      type: block_item
+      block: betterend:thallasium_bars
+
+blocks:
+  # EndMetalBlocks.java:112-124: strength(65, 1200), NEEDS_DIAMOND_TOOL, SoundType.NETHERITE_BLOCK,
+  # MapColor.COLOR_GRAY. The mod also makes its BlockItem fire-resistant; that is the netherite
+  # damage_resistant component and is recorded as debt rather than guessed at.
+  betterend:aeternium_block:
+    settings:
+      template:
+        - default:sound/block_template
+        - default:settings/solid_1x1x1
+      arguments:
+        block_type: netherite_block
+      merges:
+        hardness: 65.0
+        resistance: 1200.0
+        instrument: iron_xylophone
+        map_color: color_gray
+        correct_tools: ['#minecraft:pickaxes']
+        required_break_power: 3
+        tags: [minecraft:mineable/pickaxe]
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      texture: betterend:block/aeternium_block
+
+  # EndMetalBlocks.java:139-145: STONE_BLOCK trait + MapColor.COLOR_YELLOW, no explicit strength.
+  # BlockTraits.STONE_BLOCK lives in wover, which is not in Reference/, so hardness/resistance use
+  # vanilla stone's 1.5/6.0. UNVERIFIED -- re-check when the wover jar is available.
+  betterend:amber_block:
+    settings:
+      template:
+        - default:sound/stone
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 1.5
+        resistance: 6.0
+        instrument: basedrum
+        map_color: color_yellow
+        correct_tools: ['#minecraft:pickaxes']
+        tags: [minecraft:mineable/pickaxe]
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      texture: betterend:block/amber_block
+
+  # EndMetalBlocks.java:126-130: STONE_BLOCK trait only. Same wover caveat as amber_block.
+  betterend:charcoal_block:
+    settings:
+      template:
+        - default:sound/stone
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 1.5
+        resistance: 6.0
+        instrument: basedrum
+        map_color: color_black
+        correct_tools: ['#minecraft:pickaxes']
+        tags: [minecraft:mineable/pickaxe]
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      texture: betterend:block/charcoal_block
+
+  # EndMetalBlocks.java:132-137: strength(5, 6), SoundType.STONE, MapColor.WARPED_WART_BLOCK,
+  # requiresCorrectToolForDrops with no tier tag -> any pickaxe (required_break_power stays 0).
+  betterend:ender_block:
+    settings:
+      template:
+        - default:sound/stone
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 5.0
+        resistance: 6.0
+        instrument: basedrum
+        map_color: warped_wart_block
+        correct_tools: ['#minecraft:pickaxes']
+        tags: [minecraft:mineable/pickaxe]
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      texture: betterend:block/ender_block
+
+  betterend:terminite_block:
+    settings:
+      template:
+        - default:sound/metal
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 7.0
+        resistance: 9.0
+        instrument: iron_xylophone
+        map_color: warped_wart_block
+        correct_tools: ['#minecraft:pickaxes']
+        required_break_power: 2
+        tags: [minecraft:mineable/pickaxe]
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      texture: betterend:block/terminite_block
+
+  betterend:terminite_tile:
+    settings:
+      template:
+        - default:sound/metal
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 7.0
+        resistance: 9.0
+        instrument: iron_xylophone
+        map_color: warped_wart_block
+        correct_tools: ['#minecraft:pickaxes']
+        required_break_power: 2
+        tags: [minecraft:mineable/pickaxe]
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      texture: betterend:block/terminite_tile
+
+  # blockstates/terminite_chain.json: axis=x -> x:90 y:90, axis=y -> none, axis=z -> x:90.
+  # default:block_state/pillar is a cube_column template and cannot express those rotations,
+  # so the three variants are written out. x/y/uvlock are read at AbstractBlockManager.java:990-1021.
+  betterend:terminite_chain:
+    settings:
+      template:
+        - default:sound/metal
+        - default:settings/transparent_1x1x1
+      merges:
+        hardness: 7.0
+        resistance: 9.0
+        instrument: iron_xylophone
+        map_color: warped_wart_block
+        correct_tools: ['#minecraft:pickaxes']
+        required_break_power: 2
+        push_reaction: destroy
+        tags: [minecraft:mineable/pickaxe]
+    loot:
+      template: default:loot_table/self
+    state:
+      properties:
+        axis:
+          type: axis
+          default: y
+      appearances:
+        axisX:
+          state: copper_chain[axis=x,waterlogged=false]
+          model:
+            path: betterend:block/terminite_chain
+            x: 90
+            y: 90
+        axisY:
+          state: copper_chain[axis=y,waterlogged=false]
+          model: betterend:block/terminite_chain
+        axisZ:
+          state: copper_chain[axis=z,waterlogged=false]
+          model:
+            path: betterend:block/terminite_chain
+            x: 90
+      variants:
+        axis=x:
+          appearance: axisX
+        axis=y:
+          appearance: axisY
+        axis=z:
+          appearance: axisZ
+
+  betterend:terminite_bars:
+    settings:
+      template:
+        - default:sound/metal
+        - default:settings/transparent_1x1x1
+      merges:
+        hardness: 7.0
+        resistance: 9.0
+        instrument: iron_xylophone
+        map_color: warped_wart_block
+        correct_tools: ['#minecraft:pickaxes']
+        required_break_power: 2
+        tags: [minecraft:mineable/pickaxe]
+    loot:
+      template: default:loot_table/self
+    state:
+      properties:
+        axis:
+          type: axis
+          default: z
+      appearances:
+        runZ:
+          state: copper_bars[east=false,north=true,south=true,west=false,waterlogged=false]
+          model: betterend:block/terminite_bars_run
+        runX:
+          state: copper_bars[east=true,north=false,south=false,west=true,waterlogged=false]
+          model:
+            path: betterend:block/terminite_bars_run
+            y: 90
+      variants:
+        # No vertical bars exist. axis=y reuses the z run so the state table stays complete
+        # without spending a third candidate.
+        axis=x:
+          appearance: runX
+        axis=y:
+          appearance: runZ
+        axis=z:
+          appearance: runZ
+
+  betterend:thallasium_block:
+    settings:
+      template:
+        - default:sound/metal
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 5.0
+        resistance: 6.0
+        instrument: iron_xylophone
+        map_color: color_blue
+        correct_tools: ['#minecraft:pickaxes']
+        required_break_power: 1
+        tags: [minecraft:mineable/pickaxe]
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      texture: betterend:block/thallasium_block
+
+  betterend:thallasium_tile:
+    settings:
+      template:
+        - default:sound/metal
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 5.0
+        resistance: 6.0
+        instrument: iron_xylophone
+        map_color: color_blue
+        correct_tools: ['#minecraft:pickaxes']
+        required_break_power: 1
+        tags: [minecraft:mineable/pickaxe]
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      texture: betterend:block/thallasium_tile
+
+  betterend:thallasium_chain:
+    settings:
+      template:
+        - default:sound/metal
+        - default:settings/transparent_1x1x1
+      merges:
+        hardness: 5.0
+        resistance: 6.0
+        instrument: iron_xylophone
+        map_color: color_blue
+        correct_tools: ['#minecraft:pickaxes']
+        required_break_power: 1
+        push_reaction: destroy
+        tags: [minecraft:mineable/pickaxe]
+    loot:
+      template: default:loot_table/self
+    state:
+      properties:
+        axis:
+          type: axis
+          default: y
+      appearances:
+        axisX:
+          state: exposed_copper_chain[axis=x,waterlogged=false]
+          model:
+            path: betterend:block/thallasium_chain
+            x: 90
+            y: 90
+        axisY:
+          state: exposed_copper_chain[axis=y,waterlogged=false]
+          model: betterend:block/thallasium_chain
+        axisZ:
+          state: exposed_copper_chain[axis=z,waterlogged=false]
+          model:
+            path: betterend:block/thallasium_chain
+            x: 90
+      variants:
+        axis=x:
+          appearance: axisX
+        axis=y:
+          appearance: axisY
+        axis=z:
+          appearance: axisZ
+
+  betterend:thallasium_bars:
+    settings:
+      template:
+        - default:sound/metal
+        - default:settings/transparent_1x1x1
+      merges:
+        hardness: 5.0
+        resistance: 6.0
+        instrument: iron_xylophone
+        map_color: color_blue
+        correct_tools: ['#minecraft:pickaxes']
+        required_break_power: 1
+        tags: [minecraft:mineable/pickaxe]
+    loot:
+      template: default:loot_table/self
+    state:
+      properties:
+        axis:
+          type: axis
+          default: z
+      appearances:
+        runZ:
+          state: exposed_copper_bars[east=false,north=true,south=true,west=false,waterlogged=false]
+          model: betterend:block/thallasium_bars_run
+        runX:
+          state: exposed_copper_bars[east=true,north=false,south=false,west=true,waterlogged=false]
+          model:
+            path: betterend:block/thallasium_bars_run
+            y: 90
+      variants:
+        axis=x:
+          appearance: runX
+        axis=y:
+          appearance: runZ
+        axis=z:
+          appearance: runZ
+
+recipes:
+  # Verbatim from generated/data/betterend/recipe/. Nothing invented.
+  betterend:aeternium_block:
+    type: shaped
+    category: building
+    pattern: ['III', 'III', 'III']
+    ingredients:
+      I: betterend:aeternium_ingot
+    result:
+      id: betterend:aeternium_block
+      count: 1
+  betterend:aeternium_block_to_ingot:
+    type: shapeless
+    category: misc
+    ingredients:
+      - betterend:aeternium_block
+    result:
+      id: betterend:aeternium_ingot
+      count: 9
+  # amber_gem is a B5 id; this recipe only resolves once B5 ships.
+  betterend:amber_block:
+    type: shaped
+    category: building
+    pattern: ['##', '##']
+    ingredients:
+      '#': betterend:amber_gem
+    result:
+      id: betterend:amber_block
+      count: 1
+  betterend:charcoal_block:
+    type: shaped
+    category: building
+    pattern: ['###', '###', '###']
+    ingredients:
+      '#': minecraft:charcoal
+    result:
+      id: betterend:charcoal_block
+      count: 1
+  # charcoal_from_block.json -- the reverse of charcoal_block.
+  betterend:charcoal_from_block:
+    type: shapeless
+    category: misc
+    ingredients:
+      - betterend:charcoal_block
+    result:
+      id: minecraft:charcoal
+      count: 9
+  # ender_perl_to_block.json / ender_block_to_perl.json
+  betterend:ender_block:
+    type: shaped
+    category: building
+    pattern: ['OO', 'OO']
+    ingredients:
+      O: minecraft:ender_pearl
+    result:
+      id: betterend:ender_block
+      count: 1
+  betterend:ender_block_to_pearl:
+    type: shapeless
+    category: misc
+    ingredients:
+      - betterend:ender_block
+    result:
+      id: minecraft:ender_pearl
+      count: 4
+  betterend:terminite_block:
+    type: shaped
+    category: building
+    group: end_metal_blocks
+    pattern: ['###', '###', '###']
+    ingredients:
+      '#': betterend:terminite_ingot
+    result:
+      id: betterend:terminite_block
+      count: 1
+  betterend:terminite_ingot_from_block:
+    type: shapeless
+    category: misc
+    group: end_metal_ingots
+    ingredients:
+      - betterend:terminite_block
+    result:
+      id: betterend:terminite_ingot
+      count: 9
+  betterend:terminite_tile:
+    type: shaped
+    category: building
+    group: end_metal_tiles
+    pattern: ['##', '##']
+    ingredients:
+      '#': betterend:terminite_block
+    result:
+      id: betterend:terminite_tile
+      count: 4
+  # _stonecuttingterminite_tile.json
+  betterend:terminite_tile_stonecutting:
+    type: stonecutting
+    ingredient: betterend:terminite_block
+    result:
+      id: betterend:terminite_tile
+      count: 1
+  betterend:terminite_bars:
+    type: shaped
+    category: building
+    group: metal_bars
+    pattern: ['###', '###']
+    ingredients:
+      '#': betterend:terminite_ingot
+    result:
+      id: betterend:terminite_bars
+      count: 16
+  betterend:terminite_chain:
+    type: shaped
+    category: building
+    group: metal_chain
+    pattern: ['N', '#', 'N']
+    ingredients:
+      '#': betterend:terminite_ingot
+      N: betterend:terminite_nugget
+    result:
+      id: betterend:terminite_chain
+      count: 1
+  betterend:thallasium_block:
+    type: shaped
+    category: building
+    group: end_metal_blocks
+    pattern: ['###', '###', '###']
+    ingredients:
+      '#': betterend:thallasium_ingot
+    result:
+      id: betterend:thallasium_block
+      count: 1
+  betterend:thallasium_ingot_from_block:
+    type: shapeless
+    category: misc
+    group: end_metal_ingots
+    ingredients:
+      - betterend:thallasium_block
+    result:
+      id: betterend:thallasium_ingot
+      count: 9
+  betterend:thallasium_tile:
+    type: shaped
+    category: building
+    group: end_metal_tiles
+    pattern: ['##', '##']
+    ingredients:
+      '#': betterend:thallasium_block
+    result:
+      id: betterend:thallasium_tile
+      count: 4
+  betterend:thallasium_tile_stonecutting:
+    type: stonecutting
+    ingredient: betterend:thallasium_block
+    result:
+      id: betterend:thallasium_tile
+      count: 1
+  betterend:thallasium_bars:
+    type: shaped
+    category: building
+    group: metal_bars
+    pattern: ['###', '###']
+    ingredients:
+      '#': betterend:thallasium_ingot
+    result:
+      id: betterend:thallasium_bars
+      count: 16
+  betterend:thallasium_chain:
+    type: shaped
+    category: building
+    group: metal_chain
+    pattern: ['N', '#', 'N']
+    ingredients:
+      '#': betterend:thallasium_ingot
+      N: betterend:thallasium_nugget
+    result:
+      id: betterend:thallasium_chain
+      count: 1
+  # NOT PORTED, by recipe type rather than by choice:
+  #   terminite_ingot / terminite_ingot_thallasium / aeternium_ingot are `bclib:alloying`
+  #   (an End Stone Smelter recipe); thallasium_ingot_furnace_ore/raw need thallasium_ore and
+  #   thallasium_raw, which are not B7 ids. RecipeSerializers.java:28-45 registers shaped,
+  #   shapeless, smelting, smoking, blasting, campfire_cooking, stonecutting, smithing_transform,
+  #   smithing_trim and brewing -- there is no alloying serializer and no smelter block, so the
+  #   terminite and aeternium ingots have NO obtainable route until an alloying replacement lands.

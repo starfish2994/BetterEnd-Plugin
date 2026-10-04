@@ -1,0 +1,251 @@
+# BetterEnd stone families: 7 stones x {base, _polished, _tiles, _brick, _pillar} = 35 ids.
+# Walls and advanced functional blocks are migrated separately.
+# ponytail: slab/stairs/buttons/plates omitted until CraftEngine offers isolated shape states;
+#           shared vanilla states corrupt vanilla rendering.
+#
+# Display names live in configuration/langs/en_us.yml. The mod's names are NOT derivable from
+# ${stone_type} ("Polished Flavolite" vs "Umbralith Polished"), but the lang KEY is, so every
+# item just references <lang:item.betterend.${stone_type}_...>.
+#
+# Recipes stay INSIDE the blueprint, exactly as CE ships them (CFG/blocks/tree.yml:499).
+# ConfigFactoryParser (AbstractPackManager.java:3645-3660) hands the same blueprint Map to each
+# instance but never mutates it -- TemplateManagerImpl allocates fresh LinkedHashMap/ObjectArrayList
+# at every level (:136,:150,:203). A sibling config_factory#stone_recipes would only duplicate
+# the instances list.
+config_factory#stone_sets:
+  instances:
+    # map_color values are the mod's own MapColor per family
+    # (EndStoneBlocks.java:120-138). Filled maps render each family distinctly.
+    - stone_type: flavolite
+      map_color: sand
+    - stone_type: violecite
+      map_color: color_purple
+    - stone_type: sulphuric_rock
+      map_color: color_brown
+    - stone_type: virid_jadestone
+      map_color: color_green
+    - stone_type: azure_jadestone
+      map_color: color_light_blue
+    - stone_type: sandy_jadestone
+      map_color: color_yellow
+    - stone_type: umbralith
+      map_color: deepslate
+  blueprint:
+    items:
+      betterend:${stone_type}:
+        category: betterend:stones
+        # The mod puts its base stones in both vanilla stone tags, so they substitute
+        # for cobblestone in stone tools, furnaces and the like.
+        settings:
+          tags:
+            - minecraft:stone_crafting_materials
+            - minecraft:stone_tool_materials
+        data:
+          item_name: '<!i><white><lang:item.betterend.${stone_type}></white>'
+        model: betterend:block/${stone_type}
+        behavior:
+          type: block_item
+          block: betterend:${stone_type}
+      betterend:${stone_type}_polished:
+        category: betterend:stones
+        data:
+          item_name: '<!i><white><lang:item.betterend.${stone_type}_polished></white>'
+        model: betterend:block/${stone_type}_polished
+        behavior:
+          type: block_item
+          block: betterend:${stone_type}_polished
+      betterend:${stone_type}_tiles:
+        category: betterend:stones
+        data:
+          item_name: '<!i><white><lang:item.betterend.${stone_type}_tiles></white>'
+        model: betterend:block/${stone_type}_tiles
+        behavior:
+          type: block_item
+          block: betterend:${stone_type}_tiles
+      betterend:${stone_type}_brick:
+        category: betterend:stones
+        data:
+          item_name: '<!i><white><lang:item.betterend.${stone_type}_brick></white>'
+        model: betterend:block/${stone_type}_brick
+        behavior:
+          type: block_item
+          block: betterend:${stone_type}_brick
+      betterend:${stone_type}_pillar:
+        category: betterend:stones
+        data:
+          item_name: '<!i><white><lang:item.betterend.${stone_type}_pillar></white>'
+        model: betterend:block/${stone_type}_pillar
+        behavior:
+          type: block_item
+          block: betterend:${stone_type}_pillar
+    blocks:
+      # There is no default:settings/stone template (TPL/block_settings.yml ships only
+      # solid_1x1x1, transparent_1x1x1, sapling, leaves, wood, planks, ore, deepslate_ore),
+      # so the stone settings are assembled by hand -- deliberately mirroring the shape of
+      # default:settings/ore (TPL/block_settings.yml:66-77).
+      # merges: (not overrides:) because overrides is results.putAll -- a shallow top-level
+      # replace (TemplateManagerImpl.java:143); merges reaches deepMergeMaps :385-387.
+      # instrument: basedrum -- BlockSettings defaults to "harp" (BlockSettings.java:40) and the
+      # mod copies END_STONE, whose note-block instrument is BASEDRUM.
+      betterend:${stone_type}:
+        settings:
+          template:
+            - default:sound/stone
+            - default:settings/solid_1x1x1
+          merges:
+            hardness: 3.0
+            resistance: 9.0
+            instrument: basedrum
+            map_color: ${map_color}
+            correct_tools: ['#minecraft:pickaxes']
+            required_break_power: 1
+            tags: [minecraft:mineable/pickaxe, minecraft:dragon_immune]
+        loot:
+          template: default:loot_table/self
+        state:
+          auto_state: solid
+          texture: betterend:block/${stone_type}
+      betterend:${stone_type}_polished:
+        settings:
+          template:
+            - default:sound/stone
+            - default:settings/solid_1x1x1
+          merges:
+            hardness: 3.0
+            resistance: 9.0
+            instrument: basedrum
+            map_color: ${map_color}
+            correct_tools: ['#minecraft:pickaxes']
+            required_break_power: 1
+            tags: [minecraft:mineable/pickaxe, minecraft:dragon_immune]
+        loot:
+          template: default:loot_table/self
+        state:
+          auto_state: solid
+          texture: betterend:block/${stone_type}_polished
+      betterend:${stone_type}_tiles:
+        settings:
+          template:
+            - default:sound/stone
+            - default:settings/solid_1x1x1
+          merges:
+            hardness: 3.0
+            resistance: 9.0
+            instrument: basedrum
+            map_color: ${map_color}
+            correct_tools: ['#minecraft:pickaxes']
+            required_break_power: 1
+            tags: [minecraft:mineable/pickaxe, minecraft:dragon_immune]
+        loot:
+          template: default:loot_table/self
+        state:
+          auto_state: solid
+          texture: betterend:block/${stone_type}_tiles
+      betterend:${stone_type}_brick:
+        settings:
+          template:
+            - default:sound/stone
+            - default:settings/solid_1x1x1
+          merges:
+            hardness: 3.0
+            resistance: 9.0
+            instrument: basedrum
+            map_color: ${map_color}
+            correct_tools: ['#minecraft:pickaxes']
+            required_break_power: 1
+            tags: [minecraft:mineable/pickaxe, minecraft:dragon_immune]
+        loot:
+          template: default:loot_table/self
+        state:
+          auto_state: solid
+          texture: betterend:block/${stone_type}_brick
+      betterend:${stone_type}_pillar:
+        settings:
+          template:
+            - default:sound/stone
+            - default:settings/solid_1x1x1
+          merges:
+            hardness: 3.0
+            resistance: 9.0
+            instrument: basedrum
+            map_color: ${map_color}
+            correct_tools: ['#minecraft:pickaxes']
+            required_break_power: 1
+            tags: [minecraft:mineable/pickaxe, minecraft:dragon_immune]
+        loot:
+          template: default:loot_table/self
+        state:
+          # default:block_state/pillar generates both models from these two textures
+          # (TPL/block_states.yml:11-35) -- appearance names axisX/axisY/axisZ come from the
+          # template itself, so nothing to rename here.
+          template: default:block_state/pillar
+          arguments:
+            pillar_model: betterend:block/${stone_type}_pillar
+            pillar_texture_top: betterend:block/${stone_type}_pillar_top
+            pillar_texture_side: betterend:block/${stone_type}_pillar_side
+    recipes:
+      # NO ENTRY RECIPE. The mod defines no recipe for the seven base stones -- verified:
+      # zero recipe json for flavolite/violecite/umbralith under generated/data/betterend/recipe.
+      # They are worldgen-only, so the whole family stays creative-only until Phase 6/7 ports
+      # the End biomes. Do NOT invent one: a craftable root would survive worldgen landing and
+      # permanently trivialise the progression this mod is built around.
+      # Mod truth: polished and tiles have a stonecutter recipe ONLY, no crafting-table recipe
+      # (generated/.../stonecutter_flavolite_polished.json, stonecutter_flavolite_tiles.json).
+      # stonecutting takes no `category:` -- CustomStoneCuttingRecipe.readConfig reads only
+      # show_notifications / result / group / ingredient(s).
+      betterend:${stone_type}_polished:
+        type: stonecutting
+        group: ${stone_type}
+        ingredient: betterend:${stone_type}
+        result:
+          id: betterend:${stone_type}_polished
+          count: 1
+      betterend:${stone_type}_tiles:
+        type: stonecutting
+        group: ${stone_type}
+        ingredient: betterend:${stone_type}
+        result:
+          id: betterend:${stone_type}_tiles
+          count: 1
+      # Bricks: the mod ships BOTH a 2x2 craft (group "brick", count 4) and a stonecutter recipe.
+      betterend:${stone_type}_brick_from_crafting_${stone_type}:
+        type: shaped
+        category: building
+        group: brick
+        pattern:
+          - AA
+          - AA
+        ingredients:
+          A: betterend:${stone_type}
+        result:
+          id: betterend:${stone_type}_brick
+          count: 4
+      betterend:${stone_type}_brick_from_stonecutting_${stone_type}:
+        type: stonecutting
+        group: brick
+        ingredient: betterend:${stone_type}
+        result:
+          id: betterend:${stone_type}_brick
+          count: 1
+      # Pillars: the mod's crafting recipe consumes <stone>_SLAB, which this port deliberately
+      # does not ship, so it is re-based onto the base stone (same shape, same count).
+      # The stonecutter recipe is the mod's, verbatim.
+      betterend:${stone_type}_pillar_from_crafting_${stone_type}:
+        type: shaped
+        category: building
+        group: pillar
+        pattern:
+          - A
+          - A
+        ingredients:
+          A: betterend:${stone_type}
+        result:
+          id: betterend:${stone_type}_pillar
+          count: 1
+      betterend:${stone_type}_pillar_from_stonecutting_${stone_type}:
+        type: stonecutting
+        group: pillar
+        ingredient: betterend:${stone_type}
+        result:
+          id: betterend:${stone_type}_pillar
+          count: 1

@@ -1,0 +1,958 @@
+# BetterEnd -- batch B4 (flora-a): terrain cubes and their dirt-path variants
+# Generated from the mod's own blockstate/model json; every `models:` list is a verbatim
+# transcription of the mod's weighted variant list (AbstractBlockManager.java:988-1022 accepts
+# path/x/y/z/uvlock/weight on a block-state model entry, exactly as vanilla does).
+# One appearance = one visual state no matter how many weighted models it holds
+# (AbstractBlockManager.java:615-648), so the random variants are free.
+
+items:
+  betterend:amber_moss:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.amber_moss></white>'
+    model: betterend:block/amber_moss_1
+    behavior:
+      type: block_item
+      block: betterend:amber_moss
+  betterend:cave_moss:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.cave_moss></white>'
+    model: betterend:block/cave_moss
+    behavior:
+      type: block_item
+      block: betterend:cave_moss
+  betterend:chorus_nylium:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.chorus_nylium></white>'
+    model: betterend:block/chorus_nylium
+    behavior:
+      type: block_item
+      block: betterend:chorus_nylium
+  betterend:crystal_moss:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.crystal_moss></white>'
+    model: betterend:block/crystal_moss
+    behavior:
+      type: block_item
+      block: betterend:crystal_moss
+  betterend:end_moss:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.end_moss></white>'
+    model: betterend:block/end_moss
+    behavior:
+      type: block_item
+      block: betterend:end_moss
+  betterend:end_mycelium:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.end_mycelium></white>'
+    model: betterend:block/end_mycelium
+    behavior:
+      type: block_item
+      block: betterend:end_mycelium
+  betterend:jungle_moss:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.jungle_moss></white>'
+    model: betterend:block/jungle_moss
+    behavior:
+      type: block_item
+      block: betterend:jungle_moss
+  betterend:pink_moss:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.pink_moss></white>'
+    model: betterend:block/pink_moss
+    behavior:
+      type: block_item
+      block: betterend:pink_moss
+  betterend:rutiscus:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.rutiscus></white>'
+    model: betterend:block/rutiscus_1
+    behavior:
+      type: block_item
+      block: betterend:rutiscus
+  betterend:sangnum:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.sangnum></white>'
+    model: betterend:block/sangnum
+    behavior:
+      type: block_item
+      block: betterend:sangnum
+  betterend:shadow_grass:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.shadow_grass></white>'
+    model: betterend:block/shadow_grass
+    behavior:
+      type: block_item
+      block: betterend:shadow_grass
+  betterend:pallidium_full:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.pallidium_full></white>'
+    model: betterend:block/pallidium_full
+    behavior:
+      type: block_item
+      block: betterend:pallidium_full
+  betterend:pallidium_heavy:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.pallidium_heavy></white>'
+    model: betterend:block/pallidium_heavy
+    behavior:
+      type: block_item
+      block: betterend:pallidium_heavy
+  betterend:pallidium_thin:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.pallidium_thin></white>'
+    model: betterend:block/pallidium_thin
+    behavior:
+      type: block_item
+      block: betterend:pallidium_thin
+  betterend:pallidium_tiny:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.pallidium_tiny></white>'
+    model: betterend:block/pallidium_tiny
+    behavior:
+      type: block_item
+      block: betterend:pallidium_tiny
+  betterend:amber_moss_path:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.amber_moss_path></white>'
+    model: betterend:block/amber_moss_path_1
+    behavior:
+      type: block_item
+      block: betterend:amber_moss_path
+  betterend:cave_moss_path:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.cave_moss_path></white>'
+    model: betterend:block/cave_moss_path
+    behavior:
+      type: block_item
+      block: betterend:cave_moss_path
+  betterend:chorus_nylium_path:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.chorus_nylium_path></white>'
+    model: betterend:block/chorus_nylium_path
+    behavior:
+      type: block_item
+      block: betterend:chorus_nylium_path
+  betterend:crystal_moss_path:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.crystal_moss_path></white>'
+    model: betterend:block/crystal_moss_path
+    behavior:
+      type: block_item
+      block: betterend:crystal_moss_path
+  betterend:end_moss_path:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.end_moss_path></white>'
+    model: betterend:block/end_moss_path
+    behavior:
+      type: block_item
+      block: betterend:end_moss_path
+  betterend:end_mycelium_path:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.end_mycelium_path></white>'
+    model: betterend:block/end_mycelium_path
+    behavior:
+      type: block_item
+      block: betterend:end_mycelium_path
+  betterend:jungle_moss_path:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.jungle_moss_path></white>'
+    model: betterend:block/jungle_moss_path
+    behavior:
+      type: block_item
+      block: betterend:jungle_moss_path
+  betterend:pink_moss_path:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.pink_moss_path></white>'
+    model: betterend:block/pink_moss_path
+    behavior:
+      type: block_item
+      block: betterend:pink_moss_path
+  betterend:rutiscus_path:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.rutiscus_path></white>'
+    model: betterend:block/rutiscus_path
+    behavior:
+      type: block_item
+      block: betterend:rutiscus_path
+  betterend:sangnum_path:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.sangnum_path></white>'
+    model: betterend:block/sangnum_path
+    behavior:
+      type: block_item
+      block: betterend:sangnum_path
+  betterend:shadow_grass_path:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.shadow_grass_path></white>'
+    model: betterend:block/shadow_grass_path
+    behavior:
+      type: block_item
+      block: betterend:shadow_grass_path
+
+# NO RECIPES: every block below is worldgen-only in the mod (no recipe json under
+# generated/data/betterend/recipe). The mod makes the *_path blocks with a shovel in-world;
+# CraftEngine has no shovel-interaction behavior, so here they are placeable items only.
+blocks:
+  betterend:amber_moss:
+    settings:
+      template:
+        - default:sound/grass
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 0.5
+        resistance: 0.5
+        map_color: plant
+        is_randomly_ticking: true
+        tags:
+          - minecraft:mineable/pickaxe
+          - minecraft:nylium
+    behavior:
+      - type: surface_spreading_block
+        base_block: minecraft:end_stone
+        light_requirement: 9
+        max_light_requirement: 15
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      models:
+        - path: betterend:block/amber_moss_1
+        - path: betterend:block/amber_moss_1
+          y: 90
+        - path: betterend:block/amber_moss_1
+          y: 180
+        - path: betterend:block/amber_moss_1
+          y: 270
+        - path: betterend:block/amber_moss_2
+        - path: betterend:block/amber_moss_2
+          y: 90
+        - path: betterend:block/amber_moss_2
+          y: 180
+        - path: betterend:block/amber_moss_2
+          y: 270
+        - path: betterend:block/amber_moss_3
+        - path: betterend:block/amber_moss_3
+          y: 90
+        - path: betterend:block/amber_moss_3
+          y: 180
+        - path: betterend:block/amber_moss_3
+          y: 270
+  betterend:cave_moss:
+    settings:
+      template:
+        - default:sound/grass
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 0.5
+        resistance: 0.5
+        map_color: plant
+        is_randomly_ticking: true
+        tags:
+          - minecraft:mineable/pickaxe
+          - minecraft:nylium
+    behavior:
+      - type: surface_spreading_block
+        base_block: minecraft:end_stone
+        light_requirement: 9
+        max_light_requirement: 15
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      models:
+        - path: betterend:block/cave_moss
+        - path: betterend:block/cave_moss
+          y: 90
+        - path: betterend:block/cave_moss
+          y: 180
+        - path: betterend:block/cave_moss
+          y: 270
+  betterend:chorus_nylium:
+    settings:
+      template:
+        - default:sound/grass
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 0.5
+        resistance: 0.5
+        map_color: plant
+        is_randomly_ticking: true
+        tags:
+          - minecraft:mineable/pickaxe
+          - minecraft:nylium
+    behavior:
+      - type: surface_spreading_block
+        base_block: minecraft:end_stone
+        light_requirement: 9
+        max_light_requirement: 15
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      models:
+        - path: betterend:block/chorus_nylium
+        - path: betterend:block/chorus_nylium
+          y: 90
+        - path: betterend:block/chorus_nylium
+          y: 180
+        - path: betterend:block/chorus_nylium
+          y: 270
+  betterend:crystal_moss:
+    settings:
+      template:
+        - default:sound/grass
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 0.5
+        resistance: 0.5
+        map_color: plant
+        is_randomly_ticking: true
+        tags:
+          - minecraft:mineable/pickaxe
+          - minecraft:nylium
+    behavior:
+      - type: surface_spreading_block
+        base_block: minecraft:end_stone
+        light_requirement: 9
+        max_light_requirement: 15
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      models:
+        - path: betterend:block/crystal_moss
+        - path: betterend:block/crystal_moss
+          y: 90
+        - path: betterend:block/crystal_moss
+          y: 180
+        - path: betterend:block/crystal_moss
+          y: 270
+  betterend:end_moss:
+    settings:
+      template:
+        - default:sound/grass
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 0.5
+        resistance: 0.5
+        map_color: plant
+        is_randomly_ticking: true
+        tags:
+          - minecraft:mineable/pickaxe
+          - minecraft:nylium
+    behavior:
+      - type: surface_spreading_block
+        base_block: minecraft:end_stone
+        light_requirement: 9
+        max_light_requirement: 15
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      models:
+        - path: betterend:block/end_moss
+        - path: betterend:block/end_moss
+          y: 90
+        - path: betterend:block/end_moss
+          y: 180
+        - path: betterend:block/end_moss
+          y: 270
+  betterend:end_mycelium:
+    settings:
+      template:
+        - default:sound/grass
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 0.5
+        resistance: 0.5
+        map_color: plant
+        is_randomly_ticking: true
+        tags:
+          - minecraft:mineable/pickaxe
+    behavior:
+      - type: surface_spreading_block
+        base_block: minecraft:end_stone
+        light_requirement: 9
+        max_light_requirement: 15
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      models:
+        - path: betterend:block/end_mycelium
+        - path: betterend:block/end_mycelium
+          y: 90
+        - path: betterend:block/end_mycelium
+          y: 180
+        - path: betterend:block/end_mycelium
+          y: 270
+  betterend:jungle_moss:
+    settings:
+      template:
+        - default:sound/grass
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 0.5
+        resistance: 0.5
+        map_color: plant
+        is_randomly_ticking: true
+        tags:
+          - minecraft:mineable/pickaxe
+          - minecraft:nylium
+    behavior:
+      - type: surface_spreading_block
+        base_block: minecraft:end_stone
+        light_requirement: 9
+        max_light_requirement: 15
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      models:
+        - path: betterend:block/jungle_moss
+        - path: betterend:block/jungle_moss
+          y: 90
+        - path: betterend:block/jungle_moss
+          y: 180
+        - path: betterend:block/jungle_moss
+          y: 270
+  betterend:pink_moss:
+    settings:
+      template:
+        - default:sound/grass
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 0.5
+        resistance: 0.5
+        map_color: plant
+        is_randomly_ticking: true
+        tags:
+          - minecraft:mineable/pickaxe
+          - minecraft:nylium
+    behavior:
+      - type: surface_spreading_block
+        base_block: minecraft:end_stone
+        light_requirement: 9
+        max_light_requirement: 15
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      models:
+        - path: betterend:block/pink_moss
+        - path: betterend:block/pink_moss
+          y: 90
+        - path: betterend:block/pink_moss
+          y: 180
+        - path: betterend:block/pink_moss
+          y: 270
+  betterend:rutiscus:
+    settings:
+      template:
+        - default:sound/grass
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 0.5
+        resistance: 0.5
+        map_color: plant
+        is_randomly_ticking: true
+        tags:
+          - minecraft:mineable/pickaxe
+          - minecraft:nylium
+    behavior:
+      - type: surface_spreading_block
+        base_block: minecraft:end_stone
+        light_requirement: 9
+        max_light_requirement: 15
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      models:
+        - path: betterend:block/rutiscus_1
+        - path: betterend:block/rutiscus_1
+          y: 90
+        - path: betterend:block/rutiscus_1
+          y: 180
+        - path: betterend:block/rutiscus_1
+          y: 270
+        - path: betterend:block/rutiscus_2
+        - path: betterend:block/rutiscus_2
+          y: 90
+        - path: betterend:block/rutiscus_2
+          y: 180
+        - path: betterend:block/rutiscus_2
+          y: 270
+  betterend:sangnum:
+    settings:
+      template:
+        - default:sound/grass
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 0.5
+        resistance: 0.5
+        map_color: plant
+        is_randomly_ticking: true
+        tags:
+          - minecraft:mineable/pickaxe
+          - minecraft:nylium
+    behavior:
+      - type: surface_spreading_block
+        base_block: minecraft:end_stone
+        light_requirement: 9
+        max_light_requirement: 15
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      models:
+        - path: betterend:block/sangnum
+        - path: betterend:block/sangnum
+          y: 90
+        - path: betterend:block/sangnum
+          y: 180
+        - path: betterend:block/sangnum
+          y: 270
+  betterend:shadow_grass:
+    settings:
+      template:
+        - default:sound/grass
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 0.5
+        resistance: 0.5
+        map_color: plant
+        is_randomly_ticking: true
+        tags:
+          - minecraft:mineable/pickaxe
+          - minecraft:nylium
+    behavior:
+      - type: surface_spreading_block
+        base_block: minecraft:end_stone
+        light_requirement: 9
+        max_light_requirement: 15
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      models:
+        - path: betterend:block/shadow_grass
+        - path: betterend:block/shadow_grass
+          y: 90
+        - path: betterend:block/shadow_grass
+          y: 180
+        - path: betterend:block/shadow_grass
+          y: 270
+  betterend:pallidium_full:
+    settings:
+      template:
+        - default:sound/grass
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 0.5
+        resistance: 0.5
+        map_color: plant
+        is_randomly_ticking: true
+        tags:
+          - minecraft:mineable/pickaxe
+          - minecraft:nylium
+    behavior:
+      - type: surface_spreading_block
+        base_block: minecraft:end_stone
+        light_requirement: 9
+        max_light_requirement: 15
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      models:
+        - path: betterend:block/pallidium_full
+        - path: betterend:block/pallidium_full
+          y: 90
+        - path: betterend:block/pallidium_full
+          y: 180
+        - path: betterend:block/pallidium_full
+          y: 270
+  betterend:pallidium_heavy:
+    settings:
+      template:
+        - default:sound/grass
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 0.5
+        resistance: 0.5
+        map_color: plant
+        is_randomly_ticking: true
+        tags:
+          - minecraft:mineable/pickaxe
+          - minecraft:nylium
+    behavior:
+      - type: surface_spreading_block
+        base_block: minecraft:end_stone
+        light_requirement: 9
+        max_light_requirement: 15
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      models:
+        - path: betterend:block/pallidium_heavy
+        - path: betterend:block/pallidium_heavy
+          y: 90
+        - path: betterend:block/pallidium_heavy
+          y: 180
+        - path: betterend:block/pallidium_heavy
+          y: 270
+  betterend:pallidium_thin:
+    settings:
+      template:
+        - default:sound/grass
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 0.5
+        resistance: 0.5
+        map_color: plant
+        is_randomly_ticking: true
+        tags:
+          - minecraft:mineable/pickaxe
+          - minecraft:nylium
+    behavior:
+      - type: surface_spreading_block
+        base_block: minecraft:end_stone
+        light_requirement: 9
+        max_light_requirement: 15
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      models:
+        - path: betterend:block/pallidium_thin
+        - path: betterend:block/pallidium_thin
+          y: 90
+        - path: betterend:block/pallidium_thin
+          y: 180
+        - path: betterend:block/pallidium_thin
+          y: 270
+  betterend:pallidium_tiny:
+    settings:
+      template:
+        - default:sound/grass
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 0.5
+        resistance: 0.5
+        map_color: plant
+        is_randomly_ticking: true
+        tags:
+          - minecraft:mineable/pickaxe
+          - minecraft:nylium
+    behavior:
+      - type: surface_spreading_block
+        base_block: minecraft:end_stone
+        light_requirement: 9
+        max_light_requirement: 15
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      models:
+        - path: betterend:block/pallidium_tiny
+        - path: betterend:block/pallidium_tiny
+          y: 90
+        - path: betterend:block/pallidium_tiny
+          y: 180
+        - path: betterend:block/pallidium_tiny
+          y: 270
+  betterend:amber_moss_path:
+    settings:
+      template:
+        - default:sound/grass
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 0.65
+        resistance: 0.65
+        map_color: plant
+        tags:
+          - minecraft:mineable/pickaxe
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      models:
+        - path: betterend:block/amber_moss_path_1
+        - path: betterend:block/amber_moss_path_1
+          y: 90
+        - path: betterend:block/amber_moss_path_1
+          y: 180
+        - path: betterend:block/amber_moss_path_1
+          y: 270
+        - path: betterend:block/amber_moss_path_2
+        - path: betterend:block/amber_moss_path_2
+          y: 90
+        - path: betterend:block/amber_moss_path_2
+          y: 180
+        - path: betterend:block/amber_moss_path_2
+          y: 270
+        - path: betterend:block/amber_moss_path_3
+        - path: betterend:block/amber_moss_path_3
+          y: 90
+        - path: betterend:block/amber_moss_path_3
+          y: 180
+        - path: betterend:block/amber_moss_path_3
+          y: 270
+  betterend:cave_moss_path:
+    settings:
+      template:
+        - default:sound/grass
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 0.65
+        resistance: 0.65
+        map_color: plant
+        tags:
+          - minecraft:mineable/pickaxe
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      models:
+        - path: betterend:block/cave_moss_path
+        - path: betterend:block/cave_moss_path
+          y: 90
+        - path: betterend:block/cave_moss_path
+          y: 180
+        - path: betterend:block/cave_moss_path
+          y: 270
+  betterend:chorus_nylium_path:
+    settings:
+      template:
+        - default:sound/grass
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 0.65
+        resistance: 0.65
+        map_color: plant
+        tags:
+          - minecraft:mineable/pickaxe
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      models:
+        - path: betterend:block/chorus_nylium_path
+        - path: betterend:block/chorus_nylium_path
+          y: 90
+        - path: betterend:block/chorus_nylium_path
+          y: 180
+        - path: betterend:block/chorus_nylium_path
+          y: 270
+  betterend:crystal_moss_path:
+    settings:
+      template:
+        - default:sound/grass
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 0.65
+        resistance: 0.65
+        map_color: plant
+        tags:
+          - minecraft:mineable/pickaxe
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      models:
+        - path: betterend:block/crystal_moss_path
+        - path: betterend:block/crystal_moss_path
+          y: 90
+        - path: betterend:block/crystal_moss_path
+          y: 180
+        - path: betterend:block/crystal_moss_path
+          y: 270
+  betterend:end_moss_path:
+    settings:
+      template:
+        - default:sound/grass
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 0.65
+        resistance: 0.65
+        map_color: plant
+        tags:
+          - minecraft:mineable/pickaxe
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      models:
+        - path: betterend:block/end_moss_path
+        - path: betterend:block/end_moss_path
+          y: 90
+        - path: betterend:block/end_moss_path
+          y: 180
+        - path: betterend:block/end_moss_path
+          y: 270
+  betterend:end_mycelium_path:
+    settings:
+      template:
+        - default:sound/grass
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 0.65
+        resistance: 0.65
+        map_color: plant
+        tags:
+          - minecraft:mineable/pickaxe
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      models:
+        - path: betterend:block/end_mycelium_path
+        - path: betterend:block/end_mycelium_path
+          y: 90
+        - path: betterend:block/end_mycelium_path
+          y: 180
+        - path: betterend:block/end_mycelium_path
+          y: 270
+  betterend:jungle_moss_path:
+    settings:
+      template:
+        - default:sound/grass
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 0.65
+        resistance: 0.65
+        map_color: plant
+        tags:
+          - minecraft:mineable/pickaxe
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      models:
+        - path: betterend:block/jungle_moss_path
+        - path: betterend:block/jungle_moss_path
+          y: 90
+        - path: betterend:block/jungle_moss_path
+          y: 180
+        - path: betterend:block/jungle_moss_path
+          y: 270
+  betterend:pink_moss_path:
+    settings:
+      template:
+        - default:sound/grass
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 0.65
+        resistance: 0.65
+        map_color: plant
+        tags:
+          - minecraft:mineable/pickaxe
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      models:
+        - path: betterend:block/pink_moss_path
+        - path: betterend:block/pink_moss_path
+          y: 90
+        - path: betterend:block/pink_moss_path
+          y: 180
+        - path: betterend:block/pink_moss_path
+          y: 270
+  betterend:rutiscus_path:
+    settings:
+      template:
+        - default:sound/grass
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 0.65
+        resistance: 0.65
+        map_color: plant
+        tags:
+          - minecraft:mineable/pickaxe
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      models:
+        - path: betterend:block/rutiscus_path
+        - path: betterend:block/rutiscus_path
+          y: 90
+        - path: betterend:block/rutiscus_path
+          y: 180
+        - path: betterend:block/rutiscus_path
+          y: 270
+  betterend:sangnum_path:
+    settings:
+      template:
+        - default:sound/grass
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 0.65
+        resistance: 0.65
+        map_color: plant
+        tags:
+          - minecraft:mineable/pickaxe
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      models:
+        - path: betterend:block/sangnum_path
+        - path: betterend:block/sangnum_path
+          y: 90
+        - path: betterend:block/sangnum_path
+          y: 180
+        - path: betterend:block/sangnum_path
+          y: 270
+  betterend:shadow_grass_path:
+    settings:
+      template:
+        - default:sound/grass
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 0.65
+        resistance: 0.65
+        map_color: plant
+        tags:
+          - minecraft:mineable/pickaxe
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      models:
+        - path: betterend:block/shadow_grass_path
+        - path: betterend:block/shadow_grass_path
+          y: 90
+        - path: betterend:block/shadow_grass_path
+          y: 180
+        - path: betterend:block/shadow_grass_path
+          y: 270

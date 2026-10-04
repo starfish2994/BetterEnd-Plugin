@@ -1,0 +1,17 @@
+# INTEGRATOR: append this one entry to the `list:` of betterend:betterend in the LIVE
+# configuration/categories.yml. Do not redeclare betterend:betterend here -- CategoryParser is an
+# IdSectionConfigParser and does byId.put(id, category) (:152), so a second declaration silently wins.
+#   #betterend:foliage
+#
+# B2 declares only its own leaf category. `list: []` is deliberate: membership is pushed in from each
+# item's own `category:` key via AbstractItemManager.java:429-432 addExternalCategoryMember.
+categories:
+  betterend:foliage:
+    name: '<!i><white><l10n:category.betterend.foliage></white>'
+    hidden: true
+    icon: betterend:tenanea_leaves
+    list: []
+
+translations#b2_categories:
+  en_us:
+    category.betterend.foliage: BetterEnd Foliage

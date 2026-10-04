@@ -1,0 +1,224 @@
+# Core BetterEnd wood blocks. Tree growth and leaves need the BetterEnd feature port.
+# ponytail: slab/stairs omitted until CraftEngine offers isolated shape states; shared vanilla states corrupt vanilla rendering.
+config_factory#wood_sets:
+  instances:
+    # wood_map_color / planks_map_color are the mod's own per-family MapColor pair,
+    # EndWoodenComplexMaterial(name, woodColor, planksColor) -- EndWoodBlocks.java:139-365.
+    - tree_type: pythadendron
+      wood_map_color: color_magenta
+      planks_map_color: color_purple
+    - tree_type: lacugrove
+      wood_map_color: color_brown
+      planks_map_color: color_yellow
+    - tree_type: dragon_tree
+      wood_map_color: color_black
+      planks_map_color: color_magenta
+    - tree_type: tenanea
+      wood_map_color: color_brown
+      planks_map_color: color_pink
+    - tree_type: helix_tree
+      wood_map_color: color_gray
+      planks_map_color: color_orange
+    - tree_type: lucernia
+      wood_map_color: color_orange
+      planks_map_color: color_orange
+  blueprint:
+    items:
+      betterend:${tree_type}_log:
+        category: betterend:woods
+        settings:
+          fuel_time: 300
+          tags:
+            - betterend:${tree_type}_logs
+            - minecraft:logs
+            - minecraft:logs_that_burn
+        data:
+          item_name: '<!i><white><lang:item.betterend.${tree_type}_log></white>'
+        model: betterend:block/${tree_type}_log
+        behavior:
+          type: block_item
+          block: betterend:${tree_type}_log
+      betterend:${tree_type}_stripped_log:
+        category: betterend:woods
+        settings:
+          fuel_time: 300
+          tags:
+            - betterend:${tree_type}_logs
+            - minecraft:logs
+            - minecraft:logs_that_burn
+        data:
+          item_name: '<!i><white><lang:item.betterend.${tree_type}_stripped_log></white>'
+        model: betterend:block/${tree_type}_stripped_log
+        behavior:
+          type: block_item
+          block: betterend:${tree_type}_stripped_log
+      betterend:${tree_type}_bark:
+        category: betterend:woods
+        settings:
+          fuel_time: 300
+          tags:
+            - betterend:${tree_type}_logs
+            - minecraft:logs
+            - minecraft:logs_that_burn
+        data:
+          item_name: '<!i><white><lang:item.betterend.${tree_type}_bark></white>'
+        model: betterend:block/${tree_type}_bark
+        behavior:
+          type: block_item
+          block: betterend:${tree_type}_bark
+      betterend:${tree_type}_stripped_bark:
+        category: betterend:woods
+        settings:
+          fuel_time: 300
+          tags:
+            - betterend:${tree_type}_logs
+            - minecraft:logs
+            - minecraft:logs_that_burn
+        data:
+          item_name: '<!i><white><lang:item.betterend.${tree_type}_stripped_bark></white>'
+        model: betterend:block/${tree_type}_stripped_bark
+        behavior:
+          type: block_item
+          block: betterend:${tree_type}_stripped_bark
+      betterend:${tree_type}_planks:
+        category: betterend:woods
+        settings:
+          fuel_time: 300
+          tags:
+            - minecraft:planks
+        data:
+          item_name: '<!i><white><lang:item.betterend.${tree_type}_planks></white>'
+        model: betterend:block/${tree_type}_planks
+        behavior:
+          type: block_item
+          block: betterend:${tree_type}_planks
+    blocks:
+      betterend:${tree_type}_log:
+        behavior:
+          type: strippable_block
+          stripped: betterend:${tree_type}_stripped_log
+        settings:
+          template: default:settings/wood
+          merges:
+            map_color: ${wood_map_color}
+        loot:
+          template: default:loot_table/self
+        state:
+          template: default:block_state/pillar
+          arguments:
+            pillar_model: betterend:block/${tree_type}_log
+            pillar_texture_top: betterend:block/${tree_type}_log_top
+            pillar_texture_side: betterend:block/${tree_type}_log
+      betterend:${tree_type}_stripped_log:
+        settings:
+          template: default:settings/wood
+          merges:
+            map_color: ${wood_map_color}
+        loot:
+          template: default:loot_table/self
+        state:
+          template: default:block_state/pillar
+          arguments:
+            pillar_model: betterend:block/${tree_type}_stripped_log
+            pillar_texture_top: betterend:block/${tree_type}_stripped_log_top
+            pillar_texture_side: betterend:block/${tree_type}_stripped_log
+      betterend:${tree_type}_bark:
+        behavior:
+          type: strippable_block
+          stripped: betterend:${tree_type}_stripped_bark
+        settings:
+          template: default:settings/wood
+          merges:
+            map_color: ${wood_map_color}
+        loot:
+          template: default:loot_table/self
+        # Mod bark model is cube_column with end == side == log side texture
+        # (generated/assets/betterend/models/block/pythadendron_bark.json), so all six
+        # faces are identical and one solid state is correct.
+        state:
+          auto_state: solid
+          model: betterend:block/${tree_type}_bark
+          texture: betterend:block/${tree_type}_log
+      betterend:${tree_type}_stripped_bark:
+        settings:
+          template: default:settings/wood
+          merges:
+            map_color: ${wood_map_color}
+        loot:
+          template: default:loot_table/self
+        state:
+          auto_state: solid
+          model: betterend:block/${tree_type}_stripped_bark
+          texture: betterend:block/${tree_type}_stripped_log
+      betterend:${tree_type}_planks:
+        settings:
+          template: default:settings/planks
+          merges:
+            map_color: ${planks_map_color}
+        loot:
+          template: default:loot_table/self
+        state:
+          auto_state: solid
+          texture: betterend:block/${tree_type}_planks
+    recipes:
+      # NO ENTRY RECIPE. The mod grows these logs from trees; it defines no crafting root
+      # for them (generated/data/betterend/recipe has no <tree>_log-from-vanilla recipe).
+      # The family stays creative-only until Phase 6/7 ports the trees. The recipes below are
+      # the mod's own, verbatim, and become reachable the moment a tree generates.
+      betterend:${tree_type}_log_from_bark:
+        type: shaped
+        category: building
+        group: log
+        pattern:
+          - AA
+          - AA
+        ingredients:
+          A: betterend:${tree_type}_bark
+        result:
+          id: betterend:${tree_type}_log
+          count: 3
+      betterend:${tree_type}_bark:
+        type: shaped
+        category: building
+        group: bark
+        pattern:
+          - AA
+          - AA
+        ingredients:
+          A: betterend:${tree_type}_log
+        result:
+          id: betterend:${tree_type}_bark
+          count: 3
+      betterend:${tree_type}_stripped_log:
+        type: shaped
+        category: building
+        group: log
+        pattern:
+          - AA
+          - AA
+        ingredients:
+          A: betterend:${tree_type}_stripped_bark
+        result:
+          id: betterend:${tree_type}_stripped_log
+          count: 3
+      betterend:${tree_type}_stripped_bark:
+        type: shaped
+        category: building
+        group: bark
+        pattern:
+          - AA
+          - AA
+        ingredients:
+          A: betterend:${tree_type}_stripped_log
+        result:
+          id: betterend:${tree_type}_stripped_bark
+          count: 3
+      betterend:${tree_type}_planks:
+        type: shapeless
+        category: building
+        group: planks
+        ingredients:
+          - '#betterend:${tree_type}_logs'
+        result:
+          id: betterend:${tree_type}_planks
+          count: 4

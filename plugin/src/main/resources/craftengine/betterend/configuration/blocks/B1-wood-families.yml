@@ -1,0 +1,556 @@
+# B1 -- the four BetterEnd wood families the live wood_sets.yml does not cover, plus the
+# structural blocks their trees are built from.
+#
+# FOUR families, not five: lucernia_jellyshroom defines no log/planks at all --
+# JellyLucerniaWoodMaterial.java:29-55 emits only a hanging sign and furniture, and
+# getBlock() (:58-64) resolves PLANKS/SLAB/STRIPPED_LOG back to LUCERNIA's blocks.
+#
+# ponytail: slab/stairs/fence/button/sign omitted -- each burns a whole vanilla block from
+# CraftEngine's shared state pool; walls have no default:block_state/wall template at all.
+# ponytail: mossy_glowshroom's five random log/bark side textures (mossy_glowshroom_log_side_2..5,
+# EndWoodBlocks.java:121-127 setLogVariants(1,1,1,1,1)) are dropped -- reproducing them means
+# hand-writing three weighted appearances per id and lifting four ids out of the shared blueprint.
+# Flat side texture instead; upgrade by un-factoring those four ids if it ever matters.
+
+config_factory#b1_wood_sets:
+  instances:
+    # wood_map_color / planks_map_color are the mod's own EndWoodenComplexMaterial(name, woodColor,
+    # planksColor) pair -- EndWoodBlocks.java:121-124, :156-159, :307-310, :340-343.
+    - tree_type: mossy_glowshroom
+      wood_map_color: color_gray
+      planks_map_color: wood
+    - tree_type: end_lotus
+      wood_map_color: color_light_blue
+      planks_map_color: color_cyan
+    - tree_type: umbrella_tree
+      wood_map_color: color_blue
+      planks_map_color: color_green
+    - tree_type: jellyshroom
+      wood_map_color: color_purple
+      planks_map_color: color_light_blue
+  blueprint:
+    items:
+      betterend:${tree_type}_log:
+        category: betterend:woods
+        settings:
+          fuel_time: 300
+          tags:
+            - betterend:${tree_type}_logs
+            - minecraft:logs
+            - minecraft:logs_that_burn
+        data:
+          item_name: '<!i><white><lang:item.betterend.${tree_type}_log></white>'
+        model: betterend:block/${tree_type}_log
+        behavior:
+          type: block_item
+          block: betterend:${tree_type}_log
+      betterend:${tree_type}_stripped_log:
+        category: betterend:woods
+        settings:
+          fuel_time: 300
+          tags:
+            - betterend:${tree_type}_logs
+            - minecraft:logs
+            - minecraft:logs_that_burn
+        data:
+          item_name: '<!i><white><lang:item.betterend.${tree_type}_stripped_log></white>'
+        model: betterend:block/${tree_type}_stripped_log
+        behavior:
+          type: block_item
+          block: betterend:${tree_type}_stripped_log
+      betterend:${tree_type}_bark:
+        category: betterend:woods
+        settings:
+          fuel_time: 300
+          tags:
+            - betterend:${tree_type}_logs
+            - minecraft:logs
+            - minecraft:logs_that_burn
+        data:
+          item_name: '<!i><white><lang:item.betterend.${tree_type}_bark></white>'
+        model: betterend:block/${tree_type}_bark
+        behavior:
+          type: block_item
+          block: betterend:${tree_type}_bark
+      betterend:${tree_type}_stripped_bark:
+        category: betterend:woods
+        settings:
+          fuel_time: 300
+          tags:
+            - betterend:${tree_type}_logs
+            - minecraft:logs
+            - minecraft:logs_that_burn
+        data:
+          item_name: '<!i><white><lang:item.betterend.${tree_type}_stripped_bark></white>'
+        model: betterend:block/${tree_type}_stripped_bark
+        behavior:
+          type: block_item
+          block: betterend:${tree_type}_stripped_bark
+      betterend:${tree_type}_planks:
+        category: betterend:woods
+        settings:
+          fuel_time: 300
+          tags:
+            - minecraft:planks
+        data:
+          item_name: '<!i><white><lang:item.betterend.${tree_type}_planks></white>'
+        model: betterend:block/${tree_type}_planks
+        behavior:
+          type: block_item
+          block: betterend:${tree_type}_planks
+    blocks:
+      betterend:${tree_type}_log:
+        behavior:
+          type: strippable_block
+          stripped: betterend:${tree_type}_stripped_log
+        settings:
+          template: default:settings/wood
+          merges:
+            map_color: ${wood_map_color}
+        loot:
+          template: default:loot_table/self
+        state:
+          template: default:block_state/pillar
+          arguments:
+            pillar_model: betterend:block/${tree_type}_log
+            pillar_texture_top: betterend:block/${tree_type}_log_top
+            pillar_texture_side: betterend:block/${tree_type}_log_side
+      betterend:${tree_type}_stripped_log:
+        settings:
+          template: default:settings/wood
+          merges:
+            map_color: ${wood_map_color}
+        loot:
+          template: default:loot_table/self
+        state:
+          template: default:block_state/pillar
+          arguments:
+            pillar_model: betterend:block/${tree_type}_stripped_log
+            pillar_texture_top: betterend:block/${tree_type}_stripped_log_top
+            pillar_texture_side: betterend:block/${tree_type}_stripped_log_side
+      betterend:${tree_type}_bark:
+        behavior:
+          type: strippable_block
+          stripped: betterend:${tree_type}_stripped_bark
+        settings:
+          template: default:settings/wood
+          merges:
+            map_color: ${wood_map_color}
+        loot:
+          template: default:loot_table/self
+        # Mod bark model is cube_column with end == side == log side texture
+        # (generated/assets/betterend/models/block/mossy_glowshroom_bark.json), so all six
+        # faces are identical and one solid state is correct.
+        state:
+          auto_state: solid
+          model: betterend:block/${tree_type}_bark
+          texture: betterend:block/${tree_type}_log_side
+      betterend:${tree_type}_stripped_bark:
+        settings:
+          template: default:settings/wood
+          merges:
+            map_color: ${wood_map_color}
+        loot:
+          template: default:loot_table/self
+        state:
+          auto_state: solid
+          model: betterend:block/${tree_type}_stripped_bark
+          texture: betterend:block/${tree_type}_stripped_log_side
+      betterend:${tree_type}_planks:
+        settings:
+          template: default:settings/planks
+          merges:
+            map_color: ${planks_map_color}
+        loot:
+          template: default:loot_table/self
+        state:
+          auto_state: solid
+          texture: betterend:block/${tree_type}_planks
+    recipes:
+      # NO ENTRY RECIPE. The mod grows these logs from trees; nothing crafts one from vanilla
+      # material, so the family stays creative-only until the tree features land. Everything
+      # below is the mod's own, verbatim -- generated/data/betterend/recipe/<family>_{log,bark,
+      # stripped_log,stripped_bark,planks}.json.
+      betterend:${tree_type}_log_from_bark:
+        type: shaped
+        category: building
+        group: log
+        pattern:
+          - AA
+          - AA
+        ingredients:
+          A: betterend:${tree_type}_bark
+        result:
+          id: betterend:${tree_type}_log
+          count: 3
+      betterend:${tree_type}_bark:
+        type: shaped
+        category: building
+        group: bark
+        pattern:
+          - AA
+          - AA
+        ingredients:
+          A: betterend:${tree_type}_log
+        result:
+          id: betterend:${tree_type}_bark
+          count: 3
+      betterend:${tree_type}_stripped_log:
+        type: shaped
+        category: building
+        group: log
+        pattern:
+          - AA
+          - AA
+        ingredients:
+          A: betterend:${tree_type}_stripped_bark
+        result:
+          id: betterend:${tree_type}_stripped_log
+          count: 3
+      betterend:${tree_type}_stripped_bark:
+        type: shaped
+        category: building
+        group: bark
+        pattern:
+          - AA
+          - AA
+        ingredients:
+          A: betterend:${tree_type}_stripped_log
+        result:
+          id: betterend:${tree_type}_stripped_bark
+          count: 3
+      betterend:${tree_type}_planks:
+        type: shapeless
+        category: building
+        group: planks
+        ingredients:
+          - '#betterend:${tree_type}_logs'
+        result:
+          id: betterend:${tree_type}_planks
+          count: 4
+
+# --- family-structural blocks -------------------------------------------------------------
+# None of the eight has a crafting recipe in generated/data/betterend/recipe/; they are all
+# worldgen output of their tree feature. No `recipes:` section on purpose.
+
+items:
+  betterend:mossy_glowshroom_cap:
+    category: betterend:woods
+    data:
+      item_name: '<!i><white><lang:item.betterend.mossy_glowshroom_cap></white>'
+    model: betterend:block/mossy_glowshroom_cap
+    behavior:
+      type: block_item
+      block: betterend:mossy_glowshroom_cap
+  betterend:mossy_glowshroom_hymenophore:
+    category: betterend:woods
+    data:
+      item_name: '<!i><white><lang:item.betterend.mossy_glowshroom_hymenophore></white>'
+    model: betterend:block/mossy_glowshroom_hymenophore_1
+    behavior:
+      type: block_item
+      block: betterend:mossy_glowshroom_hymenophore
+  betterend:mossy_glowshroom_fur:
+    category: betterend:woods
+    data:
+      item_name: '<!i><white><lang:item.betterend.mossy_glowshroom_fur></white>'
+    model: betterend:block/mossy_glowshroom_fur
+    behavior:
+      type: block_item
+      block: betterend:mossy_glowshroom_fur
+  betterend:end_lotus_stem:
+    category: betterend:woods
+    data:
+      item_name: '<!i><white><lang:item.betterend.end_lotus_stem></white>'
+    model: betterend:block/end_lotus_stem
+    behavior:
+      type: block_item
+      block: betterend:end_lotus_stem
+  betterend:umbrella_tree_membrane:
+    category: betterend:woods
+    data:
+      item_name: '<!i><white><lang:item.betterend.umbrella_tree_membrane></white>'
+    model: betterend:block/umbrella_tree_membrane
+    behavior:
+      type: block_item
+      block: betterend:umbrella_tree_membrane
+  betterend:umbrella_tree_cluster:
+    category: betterend:woods
+    data:
+      item_name: '<!i><white><lang:item.betterend.umbrella_tree_cluster></white>'
+    model: betterend:block/umbrella_tree_cluster
+    behavior:
+      type: block_item
+      block: betterend:umbrella_tree_cluster
+  betterend:umbrella_tree_cluster_empty:
+    category: betterend:woods
+    data:
+      item_name: '<!i><white><lang:item.betterend.umbrella_tree_cluster_empty></white>'
+    model: betterend:block/umbrella_tree_cluster_empty
+    behavior:
+      type: block_item
+      block: betterend:umbrella_tree_cluster_empty
+  betterend:jellyshroom_cap_purple:
+    category: betterend:woods
+    data:
+      item_name: '<!i><white><lang:item.betterend.jellyshroom_cap_purple></white>'
+    model: betterend:block/jellyshroom_cap_purple
+    behavior:
+      type: block_item
+      block: betterend:jellyshroom_cap_purple
+  # Not a block item: the mod's only source is right-clicking an umbrella_tree_cluster with a
+  # glass bottle (UmbrellaTreeClusterBlock.java:52-77). Nutrition/saturation from
+  # EndItems.java:113-119 registerEndDrink("umbrella_cluster_juice", 5, 0.7F).
+  betterend:umbrella_cluster_juice:
+    category: betterend:woods
+    settings:
+      food:
+        nutrition: 5
+        saturation: 0.7
+    data:
+      item_name: '<!i><white><lang:item.betterend.umbrella_cluster_juice></white>'
+    texture: betterend:item/umbrella_cluster_juice
+
+blocks:
+  # MossyGlowshroomCapBlock.java:15-34 -- one boolean TRANSITION, true where the cap sits directly
+  # on a glowshroom log. CE has no placement hook for it, so the state exists but is reachable
+  # only from worldgen or commands; the mod's own transition model is kept so the tree feature
+  # can use it when it lands.
+  betterend:mossy_glowshroom_cap:
+    settings:
+      template: default:settings/wood
+      merges:
+        map_color: color_gray
+    loot:
+      template: default:loot_table/self
+    state:
+      properties:
+        transition:
+          type: boolean
+          default: false
+      appearances:
+        cap:
+          auto_state: solid
+          model: betterend:block/mossy_glowshroom_cap
+          texture: betterend:block/mossy_glowshroom_cap
+        transition:
+          auto_state: solid
+          model: betterend:block/mossy_glowshroom_cap_transition
+      variants:
+        transition=false:
+          appearance: cap
+        transition=true:
+          appearance: transition
+
+  # GlowingHymenophoreBlock: instabreak, axe-mineable, light 15 (BlockTraits.PLANT_LIGHT_BLOCK,
+  # EndWoodBlocks.java:105-112). Four hand-authored cube_noshade models ship with the mod; one
+  # weighted appearance costs one visual state no matter how many models it holds
+  # (AbstractBlockManager.java:615-648).
+  betterend:mossy_glowshroom_hymenophore:
+    settings:
+      template: default:hardness/none
+      merges:
+        luminance: 15
+        tags:
+          - minecraft:mineable/axe
+        # EndWoodBlocks.java:103-104 names this block's sound explicitly: WART_BLOCK. There is no
+        # default:sound/wart_block template (block_settings.yml:162-219 lists them all), so the five
+        # events are spelled out; `sounds:` is BlockSettingsModifiers.java:126.
+        sounds:
+          break: minecraft:block.nether_wart.break
+          step: minecraft:block.nether_wart.step
+          place: minecraft:block.nether_wart.place
+          hit: minecraft:block.nether_wart.hit
+          fall: minecraft:block.nether_wart.fall
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      models:
+        - path: betterend:block/mossy_glowshroom_hymenophore_1
+          weight: 1
+        - path: betterend:block/mossy_glowshroom_hymenophore_2
+          weight: 1
+        - path: betterend:block/mossy_glowshroom_hymenophore_3
+          weight: 1
+        - path: betterend:block/mossy_glowshroom_hymenophore_4
+          weight: 1
+
+  # FurBlock (blocks/basis/FurBlock.java:33-40) is a BaseAttachedBlock -- six FACING values plus
+  # waterlogged. The feature only ever attaches it to the HYMENOPHORE, not the cap:
+  # MossyGlowshroomFeature.java:150-163 branches on `getState() == MOSSY_GLOWSHROOM_HYMENOPHORE`
+  # and :160-163 places the downward-facing fur under the lowest hymenophore layer. So it ships as
+  # one downward state on the tripwire pool, supported by the hymenophore.
+  # LeavesBlockTrait.withColor(COLOR_LIGHT_BLUE, 15, ...) (EndWoodBlocks.java:114-119) supplies the
+  # light level and map colour.
+  betterend:mossy_glowshroom_fur:
+    behavior:
+      type: hanging_block
+      above_blocks:
+        - betterend:mossy_glowshroom_hymenophore
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        luminance: 15
+        map_color: color_light_blue
+        push_reaction: destroy
+        tags:
+          - minecraft:mineable/hoe
+          - minecraft:sword_efficient
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: lower_tripwire
+      model: betterend:block/mossy_glowshroom_fur
+
+  # EndLotusStemBlock.java:34-57 carries FACING (6) + SHAPE (3) + LEAF + WATERLOGGED. CE has no
+  # behaviour for the mod's leaf/shape growth, so this ships as a plain three-axis pillar of the
+  # mod's own 4x16x4 stem model; the leaf and top variants are not reachable.
+  # EndLotusStemBlock.java:33,105-107 -- box(6,*,6,10,*,10) on the axis, i.e. a 4px stem, NOT a cube.
+  # It used to ride `auto_state: solid` (note_block / mushroom blocks) through default:settings/wood,
+  # which made it a full solid cube that also OCCLUDED and SUFFOCATED. Collision is not overridable
+  # (BukkitBlockShape.java:20-26 delegates to the donor state), so the fix is a donor whose shape is
+  # already a 4px axis rod: weathered_copper_chain, freed by internal/mappings.yml:4302+ onto its
+  # waxed twin, in no AutoStateGroup and claimed by no pack on this server.
+  # can_occlude is forced false to match: EndLotusStemBlock never calls noOcclusion() in the mod, but
+  # a 4px stem inheriting solid_1x1x1's occlusion culled its neighbours' faces and suffocated players.
+  betterend:end_lotus_stem:
+    settings:
+      template: default:settings/wood
+      merges:
+        map_color: color_light_blue
+        can_occlude: false
+    loot:
+      template: default:loot_table/self
+    state:
+      properties:
+        axis:
+          type: axis
+          default: y
+      appearances:
+        axisY:
+          state: weathered_copper_chain[axis=y,waterlogged=false]
+          model: betterend:block/end_lotus_stem
+        axisX:
+          state: weathered_copper_chain[axis=x,waterlogged=false]
+          model:
+            path: betterend:block/end_lotus_stem
+            x: 90
+            y: 90
+        axisZ:
+          state: weathered_copper_chain[axis=z,waterlogged=false]
+          model:
+            path: betterend:block/end_lotus_stem
+            x: 90
+      variants:
+        axis=x:
+          appearance: axisX
+        axis=y:
+          appearance: axisY
+        axis=z:
+          appearance: axisZ
+
+  # UmbrellaTreeMembraneBlock: eight COLOR values, one baked texture each, painted by the feature
+  # as a gradient across the canopy dome (EndWoodBlocks.java:264-283). CE cannot drive a per-block
+  # gradient, and randomising the eight would speckle the dome, so the canopy ships uniformly in
+  # colour 0 -- the shade the mod itself delegates the inventory item to.
+  betterend:umbrella_tree_membrane:
+    settings:
+      template: default:settings/leaves
+      merges:
+        map_color: color_blue
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      model: betterend:block/umbrella_tree_membrane
+      texture: betterend:block/umbrella_tree_membrane_0
+
+  # A plain full cube in the mod too (cube_all model, nether_wart_block properties, light 15) --
+  # EndWoodBlocks.java:285-295. Right-clicking with a glass bottle fills a juice and leaves the
+  # empty cluster behind: UmbrellaTreeClusterBlock.java:52-77.
+  betterend:umbrella_tree_cluster:
+    settings:
+      template: default:settings/wood
+      merges:
+        hardness: 1.0
+        luminance: 15
+        map_color: color_purple
+    loot:
+      template: default:loot_table/self
+    events:
+      - on: right_click
+        conditions:
+          - type: match_item
+            id: minecraft:glass_bottle
+        functions:
+          - type: drop_loot
+            to_inventory: true
+            loot:
+              pools:
+                - rolls: 1
+                  entries:
+                    - type: item
+                      item: betterend:umbrella_cluster_juice
+          - type: set_count
+            add: true
+            count: -1
+          - type: transform_block
+            block: betterend:umbrella_tree_cluster_empty
+          - type: play_sound
+            sound: minecraft:item.bottle.fill
+            x: <arg:block.block_x> + 0.5
+            y: <arg:block.block_y> + 0.5
+            z: <arg:block.block_z> + 0.5
+          - type: swing_hand
+          - type: cancel_event
+    state:
+      auto_state: solid
+      model: betterend:block/umbrella_tree_cluster
+      texture: betterend:block/umbrella_tree_cluster
+
+  # The mod regrows this into a full cluster on a random tick (EndWoodBlocks.java:296-305
+  # .randomTicks()); CE has no random-tick regrow behaviour, so it stays empty.
+  betterend:umbrella_tree_cluster_empty:
+    settings:
+      template: default:settings/wood
+      merges:
+        hardness: 1.0
+        map_color: color_purple
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      model: betterend:block/umbrella_tree_cluster_empty
+      texture: betterend:block/umbrella_tree_cluster_empty
+
+  # Slime-block properties (EndWoodBlocks.java:314-320). block/jellyshroom_cap is greyscale and
+  # the mod tints it client-side over COLOR 0..7; CE has no per-block tint for a solid, so the
+  # shade the world actually shows (COLOR=4 -> rgb 187,61,255) is baked into
+  # textures/block/jellyshroom_cap_purple.png.
+  betterend:jellyshroom_cap_purple:
+    settings:
+      # transparent, not solid: the mod copies SLIME_BLOCK (which is noOcclusion / not suffocating /
+      # not view-blocking) and adds RENDER_LAYER.translucent, and the baked texture really is
+      # alpha 170. default:settings/solid_1x1x1 would suffocate players and swallow light.
+      template: default:settings/transparent_1x1x1
+      merges:
+        hardness: 0.0
+        map_color: color_purple
+        push_reaction: destroy
+        tags:
+          - minecraft:mineable/hoe
+        sounds:
+          break: minecraft:block.slime_block.break
+          step: minecraft:block.slime_block.step
+          place: minecraft:block.slime_block.place
+          hit: minecraft:block.slime_block.hit
+          fall: minecraft:block.slime_block.fall
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      model: betterend:block/jellyshroom_cap_purple
+      texture: betterend:block/jellyshroom_cap_purple

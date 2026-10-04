@@ -1,0 +1,561 @@
+# BetterEnd B2 -- leaves and saplings for all 10 wood families.
+# Worldgen-only: the mod defines NO recipe for any leaf or sapling (generated/data/betterend/recipe/
+# contains zero *_leaves / *_sapling entries), so none is declared here.
+#
+# DEBT (sapling growth): CE's `sapling_block` behavior requires a non-null feature|configured_feature|
+# structure id (SaplingBlockBehavior.Factory). Configured features land in the terrain pass, so these
+# saplings ship as inert bushes; the upgrade is one extra behavior entry per sapling, nothing else.
+#
+# DEBT (SAPLING pool): AutoStateGroup.java:57 gives SAPLING only 8 candidates and the pool is NOT
+# extendable -- only 16 vanilla sapling states exist and 8 are already mapped, the other 8 being the
+# visual anchors. All 9 saplings therefore ride LOWER_TRIPWIRE (63 candidates). No
+# `block_state_mappings` section is written: there is nothing left to map.
+
+# ---------------------------------------------------------------------------
+# Cube leaves (6). TintedParticleLeavesBlock / HelixTreeLeavesBlock -- a plain full cube.
+# map_color is the mod's own LeavesBlockTrait.withColor(MapColor...) -- EndWoodBlocks.java:130-348.
+# Shipped NON-tintable (leaves_tintable: false): the mod's value is a MapColor (minimap + particle),
+# not a foliage tint, and CE has no per-block tint source for a leaf. 2 candidates each, out of the
+# 52 NON_TINTABLE_LEAVES + 52 WATERLOGGED_NON_TINTABLE_LEAVES pools (12 of 104 spent).
+# `leaves_block` behavior is deliberately omitted: the template already pins persistent=true,
+# distance=7, so LeavesBlockBehavior would have nothing to decay.
+# ---------------------------------------------------------------------------
+config_factory#b2_cube_leaves:
+  instances:
+    - family: pythadendron
+      leaf_color: color_magenta
+      leaf_texture: betterend:block/pythadendron_leaves
+    - family: lacugrove
+      leaf_color: color_cyan
+      leaf_texture: betterend:block/lacugrove_leaves
+    - family: dragon_tree
+      leaf_color: color_magenta
+      leaf_texture: betterend:block/dragon_tree_leaves
+    - family: tenanea
+      leaf_color: color_pink
+      leaf_texture: betterend:block/tenanea_leaves
+    # HelixTreeLeavesBlock carries a code-side COLOR 0-7 gradient with no per-level texture;
+    # EndWoodBlocks.java:243-252 states 4 is the shade a player actually sees, so one appearance is faithful.
+    - family: helix_tree
+      leaf_color: color_orange
+      leaf_texture: betterend:block/helix_tree_leaves
+    # lucernia_leaves has 4 random textures (_1.._4) and no generated blockstate json; _1 is the one the
+    # mod itself picks for the item (EndWoodBlocks.java:350). default:block_state/leaves exposes a single
+    # texture, so the other 3 are dropped -- restoring them means hand-writing __leaves__ for this one id.
+    - family: lucernia
+      leaf_color: color_orange
+      leaf_texture: betterend:block/lucernia_leaves_1
+  blueprint:
+    items:
+      betterend:${family}_leaves:
+        category: betterend:foliage
+        settings:
+          tags:
+            - minecraft:leaves
+            - betterend:${family}_leaves
+        data:
+          item_name: '<!i><white><lang:item.betterend.${family}_leaves></white>'
+        model: betterend:block/${family}_leaves
+        behavior:
+          type: block_item
+          block: betterend:${family}_leaves
+    blocks:
+      betterend:${family}_leaves:
+        settings:
+          template: default:settings/leaves
+          merges:
+            map_color: ${leaf_color}
+            tags:
+              - betterend:${family}_leaves
+        loot:
+          template: default:loot_table/leaves
+          arguments:
+            leaves: betterend:${family}_leaves
+            sapling: betterend:${family}_sapling
+        state:
+          template: default:block_state/leaves
+          arguments:
+            leaves_tintable: false
+            leaves_model: betterend:block/${family}_leaves
+            leaves_texture: ${leaf_texture}
+
+# ---------------------------------------------------------------------------
+# Fur leaves (3). FurBlock is a 6-way face-attached, pass-through decoration -- NOT a cube, so it
+# cannot use the leaves pool (leaves states fully occlude and would hide the mesh).
+# behavior directional_attached_block binds a 6-direction `facing`
+# (DirectionalAttachedBlockBehavior.Factory:105-116, reading "facing" plus attached_block(_tag)s via
+# AbstractCanSurviveBlockBehavior.readTagsAndState). `blacklist` defaults to true and both lists are
+# omitted, so it survives on any sturdy face -- FurBlock's own rule.
+# 6 appearances each = 18 of the 63 LOWER_TRIPWIRE candidates.
+# Rotations copied verbatim from generated/assets/betterend/blockstates/<id>.json.
+# A weighted `models:` list is ONE appearance and costs ONE candidate
+# (AbstractBlockManager.java:615-648), so the 9- and 3-way random variants are free.
+# Loot is self, not default:loot_table/leaves: the mod drops glowing_pillar_seed / nothing here and
+# those ids belong to other batches.
+# ---------------------------------------------------------------------------
+items:
+  betterend:tenanea_outer_leaves:
+    category: betterend:foliage
+    settings:
+      tags:
+        - minecraft:leaves
+        - betterend:tenanea_leaves
+    data:
+      item_name: '<!i><white><lang:item.betterend.tenanea_outer_leaves></white>'
+    texture: betterend:block/tenanea_outer_leaves
+    behavior:
+      type: block_item
+      block: betterend:tenanea_outer_leaves
+  betterend:lucernia_outer_leaves:
+    category: betterend:foliage
+    settings:
+      tags:
+        - minecraft:leaves
+        - betterend:lucernia_leaves
+    data:
+      item_name: '<!i><white><lang:item.betterend.lucernia_outer_leaves></white>'
+    texture: betterend:block/lucernia_outer_leaves_1
+    behavior:
+      type: block_item
+      block: betterend:lucernia_outer_leaves
+  betterend:glowing_pillar_leaves:
+    category: betterend:foliage
+    settings:
+      tags:
+        - minecraft:leaves
+    data:
+      item_name: '<!i><white><lang:item.betterend.glowing_pillar_leaves></white>'
+    texture: betterend:block/glowing_pillar_leaves
+    behavior:
+      type: block_item
+      block: betterend:glowing_pillar_leaves
+
+blocks:
+  # EndWoodBlocks.java:217-224 -- MapColor.COLOR_PINK, one creeping_moss-parented mesh, six facings.
+  betterend:tenanea_outer_leaves:
+    behaviors:
+      # DirectionalAttachedBlockBehavior.Factory:113 hardcodes the property name "facing" and reads
+      # it off `properties` below; the factory itself takes only attached_block(_tag)s + blacklist.
+      - type: directional_attached_block
+    settings:
+      template: default:settings/leaves
+      merges:
+        map_color: color_pink
+        tags:
+          - betterend:tenanea_leaves
+    loot:
+      template: default:loot_table/self
+    state:
+      properties:
+        facing:
+          type: 6-direction
+          default: up
+      appearances:
+        up:
+          auto_state: lower_tripwire
+          models:
+            - path: betterend:block/tenanea_outer_leaves_t0
+        down:
+          auto_state: lower_tripwire
+          models:
+            - path: betterend:block/tenanea_outer_leaves_t0
+              x: 180
+        north:
+          auto_state: lower_tripwire
+          models:
+            - path: betterend:block/tenanea_outer_leaves_t0
+              x: 90
+        south:
+          auto_state: lower_tripwire
+          models:
+            - path: betterend:block/tenanea_outer_leaves_t0
+              x: 90
+              y: 180
+        east:
+          auto_state: lower_tripwire
+          models:
+            - path: betterend:block/tenanea_outer_leaves_t0
+              x: 90
+              y: 90
+        west:
+          auto_state: lower_tripwire
+          models:
+            - path: betterend:block/tenanea_outer_leaves_t0
+              x: 90
+              y: 270
+      variants:
+        facing=up:
+          appearance: up
+        facing=down:
+          appearance: down
+        facing=north:
+          appearance: north
+        facing=south:
+          appearance: south
+        facing=east:
+          appearance: east
+        facing=west:
+          appearance: west
+
+  # EndWoodBlocks.java:355-359 -- MapColor.COLOR_RED. t0-t8 are the four side faces (bulb_moss parents,
+  # 9 weighted variants); t9/t10 are the up/down faces (creeping_moss parent, 2 variants).
+  betterend:lucernia_outer_leaves:
+    behaviors:
+      # DirectionalAttachedBlockBehavior.Factory:113 hardcodes the property name "facing" and reads
+      # it off `properties` below; the factory itself takes only attached_block(_tag)s + blacklist.
+      - type: directional_attached_block
+    settings:
+      template: default:settings/leaves
+      merges:
+        map_color: color_red
+        tags:
+          - betterend:lucernia_leaves
+    loot:
+      template: default:loot_table/self
+    state:
+      properties:
+        facing:
+          type: 6-direction
+          default: up
+      appearances:
+        up:
+          auto_state: lower_tripwire
+          models:
+            - path: betterend:block/lucernia_outer_leaves_t9
+            - path: betterend:block/lucernia_outer_leaves_t10
+        down:
+          auto_state: lower_tripwire
+          models:
+            - path: betterend:block/lucernia_outer_leaves_t9
+              x: 180
+            - path: betterend:block/lucernia_outer_leaves_t10
+              x: 180
+        south:
+          auto_state: lower_tripwire
+          models:
+            - path: betterend:block/lucernia_outer_leaves_t0
+            - path: betterend:block/lucernia_outer_leaves_t1
+            - path: betterend:block/lucernia_outer_leaves_t2
+            - path: betterend:block/lucernia_outer_leaves_t3
+            - path: betterend:block/lucernia_outer_leaves_t4
+            - path: betterend:block/lucernia_outer_leaves_t5
+            - path: betterend:block/lucernia_outer_leaves_t6
+            - path: betterend:block/lucernia_outer_leaves_t7
+            - path: betterend:block/lucernia_outer_leaves_t8
+        north:
+          auto_state: lower_tripwire
+          models:
+            - path: betterend:block/lucernia_outer_leaves_t0
+              y: 180
+            - path: betterend:block/lucernia_outer_leaves_t1
+              y: 180
+            - path: betterend:block/lucernia_outer_leaves_t2
+              y: 180
+            - path: betterend:block/lucernia_outer_leaves_t3
+              y: 180
+            - path: betterend:block/lucernia_outer_leaves_t4
+              y: 180
+            - path: betterend:block/lucernia_outer_leaves_t5
+              y: 180
+            - path: betterend:block/lucernia_outer_leaves_t6
+              y: 180
+            - path: betterend:block/lucernia_outer_leaves_t7
+              y: 180
+            - path: betterend:block/lucernia_outer_leaves_t8
+              y: 180
+        east:
+          auto_state: lower_tripwire
+          models:
+            - path: betterend:block/lucernia_outer_leaves_t0
+              y: 270
+            - path: betterend:block/lucernia_outer_leaves_t1
+              y: 270
+            - path: betterend:block/lucernia_outer_leaves_t2
+              y: 270
+            - path: betterend:block/lucernia_outer_leaves_t3
+              y: 270
+            - path: betterend:block/lucernia_outer_leaves_t4
+              y: 270
+            - path: betterend:block/lucernia_outer_leaves_t5
+              y: 270
+            - path: betterend:block/lucernia_outer_leaves_t6
+              y: 270
+            - path: betterend:block/lucernia_outer_leaves_t7
+              y: 270
+            - path: betterend:block/lucernia_outer_leaves_t8
+              y: 270
+        west:
+          auto_state: lower_tripwire
+          models:
+            - path: betterend:block/lucernia_outer_leaves_t0
+              y: 90
+            - path: betterend:block/lucernia_outer_leaves_t1
+              y: 90
+            - path: betterend:block/lucernia_outer_leaves_t2
+              y: 90
+            - path: betterend:block/lucernia_outer_leaves_t3
+              y: 90
+            - path: betterend:block/lucernia_outer_leaves_t4
+              y: 90
+            - path: betterend:block/lucernia_outer_leaves_t5
+              y: 90
+            - path: betterend:block/lucernia_outer_leaves_t6
+              y: 90
+            - path: betterend:block/lucernia_outer_leaves_t7
+              y: 90
+            - path: betterend:block/lucernia_outer_leaves_t8
+              y: 90
+      variants:
+        facing=up:
+          appearance: up
+        facing=down:
+          appearance: down
+        facing=north:
+          appearance: north
+        facing=south:
+          appearance: south
+        facing=east:
+          appearance: east
+        facing=west:
+          appearance: west
+
+  # EndMushroomBlocks.java:126-131 -- MapColor.COLOR_ORANGE, no light of its own (the glow belongs to
+  # glowing_pillar_luminophor, B6). up/down use the hand-authored glowing_pillar_leaves_up mesh.
+  betterend:glowing_pillar_leaves:
+    behaviors:
+      # DirectionalAttachedBlockBehavior.Factory:113 hardcodes the property name "facing" and reads
+      # it off `properties` below; the factory itself takes only attached_block(_tag)s + blacklist.
+      - type: directional_attached_block
+    settings:
+      template: default:settings/leaves
+      merges:
+        map_color: color_orange
+    loot:
+      template: default:loot_table/self
+    state:
+      properties:
+        facing:
+          type: 6-direction
+          default: up
+      appearances:
+        up:
+          auto_state: lower_tripwire
+          models:
+            - path: betterend:block/glowing_pillar_leaves_up
+        down:
+          auto_state: lower_tripwire
+          models:
+            - path: betterend:block/glowing_pillar_leaves_up
+              x: 180
+        south:
+          auto_state: lower_tripwire
+          models:
+            - path: betterend:block/glowing_pillar_leaves_t0
+            - path: betterend:block/glowing_pillar_leaves_t1
+            - path: betterend:block/glowing_pillar_leaves_t2
+        north:
+          auto_state: lower_tripwire
+          models:
+            - path: betterend:block/glowing_pillar_leaves_t0
+              y: 180
+            - path: betterend:block/glowing_pillar_leaves_t1
+              y: 180
+            - path: betterend:block/glowing_pillar_leaves_t2
+              y: 180
+        east:
+          auto_state: lower_tripwire
+          models:
+            - path: betterend:block/glowing_pillar_leaves_t0
+              y: 270
+            - path: betterend:block/glowing_pillar_leaves_t1
+              y: 270
+            - path: betterend:block/glowing_pillar_leaves_t2
+              y: 270
+        west:
+          auto_state: lower_tripwire
+          models:
+            - path: betterend:block/glowing_pillar_leaves_t0
+              y: 90
+            - path: betterend:block/glowing_pillar_leaves_t1
+              y: 90
+            - path: betterend:block/glowing_pillar_leaves_t2
+              y: 90
+      variants:
+        facing=up:
+          appearance: up
+        facing=down:
+          appearance: down
+        facing=north:
+          appearance: north
+        facing=south:
+          appearance: south
+        facing=east:
+          appearance: east
+        facing=west:
+          appearance: west
+
+# ---------------------------------------------------------------------------
+# Land saplings (8 of the 9; hydralux_sapling is a water seed and is defined separately at the
+# bottom of this file). SurvivesOnBlockTrait.withTag(...) becomes bush_block with the tag's literal members,
+# read from generated/data/betterend/tags/block/survives_on/*.json. bottom_blocks accepts ids of
+# custom blocks that do not exist yet -- AbstractCanSurviveBlockBehavior.readTagsAndState:110-124
+# resolves them through a LazyReference -- so naming the B4 terrain ids now is safe.
+# liquid_flowable_block is paired with bush_block exactly as CE's own fairy_flower.yml:18-24 does.
+# map_color from SaplingBlockTrait.withColor(...) -- EndSaplingBlocks.java:78-121.
+# ---------------------------------------------------------------------------
+config_factory#b2_saplings:
+  instances:
+    # SaplingBlockTrait.withLight(7), EndSaplingBlocks.java:74; no withColor, so map_color stays `plant`.
+    # The mod's model parents minecraft:block/cross_emissive (a bclib client parent that is not under
+    # Reference/); the emissive overlay mossy_glowshroom_sapling_emissive.png is dropped, plain cross used.
+    - id: mossy_glowshroom_sapling
+      sapling_texture: betterend:block/mossy_glowshroom_sapling
+      item_texture: betterend:block/mossy_glowshroom_sapling
+      # SaplingBlockTrait.withLight(7), no withColor -- EndSaplingBlocks.java:74.
+      map_color: plant
+      luminance: 7
+      soils:
+        - betterend:end_moss
+        - betterend:end_mycelium
+        - betterend:pallidium_full
+        - betterend:pallidium_heavy
+        - betterend:pallidium_thin
+        - betterend:pallidium_tiny
+        - betterend:sangnum
+    - id: pythadendron_sapling
+      sapling_texture: betterend:block/pythadendron_sapling
+      item_texture: betterend:block/pythadendron_sapling
+      map_color: color_purple
+      luminance: 0
+      soils:
+        - betterend:chorus_nylium
+    - id: lacugrove_sapling
+      sapling_texture: betterend:block/lacugrove_sapling
+      item_texture: betterend:block/lacugrove_sapling
+      map_color: color_cyan
+      luminance: 0
+      soils:
+        - betterend:end_moss
+        - betterend:endstone_dust
+    - id: dragon_tree_sapling
+      sapling_texture: betterend:block/dragon_tree_sapling
+      item_texture: betterend:block/dragon_tree_sapling
+      map_color: color_magenta
+      luminance: 0
+      soils:
+        - betterend:shadow_grass
+    - id: tenanea_sapling
+      sapling_texture: betterend:block/tenanea_sapling
+      item_texture: betterend:block/tenanea_sapling
+      map_color: color_pink
+      luminance: 0
+      soils:
+        - betterend:pink_moss
+    - id: helix_tree_sapling
+      sapling_texture: betterend:block/helix_tree_sapling
+      item_texture: betterend:block/helix_tree_sapling
+      map_color: color_orange
+      luminance: 0
+      soils:
+        - betterend:amber_moss
+    - id: umbrella_tree_sapling
+      sapling_texture: betterend:block/umbrella_tree_sapling
+      item_texture: betterend:block/umbrella_tree_sapling
+      map_color: color_blue
+      luminance: 0
+      soils:
+        - betterend:jungle_moss
+    - id: lucernia_sapling
+      sapling_texture: betterend:block/lucernia_sapling
+      item_texture: betterend:block/lucernia_sapling
+      map_color: color_orange
+      luminance: 0
+      soils:
+        - betterend:pallidium_full
+        - betterend:pallidium_heavy
+        - betterend:pallidium_thin
+        - betterend:pallidium_tiny
+        - betterend:rutiscus
+        - betterend:sangnum
+  blueprint:
+    items:
+      betterend:${id}:
+        category: betterend:foliage
+        settings:
+          tags:
+            - minecraft:saplings
+        data:
+          item_name: '<!i><white><lang:item.betterend.${id}></white>'
+        texture: ${item_texture}
+        behavior:
+          type: block_item
+          block: betterend:${id}
+    blocks:
+      betterend:${id}:
+        behaviors:
+          - type: liquid_flowable_block
+          - type: bush_block
+            bottom_blocks: ${soils}
+        settings:
+          template: default:settings/sapling
+          merges:
+            map_color: ${map_color}
+            luminance: ${luminance}
+        loot:
+          template: default:loot_table/self
+        state:
+          # LOWER_TRIPWIRE, not SAPLING: that pool holds 8 and cannot be extended (see header).
+          auto_state: lower_tripwire
+          models:
+            - path: betterend:block/${id}
+              generation:
+                parent: minecraft:block/cross
+                textures:
+                  cross: ${sapling_texture}
+
+# ---------------------------------------------------------------------------
+# hydralux_sapling -- the one WATER seed, kept out of the sapling factory above.
+# EndSaplingBlocks.java:124-143: WaterSeedBlockTrait.withColor(COLOR_LIGHT_BLUE, 0, false) +
+# SurvivesOnBlockTrait.withTag(survives_on/sulphuric_rock) + a 4-stage AGE dispatch that ends in
+# betterend:hydralux (a B4 id). It ships single-stage on the age-0 mesh; crop_block would dead-end
+# without that target.
+# It deliberately has NO liquid_flowable_block: that behavior's placeLiquid
+# (LiquidFlowableBlockBehavior.java:32-46) swaps the block out for the fluid, so on an underwater
+# plant the first water update after worldgen would delete it. The land saplings keep it.
+# DEBT: no waterlogged appearance. Waterlogged rendering needs a vanilla waterlogged host state and
+# LOWER_TRIPWIRE has none, so the block sits in a dry pocket underwater.
+# EndSaplingBlocks.java:142 -- the held item is betterend:item/hydralux_spore, not the block mesh.
+# ---------------------------------------------------------------------------
+items#b2_hydralux:
+  betterend:hydralux_sapling:
+    category: betterend:foliage
+    settings:
+      tags:
+        - minecraft:saplings
+    data:
+      item_name: '<!i><white><lang:item.betterend.hydralux_sapling></white>'
+    texture: betterend:item/hydralux_spore
+    behavior:
+      type: block_item
+      block: betterend:hydralux_sapling
+
+blocks#b2_hydralux:
+  betterend:hydralux_sapling:
+    behaviors:
+      - type: bush_block
+        bottom_blocks:
+          - betterend:sulphuric_rock
+    settings:
+      template: default:settings/sapling
+      merges:
+        map_color: color_light_blue
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: lower_tripwire
+      models:
+        - path: betterend:block/hydralux_sapling
+          generation:
+            parent: minecraft:block/cross
+            textures:
+              cross: betterend:block/hydralux_sapling_1

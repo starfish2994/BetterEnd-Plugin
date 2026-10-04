@@ -1,0 +1,345 @@
+# ponytail: slab/stairs omitted until CraftEngine offers isolated shape states; shared vanilla states corrupt vanilla rendering.
+items:
+  betterend:mossy_obsidian:
+    category: betterend:misc
+    data:
+      item_name: '<!i><white><lang:item.betterend.mossy_obsidian></white>'
+    model: betterend:block/mossy_obsidian
+    behavior:
+      type: block_item
+      block: betterend:mossy_obsidian
+  betterend:mossy_dragon_bone:
+    category: betterend:misc
+    data:
+      item_name: '<!i><white><lang:item.betterend.mossy_dragon_bone></white>'
+    model: betterend:block/mossy_dragon_bone_ver
+    behavior:
+      type: block_item
+      block: betterend:mossy_dragon_bone
+  betterend:brimstone:
+    category: betterend:misc
+    data:
+      item_name: '<!i><white><lang:item.betterend.brimstone></white>'
+    model: betterend:block/brimstone_normal
+    behavior:
+      type: block_item
+      block: betterend:brimstone
+  betterend:missing_tile:
+    category: betterend:misc
+    data:
+      item_name: '<!i><white><lang:item.betterend.missing_tile></white>'
+    model: betterend:block/missing_tile
+    behavior:
+      type: block_item
+      block: betterend:missing_tile
+  betterend:endstone_dust:
+    category: betterend:misc
+    data:
+      item_name: '<!i><white><lang:item.betterend.endstone_dust></white>'
+    model: betterend:block/endstone_dust
+    behavior:
+      type: block_item
+      block: betterend:endstone_dust
+  betterend:dragon_bone_block:
+    category: betterend:misc
+    data:
+      item_name: '<!i><white><lang:item.betterend.dragon_bone_block></white>'
+    model: betterend:block/dragon_bone_block
+    behavior:
+      type: block_item
+      block: betterend:dragon_bone_block
+  betterend:ender_ore:
+    category: betterend:misc
+    data:
+      item_name: '<!i><white><lang:item.betterend.ender_ore></white>'
+    model: betterend:block/ender_ore
+    behavior:
+      type: block_item
+      block: betterend:ender_ore
+  betterend:amber_ore:
+    category: betterend:misc
+    data:
+      item_name: '<!i><white><lang:item.betterend.amber_ore></white>'
+    model: betterend:block/amber_ore
+    behavior:
+      type: block_item
+      block: betterend:amber_ore
+  betterend:ender_shard:
+    category: betterend:misc
+    data:
+      item_name: '<!i><white><lang:item.betterend.ender_shard></white>'
+    texture: betterend:item/ender_shard
+  betterend:raw_amber:
+    category: betterend:misc
+    data:
+      item_name: '<!i><white><lang:item.betterend.raw_amber></white>'
+    texture: betterend:item/raw_amber
+blocks:
+  betterend:mossy_obsidian:
+    settings:
+      template:
+        - default:sound/stone
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 3.0
+        resistance: 1200.0
+        instrument: basedrum
+        map_color: 29
+        correct_tools: ['#minecraft:pickaxes']
+        required_break_power: 3
+        tags: [minecraft:mineable/pickaxe, minecraft:dragon_immune]
+    # Mod truth: EndStoneBlocks.java:74 .dropWithSilktouch(Blocks.OBSIDIAN).
+    # default:loot_table/self would have made obsidian renewable.
+    # default:loot_table/ore is wrong here: it also applies apply_bonus/ore_drops.
+    loot:
+      pools:
+        - rolls: 1
+          conditions:
+            - type: survives_explosion
+          entries:
+            - type: alternatives
+              children:
+                - type: item
+                  item: betterend:mossy_obsidian
+                  conditions:
+                    - type: enchantment
+                      predicate: minecraft:silk_touch>=1
+                - type: item
+                  item: minecraft:obsidian
+    state:
+      auto_state: solid
+      model: betterend:block/mossy_obsidian
+  betterend:mossy_dragon_bone:
+    settings:
+      template:
+        - default:sound/stone
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 0.5
+        resistance: 6.0
+        instrument: xylophone
+        map_color: 2
+        correct_tools: ['#minecraft:pickaxes']
+        required_break_power: 1
+        tags: [minecraft:mineable/pickaxe]
+    # Mod truth: EndStoneBlocks.java:113 .dropWithSilktouch(DRAGON_BONE_BLOCK).
+    loot:
+      pools:
+        - rolls: 1
+          conditions:
+            - type: survives_explosion
+          entries:
+            - type: alternatives
+              children:
+                - type: item
+                  item: betterend:mossy_dragon_bone
+                  conditions:
+                    - type: enchantment
+                      predicate: minecraft:silk_touch>=1
+                - type: item
+                  item: betterend:dragon_bone_block
+    state:
+      properties:
+        axis:
+          type: axis
+          default: y
+      appearances:
+        axisX:
+          auto_state: solid
+          model:
+            path: betterend:block/mossy_dragon_bone_hor
+            y: 90
+        axisY:
+          auto_state: solid
+          model: betterend:block/mossy_dragon_bone_ver
+        axisZ:
+          auto_state: solid
+          model: betterend:block/mossy_dragon_bone_hor
+      variants:
+        axis=x:
+          appearance: axisX
+        axis=y:
+          appearance: axisY
+        axis=z:
+          appearance: axisZ
+  # brimstone ships as ONE state using the existing brimstone_normal model
+  # (= inactive_brimstone.png, the mod's default placed appearance).
+  # The mod's boolean 'active' property is a two-way, water-adjacency toggle
+  # (BrimstoneBlock.java:74-108). No CE behavior reproduces that:
+  # change_over_time_block is one-way, probabilistic and condition-free;
+  # near_liquid_block extends AbstractCanSurviveBlockBehavior and BREAKS the
+  # block when its condition fails. Declaring 'active' anyway would burn a
+  # second real block state nothing can ever set, and the pack has no
+  # brimstone_active model. brimstone.png stays unreferenced for now.
+  betterend:brimstone:
+    settings:
+      template:
+        - default:sound/stone
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 2.0
+        resistance: 6.0
+        instrument: basedrum
+        map_color: brown
+        correct_tools: ['#minecraft:pickaxes']
+        required_break_power: 1
+        tags: [minecraft:mineable/pickaxe]
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      model: betterend:block/brimstone_normal
+  betterend:missing_tile:
+    settings:
+      template:
+        - default:sound/stone
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 2.0
+        resistance: 6.0
+        instrument: basedrum
+        map_color: stone
+        correct_tools: ['#minecraft:pickaxes']
+        required_break_power: 1
+        tags: [minecraft:mineable/pickaxe]
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      model: betterend:block/missing_tile
+  betterend:endstone_dust:
+    behavior:
+      type: falling_block
+    settings:
+      template:
+        - default:sound/sand
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 0.5
+        resistance: 0.5
+        instrument: snare
+        map_color: sand
+        tags: [minecraft:mineable/shovel]
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      model: betterend:block/endstone_dust
+  betterend:dragon_bone_block:
+    settings:
+      template:
+        - default:sound/stone
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 2.0
+        resistance: 2.0
+        instrument: xylophone
+        map_color: 2
+        correct_tools: ['#minecraft:pickaxes']
+        required_break_power: 1
+        tags: [minecraft:mineable/pickaxe]
+    loot:
+      template: default:loot_table/self
+    state:
+      template: default:block_state/pillar
+      arguments:
+        pillar_model: betterend:block/dragon_bone_block
+        pillar_texture_top: betterend:block/dragon_bone_block_top
+        pillar_texture_side: betterend:block/dragon_bone_block_side
+  betterend:ender_ore:
+    behavior:
+      type: drop_experience_block
+      amount: 1~5
+      condition:
+        type: enchantment
+        predicate: minecraft:silk_touch<=0
+    settings:
+      template: default:settings/ore
+      # Ore.java:72 def.addTags(BlockTags.DRAGON_IMMUNE). default:settings/ore supplies
+      # tags via overrides (TPL/block_settings.yml:74); merges concatenates onto it
+      # (deepMergeMaps, TemplateManagerImpl.java:385-388) -> [mineable/pickaxe, dragon_immune].
+      merges:
+        tags: [minecraft:dragon_immune]
+      arguments:
+        break_power: 1
+        hardness: 2.0
+        resistance: 6.0
+    loot:
+      template: default:loot_table/ore
+      arguments:
+        ore_drop: betterend:ender_shard
+        ore_drop_count: 1~3
+        ore_block: betterend:ender_ore
+    state:
+      auto_state: solid
+      texture: betterend:block/ender_ore
+  betterend:amber_ore:
+    behavior:
+      type: drop_experience_block
+      amount: 1~4
+      condition:
+        type: enchantment
+        predicate: minecraft:silk_touch<=0
+    settings:
+      template: default:settings/ore
+      arguments:
+        break_power: 1
+        hardness: 2.0
+        resistance: 6.0
+    loot:
+      template: default:loot_table/ore
+      arguments:
+        ore_drop: betterend:raw_amber
+        ore_drop_count: 1~2
+        ore_block: betterend:amber_ore
+    state:
+      auto_state: solid
+      texture: betterend:block/amber_ore
+recipes:
+  # Only the recipes the mod actually defines, copied from generated/data/betterend/recipe/.
+
+  # missing_tile.json: '#' is ANY OF violecite / violecite_brick / violecite_tiles.
+  betterend:missing_tile:
+    type: shaped
+    category: building
+    group: missing_tile
+    pattern:
+      - '#P'
+      - 'P#'
+    ingredients:
+      '#':
+        - betterend:violecite
+        - betterend:violecite_brick
+        - betterend:violecite_tiles
+      P: minecraft:purpur_block
+    result:
+      id: betterend:missing_tile
+      count: 4
+  # dragon_bone_block.json
+  betterend:dragon_bone_block:
+    type: shaped
+    category: building
+    group: dragon_bone_block
+    pattern:
+      - '###'
+      - '#D#'
+      - '###'
+    ingredients:
+      '#': minecraft:bone_block
+      D: minecraft:dragon_breath
+    result:
+      id: betterend:dragon_bone_block
+      count: 8
+  # NOTHING ELSE HAS A RECIPE IN THE MOD. Verified against
+  # generated/data/betterend/recipe/: zero json for ender_ore, amber_ore, endstone_dust,
+  # mossy_obsidian, mossy_dragon_bone, brimstone, and neither ore smelts or blasts.
+  #
+  # DEBT, by real mechanic:
+  #   ender_ore / amber_ore / endstone_dust / brimstone -- worldgen only (Phase 6/7).
+  #   mossy_obsidian    -- bone meal on obsidian (BCLBlockTags.BONEMEAL_SOURCE_OBSIDIAN,
+  #                        EndStoneBlocks.java:73). Needs a bone-meal block behavior.
+  #   mossy_dragon_bone -- bone meal on dragon_bone_block (EndTags.BONEMEAL_SOURCE_DRAGON_BONE,
+  #                        EndStoneBlocks.java:112). Same behavior.
+  #   ender_shard / raw_amber -- ore loot table only, which is already configured above.
+  # Do NOT paper over these with crafting recipes: an invented root outlives the worldgen
+  # that replaces it and permanently cheapens the progression.

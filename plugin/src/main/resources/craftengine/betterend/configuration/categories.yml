@@ -1,0 +1,32 @@
+# Item-browser categories. Parsed by ItemBrowserManagerImpl.CategoryParser (:105-152):
+# name / all_items / list / icon / priority / lore / hidden / condition(s).
+# The three leaf categories keep `list: []` on purpose -- membership is pushed in from each
+# item's own `category:` key via AbstractItemManager.java:429-432 addExternalCategoryMember,
+# exactly as CE's own tree.yml:33-37 does.
+# <l10n:...> keys are defined server-side in configuration/langs/en_us.yml (translations#categories).
+categories:
+  betterend:betterend:
+    priority: 1
+    name: '<!i><white><l10n:category.betterend.name></white>'
+    lore:
+      - '<!i><gray><l10n:category.betterend.lore>'
+    icon: betterend:flavolite
+    list:
+      - '#betterend:stones'
+      - '#betterend:woods'
+      - '#betterend:misc'
+  betterend:stones:
+    name: '<!i><white><l10n:category.betterend.stones></white>'
+    hidden: true
+    icon: betterend:flavolite
+    list: []
+  betterend:woods:
+    name: '<!i><white><l10n:category.betterend.woods></white>'
+    hidden: true
+    icon: betterend:pythadendron_log
+    list: []
+  betterend:misc:
+    name: '<!i><white><l10n:category.betterend.misc></white>'
+    hidden: true
+    icon: betterend:dragon_bone_block
+    list: []

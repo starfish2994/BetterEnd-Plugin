@@ -1,0 +1,7 @@
+# Line endings: LF in the repository, native on checkout.
+* text=auto
+
+# Binaries: never diff, never convert.
+*.png binary
+*.jar binary
+*.ogg binary

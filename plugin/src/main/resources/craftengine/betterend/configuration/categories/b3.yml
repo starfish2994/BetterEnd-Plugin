@@ -1,0 +1,21 @@
+#betterend:openable
+# ^ INTEGRATOR: append that one entry, verbatim, to the `list:` of `betterend:betterend`
+#   in the LIVE configuration/categories.yml. This file must never redeclare
+#   betterend:betterend / betterend:stones / betterend:woods / betterend:misc --
+#   ItemBrowserManagerImpl.CategoryParser is an IdSectionConfigParser and does
+#   byId.put(id, category) (:152), so a second declaration silently overwrites the first.
+#
+# `list: []` is deliberate: membership is pushed in from each item's own `category:` key
+# via AbstractItemManager.java:429-432 addExternalCategoryMember.
+categories:
+  betterend:openable:
+    name: '<!i><white><l10n:category.betterend.openable></white>'
+    hidden: true
+    icon: betterend:pythadendron_door
+    list: []
+
+# Server-side only (TranslationParser, TranslationManagerImpl.java:415-482); never written to the
+# resource pack. Resolved by the <l10n:...> above.
+translations#b3_categories:
+  en_us:
+    category.betterend.openable: BetterEnd Doors and Gates

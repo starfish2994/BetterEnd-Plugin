@@ -1,0 +1,145 @@
+# BetterEnd B8-storage -- hydralux petal blocks: the plain one plus its 16 dyed variants.
+#
+# The mod ships ONE greyscale texture, betterend:block/hydralux_petal_block_colored, and paints
+# it per block with BlockRenderTraits.TINT.constColor(DyeColor.getMapColor().col)
+# (ColoredMaterial.java:104-146, colour table at :157-162). CE has no per-block tint for a solid
+# custom block, so the 16 colours are BAKED: hydralux_petal_block_colored.png multiplied by each
+# dye's MapColor rgb and written as hydralux_petal_block_<dye>.png in this pack's textures.
+# The bake is exactly what the client would have done, so the result is pixel-identical.
+#
+# NOT PORTED: the 16 extra tints amber / beige / cream / dark_green / forest_green / hot_pink /
+# indigo / maroon / navy / olive / pale_green / pale_pink / pale_yellow / sky_blue / slate_gray /
+# violet. Those blocks only exist when the optional mod Flamboyant Refabricated is installed --
+# FlamboyantRefabricatedIntegration.java:43-52 adds them via addColor(); they have no blockstate
+# json and no registered block in a vanilla install. Same class of thing as the BYG blocks the
+# manifest lists under ORPHAN.
+
+items:
+  betterend:hydralux_petal_block:
+    category: betterend:furnishings
+    data:
+      item_name: '<!i><white><lang:item.betterend.hydralux_petal_block></white>'
+    model: betterend:block/hydralux_petal_block
+    behavior:
+      type: block_item
+      block: betterend:hydralux_petal_block
+blocks:
+  # EndDecorBlocks.java:137-146 -- strength(1.0, 1.0), SoundType.WART_BLOCK, mineable axe,
+  # MapColor.PODZOL.
+  betterend:hydralux_petal_block:
+    settings:
+      template: default:settings/solid_1x1x1
+      merges:
+        hardness: 1.0
+        resistance: 1.0
+        instrument: bass
+        map_color: podzol
+        push_reaction: normal
+        sounds:
+          break: minecraft:block.nether_wart.break
+          fall: minecraft:block.nether_wart.fall
+          hit: minecraft:block.nether_wart.hit
+          place: minecraft:block.nether_wart.place
+          step: minecraft:block.nether_wart.step
+        tags: [minecraft:mineable/axe]
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      model: betterend:block/hydralux_petal_block
+recipes:
+  # generated/data/betterend/recipe/petal_block.json -- the file is named after the recipe, not
+  # after the block, which is why an id-keyed search misses it. Ingredient betterend:hydralux_petal
+  # is the B4 item (items_cls.json), so this only works once B4 is merged.
+  betterend:hydralux_petal_block:
+    type: shaped
+    pattern:
+      - '##'
+      - '##'
+    ingredients:
+      '#': betterend:hydralux_petal
+    result:
+      id: betterend:hydralux_petal_block
+      count: 1
+  # petal_white_dye.json -- one hydralux_petal shapeless into a vanilla white dye.
+  betterend:petal_white_dye:
+    type: shapeless
+    ingredients:
+      - betterend:hydralux_petal
+    result:
+      id: minecraft:white_dye
+      count: 1
+
+config_factory#b8_petal_colors:
+  instances:
+    - dye: white
+    - dye: orange
+    - dye: magenta
+    - dye: light_blue
+    - dye: yellow
+    - dye: lime
+    - dye: pink
+    - dye: gray
+    - dye: light_gray
+    - dye: cyan
+    - dye: purple
+    - dye: blue
+    - dye: brown
+    - dye: green
+    - dye: red
+    - dye: black
+  blueprint:
+    items:
+      betterend:hydralux_petal_block_${dye}:
+        category: betterend:furnishings
+        data:
+          item_name: '<!i><white><lang:item.betterend.hydralux_petal_block_${dye}></white>'
+        model: betterend:block/hydralux_petal_block_${dye}
+        behavior:
+          type: block_item
+          block: betterend:hydralux_petal_block_${dye}
+    blocks:
+      betterend:hydralux_petal_block_${dye}:
+        settings:
+          template: default:settings/solid_1x1x1
+          merges:
+            hardness: 1.0
+            resistance: 1.0
+            instrument: bass
+            map_color: color_black
+            push_reaction: normal
+            sounds:
+              break: minecraft:block.nether_wart.break
+              fall: minecraft:block.nether_wart.fall
+              hit: minecraft:block.nether_wart.hit
+              place: minecraft:block.nether_wart.place
+              step: minecraft:block.nether_wart.step
+            tags: [minecraft:mineable/axe]
+        loot:
+          template: default:loot_table/self
+        state:
+          auto_state: solid
+          model: betterend:block/hydralux_petal_block_${dye}
+    recipes:
+      # hydralux_petal_block_<dye>.json, verbatim: 8 petal blocks around 1 dye.
+      betterend:hydralux_petal_block_${dye}:
+        type: shaped
+        pattern:
+          - '###'
+          - '#D#'
+          - '###'
+        ingredients:
+          '#': betterend:hydralux_petal_block
+          D: minecraft:${dye}_dye
+        result:
+          id: betterend:hydralux_petal_block_${dye}
+          count: 8
+
+# ---------------------------------------------------------------------------
+# 17 of the mod's 33 'hydralux_petal_block*' LANG KEYS are ported here, and that is the complete
+# set of real blocks. ColoredMaterial.java:157-163 builds the tint map from DyeColor.values(),
+# i.e. exactly the 16 vanilla dyes, and generated/assets/betterend/blockstates/ holds exactly 17
+# hydralux_petal_block*.json. The other 16 lang keys (amber, beige, cream, dark_green,
+# forest_green, hot_pink, indigo, maroon, navy, olive, pale_green, pale_pink, pale_yellow,
+# sky_blue, slate_gray, violet) are stale keys from an older colour list with no registered
+# block, no blockstate and no model -- same class as lucernia_jellyshroom_wall. Do not port them.

@@ -1,0 +1,102 @@
+items:
+  betterend:thallasium_ore:
+    category: betterend:misc
+    data:
+      item_name: '<!i><white><lang:item.betterend.thallasium_ore></white>'
+    model: betterend:block/thallasium_ore
+    behavior:
+      type: block_item
+      block: betterend:thallasium_ore
+  betterend:thallasium_raw:
+    category: betterend:misc
+    data:
+      item_name: '<!i><white><lang:item.betterend.thallasium_raw></white>'
+    texture: betterend:item/thallasium_raw
+
+blocks:
+  betterend:thallasium_ore:
+    behavior:
+      type: drop_experience_block
+      # mod: DropExperienceBlock(UniformInt.of(1, 1)) -- complexmaterials/types/Ore.java:59-60
+      amount: 1
+      condition:
+        type: enchantment
+        predicate: minecraft:silk_touch<=0
+    settings:
+      # default:settings/ore supplies sound/stone, solid_1x1x1, instrument basedrum,
+      # map_color stone, minecraft:mineable/pickaxe and correct_tools #minecraft:pickaxes.
+      # break_power has no default in the template and must be passed.
+      # mod: destroyTime 3F / explosionResistance 9F (Ore.java:64-65), NEEDS_STONE_TOOL
+      # (EndMetalBlocks.java:104) => break_power 1.
+      template: default:settings/ore
+      # Ore.java:72 def.addTags(BlockTags.DRAGON_IMMUNE). default:settings/ore supplies
+      # tags via overrides (TPL/block_settings.yml:74); merges concatenates onto it
+      # (deepMergeMaps, TemplateManagerImpl.java:385-388) -> [mineable/pickaxe, dragon_immune].
+      merges:
+        tags: [minecraft:dragon_immune]
+      arguments:
+        break_power: 1
+        hardness: 3.0
+        resistance: 9.0
+    loot:
+      template: default:loot_table/ore
+      arguments:
+        ore_block: betterend:thallasium_ore
+        ore_drop: betterend:thallasium_raw
+        # mod loot table drops uniform(1,3) raw -- loot_table/blocks/thallasium_ore.json
+        ore_drop_count: 1~3
+    state:
+      auto_state: solid
+      texture: betterend:block/thallasium_ore
+
+# The ore/raw -> ingot smelts, verbatim from generated/data/betterend/recipe/
+# thallasium_ingot_furnace_{ore,raw}_{smelting,blasting}.json. Those files carry no "experience"
+# and no "cookingtime", so the vanilla codec defaults apply: 0.0 xp, 200 ticks smelting,
+# 100 ticks blasting. This debt was recorded here when thallasium_ingot did not yet exist; it does
+# now (items/B7-metals.yml), so it is paid.
+#
+# STILL MISSING, and it is the reason the metal tree stops here: terminite_ingot and
+# aeternium_ingot are `bclib:alloying` (an End Stone Smelter recipe). CraftEngine registers no
+# alloying serializer and ships no smelter block, so BOTH REMAIN UNOBTAINABLE. thallasium is the
+# only metal a player can reach until an alloying replacement lands.
+recipes:
+  betterend:thallasium_ingot_furnace_ore_smelting:
+    type: smelting
+    category: misc
+    group: thallasium_ingot
+    time: 200
+    experience: 0.0
+    ingredient: betterend:thallasium_ore
+    result:
+      id: betterend:thallasium_ingot
+      count: 1
+  betterend:thallasium_ingot_furnace_ore_blasting:
+    type: blasting
+    category: misc
+    group: thallasium_ingot
+    time: 100
+    experience: 0.0
+    ingredient: betterend:thallasium_ore
+    result:
+      id: betterend:thallasium_ingot
+      count: 1
+  betterend:thallasium_ingot_furnace_raw_smelting:
+    type: smelting
+    category: misc
+    group: thallasium_ingot
+    time: 200
+    experience: 0.0
+    ingredient: betterend:thallasium_raw
+    result:
+      id: betterend:thallasium_ingot
+      count: 1
+  betterend:thallasium_ingot_furnace_raw_blasting:
+    type: blasting
+    category: misc
+    group: thallasium_ingot
+    time: 100
+    experience: 0.0
+    ingredient: betterend:thallasium_raw
+    result:
+      id: betterend:thallasium_ingot
+      count: 1

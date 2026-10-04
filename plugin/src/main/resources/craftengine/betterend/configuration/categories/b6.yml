@@ -1,0 +1,21 @@
+# INTEGRATOR: append this ONE line to the `list:` of betterend:betterend in the live
+# configuration/categories.yml -- this file must NOT redeclare that root, because
+# ItemBrowserManagerImpl.CategoryParser is an IdSectionConfigParser doing byId.put(id, category)
+# (:152), so a second declaration of an existing id silently overwrites the first.
+#betterend:lights
+#
+# The leaf keeps `list: []` on purpose: membership is pushed in from each item own `category:` key
+# via AbstractItemManager.java:429-432 addExternalCategoryMember, exactly as the live categories.yml
+# and CE own tree.yml:33-37 do.
+categories:
+  betterend:lights:
+    name: '<!i><white><l10n:category.betterend.lights></white>'
+    hidden: true
+    icon: betterend:iron_bulb_lantern
+    list: []
+
+# Server-side name for the <l10n:...> key above. A separate TranslationParser section
+# (TranslationManagerImpl.java:415-482), suffixed b6 so it cannot collide with another batch.
+translations#b6_categories:
+  en_us:
+    category.betterend.lights: BetterEnd Lights

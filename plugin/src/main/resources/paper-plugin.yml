@@ -1,0 +1,59 @@
+# The only plugin descriptor. Only paper-plugin.yml can declare a bootstrapper
+# (PluginFileType.java:28-45), and only a bootstrapper can register the biome datapack early enough
+# for the worldgen registries (LifecycleEvents.java:42). PluginFileType.guessType iterates
+# List.of(PAPER, SPIGOT) and returns the FIRST match (:47, :59-68), so a plugin.yml beside this file
+# would never be read - it was deleted rather than left as a trap for whoever edits it next.
+# This plugin cannot run on plain Spigot regardless: it needs Paper's BiomeProvider, the lifecycle
+# datapack API and DragonBattle.
+#
+# `folia-supported` is a Folia-only key: it is absent from all of Paper 26.1.2 and PaperPluginMeta
+# declares no such field. Keeping it here is still correct. PaperPluginMeta.create() deserializes
+# with a plain Configurate ObjectMapper (node.require(PaperPluginMeta.java:118)), which binds the
+# fields it declares and ignores every other node - the same reason it can read `author` by hand at
+# :121 with no `author` field. So Paper ignores this line and Folia reads it; without it Folia
+# refuses to load the plugin at all, and plugin.yml's copy is shadowed by this file.
+name: BetterEnd
+version: '${version}'
+description: >-
+  Server-side Bukkit/Paper/Folia port of the "Better End" Minecraft mod: BetterEnd island terrain, 27
+  End biomes, caves, ores, nine tree species, flora and a reskin of the vanilla End spikes, with all
+  blocks, items, models, recipes and translations owned by CraftEngine. Original mod by Team BetterX
+  -- https://modrinth.com/mod/betterend (source: https://github.com/quiqueck/BetterEnd). Port author:
+  HuiDu_OwO -- https://github.com/IOVEYOUMC0/BetterEnd-Plugin
+# `authors` and `contributors` are real PaperPluginMeta fields (PaperPluginMeta.java:58-59) and are
+# both plain lists. `authors` is this plugin's author; `contributors` credits the people who made the
+# original mod, whose world content this port re-implements. Paper also appends a singular `author`
+# node to `authors` (PaperPluginMeta.java:122-127), which is why that legacy key is not used here.
+authors:
+  - HuiDu_OwO
+contributors:
+  - Quiqueck
+  - paulevs
+  - Bulldog83
+  - Edos
+  - Yuki
+  - Seaward
+  - Firel
+website: https://github.com/IOVEYOUMC0/BetterEnd-Plugin
+main: org.betterx.betterend.bukkit.BetterEndPlugin
+bootstrapper: org.betterx.betterend.bukkit.biome.BiomeDatapack
+api-version: '26.2'
+load: STARTUP
+folia-supported: true
+dependencies:
+  server:
+    CraftEngine:
+      load: BEFORE
+      required: true
+      join-classpath: true
+    # Optional. Its plugin.yml declares `name: UltimateAdvancementAPI`, load: STARTUP and
+    # folia-supported: true; this is the owner's fork, which adds MC 26.2 NMS support, the
+    # auto-layout registerAdvancements overload and Folia-aware packet dispatch.
+    # required: false means a server without it loads BetterEnd exactly as before, minus the
+    # advancement tab -- BetterEndPlugin checks for the plugin before it touches any class that
+    # names one of its types, so nothing can NoClassDefFoundError.
+    # join-classpath: true because this plugin resolves its classes itself.
+    UltimateAdvancementAPI:
+      load: BEFORE
+      required: false
+      join-classpath: true

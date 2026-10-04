@@ -1,0 +1,748 @@
+# BetterEnd B8-storage -- the batch's 16 standalone decorative blocks and its 13 items.
+#
+# Settings come from the mod's own registry calls; the file:line is on each entry.
+# `luminance` is a real settings key (BlockSettingsModifiers.java:28); so is `friction` (:70).
+
+items:
+  betterend:emerald_ice:
+    category: betterend:furnishings
+    data:
+      item_name: '<!i><white><lang:item.betterend.emerald_ice></white>'
+    model: betterend:block/emerald_ice
+    behavior:
+      type: block_item
+      block: betterend:emerald_ice
+  betterend:dense_emerald_ice:
+    category: betterend:furnishings
+    data:
+      item_name: '<!i><white><lang:item.betterend.dense_emerald_ice></white>'
+    model: betterend:block/dense_emerald_ice
+    behavior:
+      type: block_item
+      block: betterend:dense_emerald_ice
+  betterend:ancient_emerald_ice:
+    category: betterend:furnishings
+    data:
+      item_name: '<!i><white><lang:item.betterend.ancient_emerald_ice></white>'
+    model: betterend:block/ancient_emerald_ice
+    behavior:
+      type: block_item
+      block: betterend:ancient_emerald_ice
+  betterend:dense_snow:
+    category: betterend:furnishings
+    data:
+      item_name: '<!i><white><lang:item.betterend.dense_snow></white>'
+    model: betterend:block/dense_snow
+    behavior:
+      type: block_item
+      block: betterend:dense_snow
+  betterend:end_stone_brick_cracked:
+    category: betterend:furnishings
+    data:
+      item_name: '<!i><white><lang:item.betterend.end_stone_brick_cracked></white>'
+    model: betterend:block/end_stone_brick_cracked
+    behavior:
+      type: block_item
+      block: betterend:end_stone_brick_cracked
+  betterend:end_stone_brick_weathered:
+    category: betterend:furnishings
+    data:
+      item_name: '<!i><white><lang:item.betterend.end_stone_brick_weathered></white>'
+    model: betterend:block/end_stone_brick_weathered
+    behavior:
+      type: block_item
+      block: betterend:end_stone_brick_weathered
+  betterend:menger_sponge:
+    category: betterend:furnishings
+    data:
+      item_name: '<!i><white><lang:item.betterend.menger_sponge></white>'
+    model: betterend:block/menger_sponge
+    behavior:
+      type: block_item
+      block: betterend:menger_sponge
+  betterend:menger_sponge_wet:
+    category: betterend:furnishings
+    data:
+      item_name: '<!i><white><lang:item.betterend.menger_sponge_wet></white>'
+    model: betterend:block/menger_sponge_wet
+    behavior:
+      type: block_item
+      block: betterend:menger_sponge_wet
+  betterend:neon_cactus_block:
+    category: betterend:furnishings
+    data:
+      item_name: '<!i><white><lang:item.betterend.neon_cactus_block></white>'
+    model: betterend:block/neon_cactus_block
+    behavior:
+      type: block_item
+      block: betterend:neon_cactus_block
+  betterend:smaragdant_crystal:
+    category: betterend:furnishings
+    data:
+      item_name: '<!i><white><lang:item.betterend.smaragdant_crystal></white>'
+    model: betterend:block/smaragdant_crystal
+    behavior:
+      type: block_item
+      block: betterend:smaragdant_crystal
+  betterend:smaragdant_crystal_bricks:
+    category: betterend:furnishings
+    data:
+      item_name: '<!i><white><lang:item.betterend.smaragdant_crystal_bricks></white>'
+    model: betterend:block/smaragdant_crystal_bricks
+    behavior:
+      type: block_item
+      block: betterend:smaragdant_crystal_bricks
+  betterend:smaragdant_crystal_polished:
+    category: betterend:furnishings
+    data:
+      item_name: '<!i><white><lang:item.betterend.smaragdant_crystal_polished></white>'
+    model: betterend:block/smaragdant_crystal_polished
+    behavior:
+      type: block_item
+      block: betterend:smaragdant_crystal_polished
+  betterend:smaragdant_crystal_tiles:
+    category: betterend:furnishings
+    data:
+      item_name: '<!i><white><lang:item.betterend.smaragdant_crystal_tiles></white>'
+    model: betterend:block/smaragdant_crystal_tiles
+    behavior:
+      type: block_item
+      block: betterend:smaragdant_crystal_tiles
+  betterend:smaragdant_crystal_pillar:
+    category: betterend:furnishings
+    data:
+      item_name: '<!i><white><lang:item.betterend.smaragdant_crystal_pillar></white>'
+    model: betterend:block/smaragdant_crystal_pillar
+    behavior:
+      type: block_item
+      block: betterend:smaragdant_crystal_pillar
+  betterend:silk_moth_hive:
+    category: betterend:furnishings
+    data:
+      item_name: '<!i><white><lang:item.betterend.silk_moth_hive></white>'
+    model: betterend:block/silk_moth_hive
+    behavior:
+      type: block_item
+      block: betterend:silk_moth_hive
+  betterend:flavolite_runed:
+    category: betterend:furnishings
+    data:
+      item_name: '<!i><white><lang:item.betterend.flavolite_runed></white>'
+    model: betterend:block/flavolite_runed_1
+    behavior:
+      type: block_item
+      block: betterend:flavolite_runed
+  # --- items with no block ---------------------------------------------------
+  betterend:enchanted_membrane:
+    category: betterend:furnishings
+    data:
+      item_name: '<!i><white><lang:item.betterend.enchanted_membrane></white>'
+    # The mod's own item model reuses the vanilla sprite:
+    # generated/assets/betterend/models/item/enchanted_membrane.json -> minecraft:item/phantom_membrane.
+    texture: minecraft:item/phantom_membrane
+  betterend:end_fish_raw:
+    category: betterend:furnishings
+    data:
+      item_name: '<!i><white><lang:item.betterend.end_fish_raw></white>'
+    texture: betterend:item/end_fish
+  betterend:end_fish_cooked:
+    category: betterend:furnishings
+    data:
+      item_name: '<!i><white><lang:item.betterend.end_fish_cooked></white>'
+    texture: betterend:item/end_fish_cooked
+  betterend:gelatine:
+    category: betterend:furnishings
+    data:
+      item_name: '<!i><white><lang:item.betterend.gelatine></white>'
+    texture: betterend:item/gelatine
+  betterend:guidebook:
+    category: betterend:furnishings
+    data:
+      # max_stack_size is a vanilla COMPONENT, not a CE item setting: ItemSettingsModifiers.java
+      # registers no such key and ItemSettings.applyModifiers:180-184 silently drops unknown
+      # settings, so under `settings:` it was a no-op. `data:` reaches it through
+      # ItemProcessors.collectProcessors:95-100 -> DataComponentKeys:155.
+      max_stack_size: 1
+      item_name: '<!i><white><lang:item.betterend.guidebook></white>'
+    texture: betterend:item/guidebook
+  betterend:silk_fiber:
+    category: betterend:furnishings
+    data:
+      item_name: '<!i><white><lang:item.betterend.silk_fiber></white>'
+    texture: betterend:item/silk_fiber
+  betterend:silk_moth_matrix:
+    category: betterend:furnishings
+    data:
+      item_name: '<!i><white><lang:item.betterend.silk_moth_matrix></white>'
+    texture: betterend:item/silk_moth_matrix
+  # --- music discs -----------------------------------------------------------
+  # DECORATIVE. A playable disc needs an entry in the minecraft:jukebox_song registry, which is
+  # datapack territory and outside anything CE configures; the plugin ships no ogg either. These
+  # are the correct items with the correct names and the mod's own artist/title line as lore, and
+  # they do nothing in a jukebox. The 6 `.desc` lang keys the manifest asks us to keep live in
+  # b8_en_us.yml next to the disc names and are what that lore resolves.
+  betterend:music_disc_ender_hollow:
+    category: betterend:furnishings
+    data:
+      max_stack_size: 1
+      item_name: '<!i><white><lang:item.betterend.music_disc_ender_hollow></white>'
+      lore:
+        - '<!i><gray><lang:item.betterend.music_disc_ender_hollow.desc>'
+    texture: betterend:item/music_disc_ender_hollow
+  betterend:music_disc_endseeker:
+    category: betterend:furnishings
+    data:
+      max_stack_size: 1
+      item_name: '<!i><white><lang:item.betterend.music_disc_endseeker></white>'
+      lore:
+        - '<!i><gray><lang:item.betterend.music_disc_endseeker.desc>'
+    texture: betterend:item/music_disc_endseeker
+  betterend:music_disc_eo_dracona:
+    category: betterend:furnishings
+    data:
+      max_stack_size: 1
+      item_name: '<!i><white><lang:item.betterend.music_disc_eo_dracona></white>'
+      lore:
+        - '<!i><gray><lang:item.betterend.music_disc_eo_dracona.desc>'
+    texture: betterend:item/music_disc_eo_dracona
+  betterend:music_disc_grasping_at_stars:
+    category: betterend:furnishings
+    data:
+      max_stack_size: 1
+      item_name: '<!i><white><lang:item.betterend.music_disc_grasping_at_stars></white>'
+      lore:
+        - '<!i><gray><lang:item.betterend.music_disc_grasping_at_stars.desc>'
+    texture: betterend:item/music_disc_grasping_at_stars
+  betterend:music_disc_moonlit_undercurrents:
+    category: betterend:furnishings
+    data:
+      max_stack_size: 1
+      item_name: '<!i><white><lang:item.betterend.music_disc_moonlit_undercurrents></white>'
+      lore:
+        - '<!i><gray><lang:item.betterend.music_disc_moonlit_undercurrents.desc>'
+    texture: betterend:item/music_disc_moonlit_undercurrents
+  betterend:music_disc_strange_and_alien:
+    category: betterend:furnishings
+    data:
+      max_stack_size: 1
+      item_name: '<!i><white><lang:item.betterend.music_disc_strange_and_alien></white>'
+      lore:
+        - '<!i><gray><lang:item.betterend.music_disc_strange_and_alien.desc>'
+    texture: betterend:item/music_disc_strange_and_alien
+
+blocks:
+  # ---- ICE ------------------------------------------------------------------
+  # EndDecorBlocks.java:77-95. Each variant copies a vanilla ice block's properties via
+  # IceBlockTrait.withBase(ICE / PACKED_ICE / BLUE_ICE), so hardness/friction are the vanilla
+  # ones. EmeraldIceBlock and AncientEmeraldIceBlock also melt on random tick -- CE has no melt
+  # behavior (change_over_time_block is one-way and condition-free), so these do not melt.
+  # Vanilla ice loot is "nothing without Silk Touch"; default:loot_table/silk_touch does exactly
+  # that (loot_tables.yml:70-87).
+  betterend:emerald_ice:
+    settings:
+      template:
+        - default:sound/glass
+        - default:settings/transparent_1x1x1
+      merges:
+        hardness: 0.5
+        resistance: 0.5
+        friction: 0.98
+        instrument: hat
+        map_color: ice
+        correct_tools: ['#minecraft:pickaxes']
+        tags: [minecraft:mineable/pickaxe]
+    loot:
+      template: default:loot_table/silk_touch
+      arguments:
+        item: betterend:emerald_ice
+    state:
+      auto_state: solid
+      model: betterend:block/emerald_ice
+  betterend:dense_emerald_ice:
+    settings:
+      template:
+        - default:sound/glass
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 0.5
+        resistance: 0.5
+        friction: 0.98
+        instrument: hat
+        map_color: ice
+        correct_tools: ['#minecraft:pickaxes']
+        tags: [minecraft:mineable/pickaxe]
+    loot:
+      template: default:loot_table/silk_touch
+      arguments:
+        item: betterend:dense_emerald_ice
+    state:
+      auto_state: solid
+      model: betterend:block/dense_emerald_ice
+  betterend:ancient_emerald_ice:
+    settings:
+      template:
+        - default:sound/glass
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 2.8
+        resistance: 2.8
+        friction: 0.989
+        instrument: hat
+        map_color: ice
+        correct_tools: ['#minecraft:pickaxes']
+        tags: [minecraft:mineable/pickaxe]
+    loot:
+      template: default:loot_table/silk_touch
+      arguments:
+        item: betterend:ancient_emerald_ice
+    state:
+      auto_state: solid
+      model: betterend:block/ancient_emerald_ice
+  # ---- DENSE SNOW -----------------------------------------------------------
+  # EndDecorBlocks.java:71-75, SnowBlockTrait -- vanilla snow_block properties.
+  betterend:dense_snow:
+    settings:
+      template:
+        - default:sound/snow
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 0.2
+        resistance: 0.2
+        instrument: snare
+        map_color: snow
+        tags: [minecraft:mineable/shovel]
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      model: betterend:block/dense_snow
+  # ---- END STONE BRICK VARIANTS ---------------------------------------------
+  betterend:end_stone_brick_cracked:
+    settings:
+      template:
+        - default:sound/stone
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 3.0
+        resistance: 9.0
+        instrument: basedrum
+        map_color: sand
+        correct_tools: ['#minecraft:pickaxes']
+        required_break_power: 1
+        tags: [minecraft:mineable/pickaxe]
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      model: betterend:block/end_stone_brick_cracked
+  betterend:end_stone_brick_weathered:
+    settings:
+      template:
+        - default:sound/stone
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 3.0
+        resistance: 9.0
+        instrument: basedrum
+        map_color: sand
+        correct_tools: ['#minecraft:pickaxes']
+        required_break_power: 1
+        tags: [minecraft:mineable/pickaxe]
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      model: betterend:block/end_stone_brick_weathered
+  # ---- MENGER SPONGE --------------------------------------------------------
+  # EndDecorBlocks.java:118-135 -- noOcclusion, mineable with a hoe, cutout render.
+  # MengerSpongeBlock's water-absorbing behavior (the dry one soaking a pool and turning wet) has
+  # no CE equivalent; the two blocks ship independent, linked only by the smelting recipe below.
+  betterend:menger_sponge:
+    settings:
+      template:
+        - default:sound/grass
+        - default:settings/transparent_1x1x1
+      merges:
+        hardness: 0.6
+        resistance: 0.6
+        instrument: bass
+        map_color: color_yellow
+        tags: [minecraft:mineable/hoe]
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      model: betterend:block/menger_sponge
+  betterend:menger_sponge_wet:
+    settings:
+      template:
+        - default:sound/grass
+        - default:settings/transparent_1x1x1
+      merges:
+        hardness: 0.6
+        resistance: 0.6
+        instrument: bass
+        map_color: color_yellow
+        tags: [minecraft:mineable/hoe]
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      model: betterend:block/menger_sponge_wet
+  # ---- NEON CACTUS BLOCK ----------------------------------------------------
+  # EndDecorBlocks.java:97-101 -- RotatedPillarBlock, lightLevel 15.
+  # A property literally named `axis` gets its placement + rotation for free
+  # (HardcodedPropertyBlockBehavior.java:29-42).
+  betterend:neon_cactus_block:
+    settings:
+      template:
+        - default:sound/wood
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 0.4
+        resistance: 0.4
+        luminance: 15
+        instrument: bass
+        map_color: color_green
+        tags: [minecraft:mineable/axe]
+    loot:
+      template: default:loot_table/self
+    state:
+      template: default:block_state/pillar
+      arguments:
+        pillar_model: betterend:block/neon_cactus_block
+        pillar_texture_top: betterend:block/neon_cactus_block_top
+        pillar_texture_side: betterend:block/neon_cactus_block_side
+  # ---- SMARAGDANT CRYSTAL FAMILY --------------------------------------------
+  # EndCrystalBlocks.java:144-154 -- lightLevel 15, strength 1, SoundType.AMETHYST, noOcclusion.
+  # The four sub-blocks use replacePropertiesWithCopy(SMARAGDANT_CRYSTAL)
+  # (CrystalSubblocksMaterial.java:60-80), so they share every one of those values.
+  betterend:smaragdant_crystal:
+    settings:
+      template:
+        - default:sound/amethyst_block
+        - default:settings/transparent_1x1x1
+      merges:
+        hardness: 1.0
+        resistance: 1.0
+        luminance: 15
+        instrument: basedrum
+        map_color: color_green
+        correct_tools: ['#minecraft:pickaxes']
+        tags: [minecraft:mineable/pickaxe]
+    loot:
+      template: default:loot_table/self
+    state:
+      template: default:block_state/pillar
+      arguments:
+        pillar_model: betterend:block/smaragdant_crystal
+        pillar_texture_top: betterend:block/smaragdant_crystal_top
+        pillar_texture_side: betterend:block/smaragdant_crystal_side
+  betterend:smaragdant_crystal_pillar:
+    settings:
+      template:
+        - default:sound/amethyst_block
+        - default:settings/transparent_1x1x1
+      merges:
+        hardness: 1.0
+        resistance: 1.0
+        luminance: 15
+        instrument: basedrum
+        map_color: color_green
+        correct_tools: ['#minecraft:pickaxes']
+        tags: [minecraft:mineable/pickaxe]
+    loot:
+      template: default:loot_table/self
+    state:
+      template: default:block_state/pillar
+      arguments:
+        pillar_model: betterend:block/smaragdant_crystal_pillar
+        pillar_texture_top: betterend:block/smaragdant_crystal_pillar_top
+        pillar_texture_side: betterend:block/smaragdant_crystal_pillar_side
+  betterend:smaragdant_crystal_bricks:
+    settings:
+      template:
+        - default:sound/amethyst_block
+        - default:settings/transparent_1x1x1
+      merges:
+        hardness: 1.0
+        resistance: 1.0
+        luminance: 15
+        instrument: basedrum
+        map_color: color_green
+        correct_tools: ['#minecraft:pickaxes']
+        tags: [minecraft:mineable/pickaxe]
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      model: betterend:block/smaragdant_crystal_bricks
+  betterend:smaragdant_crystal_polished:
+    settings:
+      template:
+        - default:sound/amethyst_block
+        - default:settings/transparent_1x1x1
+      merges:
+        hardness: 1.0
+        resistance: 1.0
+        luminance: 15
+        instrument: basedrum
+        map_color: color_green
+        correct_tools: ['#minecraft:pickaxes']
+        tags: [minecraft:mineable/pickaxe]
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      model: betterend:block/smaragdant_crystal_polished
+  betterend:smaragdant_crystal_tiles:
+    settings:
+      template:
+        - default:sound/amethyst_block
+        - default:settings/transparent_1x1x1
+      merges:
+        hardness: 1.0
+        resistance: 1.0
+        luminance: 15
+        instrument: basedrum
+        map_color: color_green
+        correct_tools: ['#minecraft:pickaxes']
+        tags: [minecraft:mineable/pickaxe]
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      model: betterend:block/smaragdant_crystal_tiles
+  # ---- SILK MOTH HIVE -------------------------------------------------------
+  # EndFunctionalBlocks.java:87-95 -- strength(0.5, 0.1), SoundType.WOOL, noOcclusion, mineable
+  # with an axe. The mod's FULLNESS 0-3 fills the hive with silk as the moths work it; with no
+  # silk moth entity in this phase there is nothing to advance it, so only the empty appearance
+  # ships (4 facings). moth_hive_front_silk.png is deliberately left uncopied.
+  betterend:silk_moth_hive:
+    settings:
+      template:
+        - default:hardness/wool
+        - default:settings/transparent_1x1x1
+      merges:
+        hardness: 0.5
+        resistance: 0.1
+        instrument: guitar
+        map_color: color_pink
+        sounds:
+          break: minecraft:block.wool.break
+          fall: minecraft:block.wool.fall
+          hit: minecraft:block.wool.hit
+          place: minecraft:block.wool.place
+          step: minecraft:block.wool.step
+        tags: [minecraft:mineable/axe]
+    loot:
+      template: default:loot_table/self
+    state:
+      properties:
+        facing:
+          type: 4-direction
+          default: north
+      appearances:
+        north:
+          auto_state: solid
+          model: betterend:block/silk_moth_hive
+        east:
+          auto_state: solid
+          model:
+            path: betterend:block/silk_moth_hive
+            y: 90
+        south:
+          auto_state: solid
+          model:
+            path: betterend:block/silk_moth_hive
+            y: 180
+        west:
+          auto_state: solid
+          model:
+            path: betterend:block/silk_moth_hive
+            y: 270
+      variants:
+        facing=north:
+          appearance: north
+        facing=east:
+          appearance: east
+        facing=south:
+          appearance: south
+        facing=west:
+          appearance: west
+  # ---- FLAVOLITE RUNED ------------------------------------------------------
+  # EndStoneBlocks.java:260-269 -- strength(1, obsidian resistance), lightLevel 8 only while
+  # ACTIVATED. `active` is set by the Eternal Portal ritual, which no CE behavior reproduces, so
+  # the block ships as the inactive rune mesh exactly as the live pack shipped brimstone's
+  # unreachable `active` (basic_blocks.yml). flavolite_runed_active_*.png stays uncopied.
+  # The mod also picks one of 5 rune meshes at random; the generated blockstate json only
+  # references variant 1, so variant 1 is what ships.
+  betterend:flavolite_runed:
+    settings:
+      template:
+        - default:sound/stone
+        - default:settings/solid_1x1x1
+      merges:
+        hardness: 1.0
+        resistance: 1200.0
+        instrument: basedrum
+        map_color: sand
+        correct_tools: ['#minecraft:pickaxes']
+        required_break_power: 1
+        tags: [minecraft:mineable/pickaxe, minecraft:dragon_immune]
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: solid
+      model: betterend:block/flavolite_runed_1
+
+recipes:
+  # Verbatim from generated/data/betterend/recipe/.
+  betterend:dense_emerald_ice:
+    type: shaped
+    pattern:
+      - '##'
+      - '##'
+    ingredients:
+      '#': betterend:emerald_ice
+    result:
+      id: betterend:dense_emerald_ice
+      count: 1
+  betterend:ancient_emerald_ice:
+    type: shaped
+    pattern:
+      - '###'
+      - '###'
+      - '###'
+    ingredients:
+      '#': betterend:dense_emerald_ice
+    result:
+      id: betterend:ancient_emerald_ice
+      count: 1
+  # `time` is explicit because CE defaults to 80 ticks (CustomSmeltingRecipe.java:52 /
+  # CustomBlastingRecipe.java:52) while the mod's json omits cookingtime and so inherits
+  # vanilla's 200 (smelting) / 100 (blasting).
+  betterend:end_stone_brick_cracked_smelting:
+    type: smelting
+    ingredient: minecraft:end_stone_bricks
+    experience: 0.1
+    time: 200
+    result:
+      id: betterend:end_stone_brick_cracked
+      count: 1
+  betterend:end_stone_brick_cracked_blasting:
+    type: blasting
+    ingredient: minecraft:end_stone_bricks
+    experience: 0.1
+    time: 100
+    result:
+      id: betterend:end_stone_brick_cracked
+      count: 1
+  # end_stone_brick_weathered_from_moss_block.json. The mod's second route,
+  # end_stone_brick_weathered_from_vine.json, keys on the tag #wover:vegetation/vines, which does
+  # not exist outside the mod loader -- omitted rather than rewritten.
+  betterend:end_stone_brick_weathered:
+    type: shapeless
+    group: mossy
+    ingredients:
+      - minecraft:end_stone_bricks
+      - minecraft:moss_block
+    result:
+      id: betterend:end_stone_brick_weathered
+      count: 1
+  # menger_sponge_smelting.json has neither `experience` nor `cookingtime`: 0 xp, vanilla 200t.
+  betterend:menger_sponge_smelting:
+    type: smelting
+    ingredient: betterend:menger_sponge_wet
+    time: 200
+    result:
+      id: betterend:menger_sponge
+      count: 1
+  # CROSS-BATCH FIX: neon_cactus_block.json is 2x2 betterend:neon_cactus, but betterend:neon_cactus
+  # is NOT ported (B4 dropped it: NeonCactusPlantBlock is 54 blockstate variants). CE hard-errors on
+  # an ingredient whose item does not exist -- AbstractRecipeSerializer.parseIngredient:112-115
+  # throws KnownResourceException("resource.recipe.ingredient.item_not_exist") -- so this recipe
+  # would fail the whole file at load. Removed; neon_cactus_block is worldgen/creative-only until
+  # neon_cactus itself is ported. Restore verbatim from generated/data/betterend/recipe/
+  # neon_cactus_block.json at that point.
+  betterend:smaragdant_crystal:
+    type: shaped
+    pattern:
+      - '##'
+      - '##'
+    ingredients:
+      '#': betterend:smaragdant_crystal_shard
+    result:
+      id: betterend:smaragdant_crystal
+      count: 1
+  betterend:smaragdant_crystal_bricks:
+    type: shaped
+    group: end_bricks
+    pattern:
+      - '##'
+      - '##'
+    ingredients:
+      '#': betterend:smaragdant_crystal
+    result:
+      id: betterend:smaragdant_crystal_bricks
+      count: 4
+  betterend:smaragdant_crystal_polished:
+    type: shaped
+    group: end_tile
+    pattern:
+      - '##'
+      - '##'
+    ingredients:
+      '#': betterend:smaragdant_crystal_bricks
+    result:
+      id: betterend:smaragdant_crystal_polished
+      count: 4
+  betterend:smaragdant_crystal_tiles:
+    type: shaped
+    group: end_small_tile
+    pattern:
+      - '##'
+      - '##'
+    ingredients:
+      '#': betterend:smaragdant_crystal_polished
+    result:
+      id: betterend:smaragdant_crystal_tiles
+      count: 4
+  betterend:silk_moth_hive:
+    type: shaped
+    pattern:
+      - '#L#'
+      - 'LML'
+      - '#L#'
+    ingredients:
+      '#': betterend:tenanea_planks
+      L: betterend:tenanea_leaves
+      M: betterend:silk_moth_matrix
+    result:
+      id: betterend:silk_moth_hive
+      count: 1
+# NO RECIPE, by design, for:
+#   emerald_ice / dense_snow / flavolite_runed -- no json in generated/data/betterend/recipe.
+#     Worldgen and structure only (Phase 6/7).
+#   smaragdant_crystal_pillar -- its json keys S to betterend:smaragdant_crystal_slab; slabs are
+#     unportable in this pass. Ships uncraftable rather than with an invented root.
+#   the 6 music discs, silk_fiber, silk_moth_matrix, gelatine, end_fish_raw/cooked,
+#     enchanted_membrane, guidebook -- all mob or loot drops in the mod, no crafting json.
+#
+# UNPORTABLE IN THIS FILE'S SCOPE:
+#   flavolite_runed_eternal -- EndStoneBlocks.java:271-278 gives it strength(-11, bedrock
+#     resistance), i.e. unbreakable, and deliberately NO loot table. It is the Eternal Portal's
+#     frame, placed only by a structure this phase does not have, and it has no obtainable item.
+#     An unbreakable, unobtainable, unplaceable block buys nothing.
+#   end_portal_block -- a portal renderer (models/block/end_portal.json has no parent and paints
+#     the animated portal sampler). CE has no portal render path and no teleport behavior.
+#   respawn_obelisk -- a 3-tall TripleShape multiblock whose entire point is setting the player's
+#     End spawn. multi_high_block could stack the mesh, but a decorative obelisk that silently
+#     does not set spawn is worse than an absent one. The 3 meshes are on disk and correct;
+#     re-open this the moment a spawn-point behavior exists.
+#   silk_moth_nest -- 2-tall (bottom cube + a cross-shaped top), ACTIVE x FACING x FULLNESS,
+#     and it SPAWNS silk moths. The mobs are a later phase; without them the nest is furniture
+#     with a misleading name.
+#   lucernia_jellyshroom_taburet / _chair / _bar_stool -- the same bclib:block/{taburet,chair,
+#     bar_stool} parents that block the other 30 seats. JellyLucerniaWoodMaterial.java:29-64
+#     defines no log or planks of its own, so these three are its only B8 ids.

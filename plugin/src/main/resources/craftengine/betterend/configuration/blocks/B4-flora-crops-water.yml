@@ -1,0 +1,687 @@
+# BetterEnd -- batch B4 (flora-a): crops, seeds and water plants
+# Generated from the mod's own blockstate/model json; every `models:` list is a verbatim
+# transcription of the mod's weighted variant list (AbstractBlockManager.java:988-1022 accepts
+# path/x/y/z/uvlock/weight on a block-state model entry, exactly as vanilla does).
+# One appearance = one visual state no matter how many weighted models it holds
+# (AbstractBlockManager.java:615-648), so the random variants are free.
+#
+# AUTO-STATE POOLS (revised after the cross-batch audit): B4 does NOT use cave_vines/kelp/
+# weeping_vines/twisting_vines. B5-flora-b claims 48/50 cave_vines, 24/25 kelp, 24/25 weeping and
+# 24/25 twisting on its own, so any B4 draw on those four pools exhausts them
+# (VisualBlockStateAllocator.java:137-155 -> StateExhaustedException). B4's plants sit on the
+# tripwire pool instead, split so the halves cannot starve each other: AutoStateGroup.values()
+# (AutoStateGroup.java:38-39,46) puts LOWER_TRIPWIRE and HIGHER_TRIPWIRE *before* the generic
+# TRIPWIRE group, and processPendingAllocations walks the groups in that enum order, so the two
+# halves are served first and the generic group only gets leftovers.
+#   lower_tripwire  63: 19 (B1+B2) + 23 (B4 ground/wall plants) + 10 FarmersDelight = 60
+#   higher_tripwire 63: 26 (B4) + 6 (B5 shards) + 3 (B4-flora-plants grasses)
+#                       + 15 FarmersDelight + 1 shared explicit state             = 51
+#   tripwire (generic) : 12 (B5 furs) + 1 CrabbersDelight, out of the 15 left over
+# 2026 REMAP: 7 *_seed / growth blocks (28 states) were unshipped with the deferred growth blocks,
+# and end_lotus_leaf moved off higher_tripwire onto a walkable trapdoor state -- it is a lily-pad
+# platform in the mod and the tripwire donor gave it no collision at all. Together that returned
+# 31 slots to a 126-state pool this pack shares with FarmersDelight, EndsDelight and
+# BrewinAndChewin; latest.log recorded 6 tripwire-family exhaustion failures before the change.
+
+items:
+  betterend:shadow_berry:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.shadow_berry></white>'
+    texture: betterend:item/shadow_berry_seeds
+    behavior:
+      type: block_item
+      block: betterend:shadow_berry
+  betterend:cave_pumpkin:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.cave_pumpkin></white>'
+    model: betterend:block/cave_pumpkin
+    behavior:
+      type: block_item
+      block: betterend:cave_pumpkin
+  betterend:charnia_cyan:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.charnia_cyan></white>'
+    texture: betterend:item/charnia_cyan
+    behavior:
+      type: block_item
+      block: betterend:charnia_cyan
+  betterend:charnia_green:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.charnia_green></white>'
+    texture: betterend:item/charnia_green
+    behavior:
+      type: block_item
+      block: betterend:charnia_green
+  betterend:charnia_light_blue:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.charnia_light_blue></white>'
+    texture: betterend:item/charnia_light_blue
+    behavior:
+      type: block_item
+      block: betterend:charnia_light_blue
+  betterend:charnia_orange:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.charnia_orange></white>'
+    texture: betterend:item/charnia_orange
+    behavior:
+      type: block_item
+      block: betterend:charnia_orange
+  betterend:charnia_purple:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.charnia_purple></white>'
+    texture: betterend:item/charnia_purple
+    behavior:
+      type: block_item
+      block: betterend:charnia_purple
+  betterend:charnia_red:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.charnia_red></white>'
+    texture: betterend:item/charnia_red
+    behavior:
+      type: block_item
+      block: betterend:charnia_red
+  betterend:bubble_coral:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.bubble_coral></white>'
+    model: betterend:block/bubble_coral_1
+    behavior:
+      type: block_item
+      block: betterend:bubble_coral
+  betterend:pond_anemone:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.pond_anemone></white>'
+    texture: betterend:item/pond_anemone
+    behavior:
+      type: block_item
+      block: betterend:pond_anemone
+  betterend:flamaea:
+    category: betterend:flora
+    data:
+      item_name: '<!i><white><lang:item.betterend.flamaea></white>'
+    texture: betterend:block/flamaea_1
+    behavior:
+      type: block_item
+      block: betterend:flamaea
+
+blocks:
+  # ShadowBerryBlock -- the mod names this "Shadow Berry Seeds"; the block IS the seed.
+  betterend:shadow_berry:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        is_randomly_ticking: true
+        tags:
+          - minecraft:sword_efficient
+    behavior:
+      - type: liquid_flowable_block
+      - type: bush_block
+        bottom_blocks:
+          - betterend:shadow_grass
+      - type: crop_block
+        grow_speed: 0.125
+        light_requirement: 0
+        is_bone_meal_target: true
+        bone_meal_age_bonus: 1
+    loot:
+      template: default:loot_table/seed_crop
+      arguments:
+        crop_item: betterend:shadow_berry_raw
+        crop_seed: betterend:shadow_berry
+        ripe_age: 3
+    state:
+      properties:
+        age:
+          type: int
+          default: 0
+          min: 0
+          max: 3
+      appearances:
+        age_0:
+          auto_state: higher_tripwire
+          models:
+            - path: betterend:block/shadow_berry_01
+            - path: betterend:block/shadow_berry_01
+              y: 90
+            - path: betterend:block/shadow_berry_01
+              y: 180
+            - path: betterend:block/shadow_berry_01
+              y: 270
+        age_1:
+          auto_state: higher_tripwire
+          models:
+            - path: betterend:block/shadow_berry_02
+            - path: betterend:block/shadow_berry_02
+              y: 90
+            - path: betterend:block/shadow_berry_02
+              y: 180
+            - path: betterend:block/shadow_berry_02
+              y: 270
+        age_2:
+          auto_state: higher_tripwire
+          models:
+            - path: betterend:block/shadow_berry_03
+            - path: betterend:block/shadow_berry_03
+              y: 90
+            - path: betterend:block/shadow_berry_03
+              y: 180
+            - path: betterend:block/shadow_berry_03
+              y: 270
+        age_3:
+          auto_state: higher_tripwire
+          models:
+            - path: betterend:block/shadow_berry_04
+            - path: betterend:block/shadow_berry_04
+              y: 90
+            - path: betterend:block/shadow_berry_04
+              y: 180
+            - path: betterend:block/shadow_berry_04
+              y: 270
+      variants:
+        age=0:
+          appearance: age_0
+        age=1:
+          appearance: age_1
+        age=2:
+          appearance: age_2
+        age=3:
+          appearance: age_3
+  # CavePumpkinBlock -- luminance 15 when full, 10 when small (EndCropBlocks.java:184).
+  betterend:cave_pumpkin:
+    settings:
+      template:
+        - default:sound/wood
+        - default:settings/transparent_1x1x1
+      merges:
+        hardness: 1.0
+        resistance: 1.0
+        luminance: 15
+        map_color: plant
+        tags:
+    loot:
+      template: default:loot_table/self
+    state:
+      properties:
+        small:
+          type: boolean
+          default: false
+      appearances:
+        full:
+          auto_state: solid
+          model: betterend:block/cave_pumpkin
+        small:
+          auto_state: solid
+          model: betterend:block/cave_pumpkin_small
+      variants:
+        small=false:
+          appearance: full
+        small=true:
+          appearance: small
+          settings:
+            luminance: 10
+  # CharniaBlock -- UnderwaterPlantBlock rooted on end stone (#betterend:survives_on/end_stone).
+  betterend:charnia_cyan:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        fluid_state: water
+        tags:
+          - minecraft:sword_efficient
+    behavior:
+      - type: seagrass_like_block
+      - type: bush_block
+        bottom_blocks:
+          - minecraft:end_stone
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: higher_tripwire
+      models:
+        - path: betterend:block/charnia_cyan
+        - path: betterend:block/charnia_cyan
+          y: 90
+        - path: betterend:block/charnia_cyan
+          y: 180
+        - path: betterend:block/charnia_cyan
+          y: 270
+  betterend:charnia_green:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        fluid_state: water
+        tags:
+          - minecraft:sword_efficient
+    behavior:
+      - type: seagrass_like_block
+      - type: bush_block
+        bottom_blocks:
+          - minecraft:end_stone
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: higher_tripwire
+      models:
+        - path: betterend:block/charnia_green
+        - path: betterend:block/charnia_green
+          y: 90
+        - path: betterend:block/charnia_green
+          y: 180
+        - path: betterend:block/charnia_green
+          y: 270
+  betterend:charnia_light_blue:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        fluid_state: water
+        tags:
+          - minecraft:sword_efficient
+    behavior:
+      - type: seagrass_like_block
+      - type: bush_block
+        bottom_blocks:
+          - minecraft:end_stone
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: higher_tripwire
+      models:
+        - path: betterend:block/charnia_light_blue
+        - path: betterend:block/charnia_light_blue
+          y: 90
+        - path: betterend:block/charnia_light_blue
+          y: 180
+        - path: betterend:block/charnia_light_blue
+          y: 270
+  betterend:charnia_orange:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        fluid_state: water
+        tags:
+          - minecraft:sword_efficient
+    behavior:
+      - type: seagrass_like_block
+      - type: bush_block
+        bottom_blocks:
+          - minecraft:end_stone
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: higher_tripwire
+      models:
+        - path: betterend:block/charnia_orange
+        - path: betterend:block/charnia_orange
+          y: 90
+        - path: betterend:block/charnia_orange
+          y: 180
+        - path: betterend:block/charnia_orange
+          y: 270
+  betterend:charnia_purple:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        fluid_state: water
+        tags:
+          - minecraft:sword_efficient
+    behavior:
+      - type: seagrass_like_block
+      - type: bush_block
+        bottom_blocks:
+          - minecraft:end_stone
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: higher_tripwire
+      models:
+        - path: betterend:block/charnia_purple
+        - path: betterend:block/charnia_purple
+          y: 90
+        - path: betterend:block/charnia_purple
+          y: 180
+        - path: betterend:block/charnia_purple
+          y: 270
+  betterend:charnia_red:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        fluid_state: water
+        tags:
+          - minecraft:sword_efficient
+    behavior:
+      - type: seagrass_like_block
+      - type: bush_block
+        bottom_blocks:
+          - minecraft:end_stone
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: higher_tripwire
+      models:
+        - path: betterend:block/charnia_red
+        - path: betterend:block/charnia_red
+          y: 90
+        - path: betterend:block/charnia_red
+          y: 180
+        - path: betterend:block/charnia_red
+          y: 270
+  betterend:bubble_coral:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        fluid_state: water
+        tags:
+          - minecraft:sword_efficient
+    behavior:
+      - type: seagrass_like_block
+      - type: bush_block
+        bottom_blocks:
+          - minecraft:end_stone
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: higher_tripwire
+      models:
+        - path: betterend:block/bubble_coral_1
+        - path: betterend:block/bubble_coral_1
+          y: 90
+        - path: betterend:block/bubble_coral_1
+          y: 180
+        - path: betterend:block/bubble_coral_1
+          y: 270
+        - path: betterend:block/bubble_coral_2
+        - path: betterend:block/bubble_coral_2
+          y: 90
+        - path: betterend:block/bubble_coral_2
+          y: 180
+        - path: betterend:block/bubble_coral_2
+          y: 270
+        - path: betterend:block/bubble_coral_3
+        - path: betterend:block/bubble_coral_3
+          y: 90
+        - path: betterend:block/bubble_coral_3
+          y: 180
+        - path: betterend:block/bubble_coral_3
+          y: 270
+  betterend:pond_anemone:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        luminance: 13
+        fluid_state: water
+        tags:
+          - minecraft:sword_efficient
+    behavior:
+      - type: seagrass_like_block
+      - type: bush_block
+        bottom_blocks:
+          - minecraft:end_stone
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: higher_tripwire
+      models:
+        - path: betterend:block/pond_anemone
+        - path: betterend:block/pond_anemone
+          y: 90
+        - path: betterend:block/pond_anemone
+          y: 180
+        - path: betterend:block/pond_anemone
+          y: 270
+  # FlamaeaBlock -- floats on the water surface (SurvivesOnBlockTrait.withBlocks(Blocks.WATER)
+  # + PlaceOnWaterBlockItem). on_liquid_block is CraftEngine's equivalent (reed.yml:17-20).
+  betterend:flamaea:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        tags:
+          - minecraft:sword_efficient
+    behavior:
+      - type: on_liquid_block
+        liquid_type:
+          - water
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: higher_tripwire
+      models:
+        - path: betterend:block/flamaea_0
+        - path: betterend:block/flamaea_1
+        - path: betterend:block/flamaea_2
+        - path: betterend:block/flamaea_3
+        - path: betterend:block/flamaea_4
+  # EndLilyBlock -- defineBlockOnly in the mod, so it has no item and is worldgen-placed only.
+  betterend:end_lily:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        fluid_state: water
+        tags:
+          - minecraft:sword_efficient
+    behavior:
+      - type: seagrass_like_block
+      - type: bush_block
+        bottom_blocks:
+          - minecraft:end_stone
+    loot:
+      template: default:loot_table/self
+    state:
+      properties:
+        shape:
+          type: string
+          values: [bottom, middle, top]
+          default: bottom
+      appearances:
+        bottom:
+          auto_state: higher_tripwire
+          model: betterend:block/end_lily_roots
+        middle:
+          auto_state: higher_tripwire
+          model: betterend:block/end_lily_stem
+        top:
+          auto_state: higher_tripwire
+          models:
+            - path: betterend:block/end_lily_top
+            - path: betterend:block/end_lily_top_small
+            - path: betterend:block/end_lily_top_small_2
+      variants:
+        shape=bottom:
+          appearance: bottom
+        shape=middle:
+          appearance: middle
+        shape=top:
+          appearance: top
+  # HydraluxBlock -- defineBlockOnly, worldgen-placed; the 6 shapes make up one stacked plant.
+  betterend:hydralux:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        fluid_state: water
+        tags:
+          - minecraft:sword_efficient
+    behavior:
+      - type: seagrass_like_block
+      - type: bush_block
+        bottom_blocks:
+          - minecraft:end_stone
+    loot:
+      template: default:loot_table/self
+    state:
+      properties:
+        shape:
+          type: string
+          values: [roots, vine, flower_small_bottom, flower_small_top, flower_big_bottom, flower_big_top]
+          default: roots
+      appearances:
+        roots:
+          auto_state: higher_tripwire
+          model: betterend:block/hydralux_roots
+        vine:
+          auto_state: higher_tripwire
+          model: betterend:block/hydralux_vine
+        flower_small_bottom:
+          auto_state: higher_tripwire
+          model: betterend:block/hydralux_flower_small_bottom
+        flower_small_top:
+          auto_state: higher_tripwire
+          model: betterend:block/hydralux_flower_small_top
+        flower_big_bottom:
+          auto_state: higher_tripwire
+          models:
+            - path: betterend:block/hydralux_flower_big_1_bottom
+            - path: betterend:block/hydralux_flower_big_2_bottom
+            - path: betterend:block/hydralux_flower_big_3_bottom
+        flower_big_top:
+          auto_state: higher_tripwire
+          model: betterend:block/hydralux_flower_big_top
+      variants:
+        shape=roots:
+          appearance: roots
+        shape=vine:
+          appearance: vine
+        shape=flower_small_bottom:
+          appearance: flower_small_bottom
+        shape=flower_small_top:
+          appearance: flower_small_top
+        shape=flower_big_bottom:
+          appearance: flower_big_bottom
+        shape=flower_big_top:
+          appearance: flower_big_top
+  # EndLotusLeafBlock -- defineBlockOnly. The mod tiles 3x3 lily pads with shape x facing (12
+  # states); the facing half is dropped here because CraftEngine cannot reproduce the
+  # neighbour-driven tiling without the worldgen feature, so only the north models are bound.
+  betterend:end_lotus_leaf:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        tags:
+          - minecraft:sword_efficient
+          - minecraft:mineable/hoe
+    behavior:
+      - type: on_liquid_block
+        liquid_type:
+          - water
+    loot:
+      template: default:loot_table/self
+    state:
+      properties:
+        shape:
+          type: string
+          values: [bottom, middle, top]
+          default: bottom
+      # REVERSE MISMATCH, fixed. EndLotusLeafBlock.java:29,32 extends Block with
+      # VSHAPE = box(0,0,0,16,1,16) -- a walkable lily-pad platform. `auto_state: higher_tripwire`
+      # gave it the tripwire donor's NO collision, so you fell straight through a lotus leaf.
+      # Collision is not overridable (BukkitBlockShape.java:20-26), so this pins a closed trapdoor
+      # state: a 3px walkable pad, the thinnest solid platform vanilla has. 2px too thick, but
+      # walkable, which is the point. These are copper trapdoor states freed at
+      # internal/mappings.yml:2117+, in no AutoStateGroup and unclaimed by any pack here -- and
+      # moving the leaf off higher_tripwire returns 3 slots to the oversubscribed tripwire pool.
+      # UNVERIFIED: wover's PlantBlockTrait is not in Reference/, so I could not rule out that the
+      # trait adds noCollission() on top of the class's own VSHAPE. If lotus leaves turn out to be
+      # pass-through in the mod, revert these three to `auto_state: higher_tripwire`.
+      appearances:
+        bottom:
+          state: waxed_weathered_copper_trapdoor[facing=south,half=bottom,open=false,powered=true,waterlogged=false]
+          model: betterend:block/end_lotus_leaf_bottom_north
+        middle:
+          state: waxed_weathered_copper_trapdoor[facing=east,half=bottom,open=false,powered=true,waterlogged=false]
+          model: betterend:block/end_lotus_leaf_middle_north
+        top:
+          state: waxed_weathered_copper_trapdoor[facing=west,half=bottom,open=false,powered=true,waterlogged=false]
+          model: betterend:block/end_lotus_leaf_top_north
+      variants:
+        shape=bottom:
+          appearance: bottom
+        shape=middle:
+          appearance: middle
+        shape=top:
+          appearance: top
+  # EndLotusFlowerBlock -- defineBlockOnly, luminance 15, sits on top of a betterend:end_lotus_stem
+  # column (EndWaterPlantBlocks.java:160-186). Drops end lotus seeds, never itself.
+  betterend:end_lotus_flower:
+    settings:
+      template:
+        - default:hardness/none
+        - default:sound/grass
+      merges:
+        push_reaction: destroy
+        map_color: plant
+        luminance: 15
+        tags:
+          - minecraft:sword_efficient
+          - minecraft:mineable/hoe
+    behavior:
+      - type: liquid_flowable_block
+      - type: bush_block
+        bottom_blocks:
+          - betterend:end_lotus_stem
+    # DEVIATION: the mod drops end_lotus_seed 1~2 here, but end_lotus_seed was unshipped with the
+    # deferred growth blocks. Self-drop keeps the flower obtainable instead of dropping nothing.
+    loot:
+      template: default:loot_table/self
+    state:
+      auto_state: higher_tripwire
+      models:
+        - path: betterend:block/end_lotus_flower
+        - path: betterend:block/end_lotus_flower_2

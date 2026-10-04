@@ -1,0 +1,22 @@
+# INTEGRATOR: append this one line to the `list:` of betterend:betterend in the LIVE
+# configuration/categories.yml (it cannot be added from here -- ItemBrowserManagerImpl
+# .CategoryParser is an IdSectionConfigParser and does byId.put(id, category) at :152, so
+# redeclaring betterend:betterend in a second file would SILENTLY OVERWRITE the live one):
+#
+#   - '#betterend:growths'
+#
+# This file declares only B5's own leaf category. `list: []` stays empty on purpose: membership is
+# pushed in from each item's own `category:` key via AbstractItemManager.java:429-432
+# addExternalCategoryMember, exactly as the live categories.yml does for stones/woods/misc.
+categories:
+  betterend:growths:
+    name: '<!i><white><l10n:category.betterend.growths></white>'
+    hidden: true
+    icon: betterend:aurora_crystal
+    list: []
+
+# Server-side name for the <l10n:...> key above. Batch-suffixed section name so it merges with the
+# live translations#categories rather than colliding with it (TranslationManagerImpl.java:415-482).
+translations#b5_categories:
+  en_us:
+    category.betterend.growths: BetterEnd Growths
